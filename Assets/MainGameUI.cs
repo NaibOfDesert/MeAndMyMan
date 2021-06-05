@@ -27,37 +27,55 @@ public class MainGameUI : MonoBehaviour
         gameManager.MainGameUILoadBoard();
     }
 
-    // Getting list of hex fields.
-    public List<int> GetListOfFields()
+    public List<Transform> GetListOfHexs()
     {
-        List<int> fieldsPositonsList = new List<int>();
+        List<Transform> boardHexList = new List<Transform>();
 
         Transform board = GameObject.Find("Board").transform;
         foreach (Transform boardHex in board)
         {
-            // Debug.Log("board:" + boardHex.name);
-            var tmpBoardHex = boardHex.name.Split('[', ']')[1].Split('.'); 
-            int fieldPosition = int.Parse(tmpBoardHex[0]);
-            // Debug.Log("board:" + boardHex.name);
-            fieldsPositonsList.Add(fieldPosition);
+            boardHexList.Add(boardHex);
         }
+        return boardHexList;
+    }        
 
-        return fieldsPositonsList;
-    }
-    
     public void Update()
     {
         int currentPlayerId = gameManager.currentPlayerId;
+
         currentRound.text = "Round #" + gameManager.currentRound;
         currentPlayer.text = gameManager.playersList[currentPlayerId].Nick;
-        amountOfCitizens.text = "Citizens " + gameManager.amountOfCitizens;
-        amountOfGold.text = "Gold: " + gameManager.amountOfGold; 
-        amountOfWood.text = "Wood: " + gameManager.amountOfWood;
-        amountOfStone.text = "Stone: " + gameManager.amountOfStone;
-        amountOfFood.text = "Food: " + gameManager.amountOfFood;
+
+        if (currentPlayerId == 0)
+        {
+            amountOfCitizens.text = "Citizens " + gameManager.amountOfCitizens;
+            amountOfGold.text = "Gold: " + gameManager.amountOfGold;
+            amountOfWood.text = "Wood: " + gameManager.amountOfWood;
+            amountOfStone.text = "Stone: " + gameManager.amountOfStone;
+            amountOfFood.text = "Food: " + gameManager.amountOfFood;
+        }
+
+        if (currentPlayerId == 1)
+        {
+            amountOfCitizens.text = "Citizens " + gameManager.amountOfCitizens;
+            amountOfGold.text = "Gold: " + "???";
+            amountOfWood.text = "Wood: " + "???";
+            amountOfStone.text = "Stone: " + "???";
+            amountOfFood.text = "Food: " + gameManager.amountOfFood;
+        }
+
+        if (currentPlayerId == 2)
+        {
+            amountOfCitizens.text = "Citizens " + gameManager.amountOfCitizens;
+            amountOfGold.text = "Gold: " + "???";
+            amountOfWood.text = "Wood: " + gameManager.amountOfWood;
+            amountOfStone.text = "Stone: " + gameManager.amountOfStone;
+            amountOfFood.text = "Food: " + "???";
+        }
 
         GameObject check = GameObject.Find("Board");
         if (check != null) RefreshBoard();
+        gameManager.SetActive();
     }
 
     public void SetField()
@@ -83,9 +101,10 @@ public class MainGameUI : MonoBehaviour
         //
 
     }
-    public void BackToMenu()
+
+    public void Exit()
     {
-        SceneManager.LoadSceneAsync("MainScene");
+        SceneManager.LoadSceneAsync("EndScene");
     }
 
     private void Awake()

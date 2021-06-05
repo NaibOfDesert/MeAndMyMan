@@ -25,9 +25,6 @@ public class BoardOnClick : MonoBehaviour
         GameObject boardButtonCreate = GameObject.Find("/MainGameUI/Panel/BoardHexPanel/Button Create");
         Transform board = GameObject.Find("Board").transform;
 
-        // float width = ((RectTransform)boardHexPanel.transform).rect.width;
-        // Vector3 shift = new Vector3(width * (float)(Screen.width / 1283.0), 0, 0);
-
         boardButtonCreate.SetActive(false);
         boardButtonBuild.SetActive(false);
         boardButtonBuildHouse.SetActive(false);
@@ -43,21 +40,23 @@ public class BoardOnClick : MonoBehaviour
 
             gameManager.onClickField = tmpHex;
 
-            if (tmpHex.fieldId == 64 && gameManager.currentPlayerId == 0)
-            {
-                boardButtonCreate.SetActive(true);
-            }
-            if (tmpHex.fieldType == FieldType.grass && gameManager.currentPlayerId == 2)
-            {
-                boardButtonBuild.SetActive(true);
-            }
-            if (tmpHex.fieldType == FieldType.grass && gameManager.currentPlayerId == 1)
-            {
-                boardButtonBuildHouse.SetActive(true);
+            if (tmpHex.isActive == true) { 
+                if (tmpHex.fieldId == 64 && gameManager.currentPlayerId == 0)
+                {
+                    boardButtonCreate.SetActive(true);
+                }
+                if (tmpHex.fieldType == FieldType.grass && gameManager.currentPlayerId == 2)
+                {
+                    boardButtonBuild.SetActive(true);
+                }
+                if (tmpHex.fieldType == FieldType.grass && gameManager.currentPlayerId == 1)
+                {
+                    boardButtonBuildHouse.SetActive(true);
+                }
             }
         }
-
     }
+
     private static bool IsPointerOverUIElement()
     {
         return IsPointerOverUIElement(GetEventSystemRaycastResults());

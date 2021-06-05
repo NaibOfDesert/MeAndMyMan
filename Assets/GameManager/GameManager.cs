@@ -12,15 +12,16 @@ class GameManager : MonoBehaviour
     public int currentPlayerId; 
     public int currentRound;
 
-    public int amountOfCitizens = 1000;
-    public int amountOfGold = 700;
-    public int amountOfWood = 500;
-    public int amountOfStone = 200;
-    public int amountOfFood = 200;
+    public int amountOfCitizens = 100;
+    public int amountOfGold = 100;
+    public int amountOfWood = 100;
+    public int amountOfStone = 100;
+    public int amountOfFood = 100;
 
     private MainGameUI mainGameUI;
     public List<Player> playersList = new List<Player>();
     public List<Field> fieldsList = new List<Field>();
+    public List<Transform> boardHexList = new List<Transform>();
 
     public Field onClickField = null;
 
@@ -41,23 +42,24 @@ class GameManager : MonoBehaviour
     {
         var rand = new Random();
         mainGameUI = MainGameUI.Instance;
-        List<int> fieldsPositonsList = mainGameUI.GetListOfFields();
+        boardHexList = mainGameUI.GetListOfHexs();
 
-        foreach (int fieldPosition in fieldsPositonsList)
+        foreach (Transform boardHex in boardHexList)
         {
-            // Debug.Log("position field:" + fieldPosition);
+            var tmpBoardHex = boardHex.name.Split('[', ']')[1].Split('.');
+            int fieldPosition = int.Parse(tmpBoardHex[0]);
+
             FieldType newFieldType = NewFieldType(fieldPosition, rand);
-            Field newField = new Field(fieldPosition, newFieldType);
+            Field newField = new Field(fieldPosition, newFieldType, boardHex.position.x, boardHex.position.y, boardHex.position.z);
             fieldsList.Add(newField);
-            // Debug.Log("position field:" + newFieldType);
         }
+        SetActive();
     }
 
     // Fill randomly board.
     public FieldType NewFieldType(int __fieldPosition, System.Random __rand)
     {
         // Debug.Log("NewFieldType: " + __fieldPosition);
-
         FieldType newFieldType = FieldType.none;
         GameObject field = GameObject.Find("Board/Hex1 [" + __fieldPosition + "].");
 
@@ -67,60 +69,40 @@ class GameManager : MonoBehaviour
         if (__fieldPosition == 64)
         {
             newFieldType = FieldType.castle;
-            GameObject newHex = GameObject.Find("BoardTemp/Castle/Castle");
-            field.GetComponent<MeshFilter>().mesh = newHex.GetComponent<MeshFilter>().mesh;
         }
         else if ((__fieldPosition == 51) || (__fieldPosition == 63) || (__fieldPosition == 65))
         {
             newFieldType = FieldType.house;
-            GameObject newHex = GameObject.Find("BoardTemp/Town/Town");
-            field.GetComponent<MeshFilter>().mesh = newHex.GetComponent<MeshFilter>().mesh;
         }
         else if ((__fieldPosition == 76) || (__fieldPosition == 77))
         {
             newFieldType = FieldType.field;
-            GameObject newHex = GameObject.Find("BoardTemp/Crops/Crops");
-            field.GetComponent<MeshFilter>().mesh = newHex.GetComponent<MeshFilter>().mesh;
+        }
+        else if ((__fieldPosition == 39))
+        {
+            newFieldType = FieldType.mine;
         }
         else
         {
-            // mine
+            // grass
             if (tempValue < 10)
             {
-                newFieldType = FieldType.mine;
-                GameObject newHex = GameObject.Find("BoardTemp/RockyEdge");
-                field.GetComponent<MeshFilter>().mesh = newHex.GetComponent<MeshFilter>().mesh;
-            }
-
-            // grass
-            if (tempValue < 9)
-            {
                 newFieldType = FieldType.grass;
-                GameObject newHex = GameObject.Find("BoardTemp/Hex11");
-                field.GetComponent<MeshFilter>().mesh = newHex.GetComponent<MeshFilter>().mesh;
             }
-
             // forest
-            if (tempValue < 5)
+            if (tempValue < 6)
             {
                 newFieldType = FieldType.forest;
-                GameObject newHex = GameObject.Find("BoardTemp/Forest/Forest");
-                field.GetComponent<MeshFilter>().mesh = newHex.GetComponent<MeshFilter>().mesh;
             }
-
             // mountain
-            if (tempValue < 3)
+            if (tempValue < 4)
             {
                 newFieldType = FieldType.mountain;
-                GameObject newHex = GameObject.Find("BoardTemp/SnowyMountain/Mountain");
-                field.GetComponent<MeshFilter>().mesh = newHex.GetComponent<MeshFilter>().mesh;
             }
-
+            // water
             if (tempValue < 2) // water
             {
                 newFieldType = FieldType.water;
-                GameObject newHex = GameObject.Find("BoardTemp/Hex19");
-                field.GetComponent<MeshFilter>().mesh = newHex.GetComponent<MeshFilter>().mesh;
             }
         }
         return newFieldType;
@@ -133,6 +115,7 @@ class GameManager : MonoBehaviour
                 return field;
         return null;
     }
+
     public void SetBoardValue()
     {
         foreach (Field field in fieldsList)
@@ -179,7 +162,105 @@ class GameManager : MonoBehaviour
         }
     }
 
+    public void SetActive()
+    {
 
+        foreach (Field field in fieldsList)
+        {
+            Field tempField = null;
+            if (field.fieldType == FieldType.castle || field.fieldType == FieldType.house || field.fieldType == FieldType.field || field.fieldType == FieldType.mine)
+            {
+                SetHexValue(field);
+                tempField = fieldsList.Find(f => f.fieldX == field.fieldX - 100 && f.fieldZ == field.fieldZ);
+                if (tempField != null)
+                {
+                    tempField.isActive = true;
+                    SetHexValue(tempField);
+                }
+
+                tempField = fieldsList.Find(f => f.fieldX == field.fieldX + 100 && f.fieldZ == field.fieldZ);
+                if (tempField != null)
+                {
+                    tempField.isActive = true;
+                    SetHexValue(tempField);
+                }
+
+                tempField = fieldsList.Find(f => f.fieldX == field.fieldX - 50 && f.fieldZ == field.fieldZ - 86);
+                if (tempField != null)
+                {
+                    tempField.isActive = true;
+                    SetHexValue(tempField);
+                }
+
+                tempField = fieldsList.Find(f => f.fieldX == field.fieldX - 50 && f.fieldZ == field.fieldZ + 86);
+                if (tempField != null)
+                {
+                    tempField.isActive = true;
+                    SetHexValue(tempField);
+                }
+
+                tempField = fieldsList.Find(f => f.fieldX == field.fieldX + 50 && f.fieldZ == field.fieldZ - 86);
+                if (tempField != null)
+                {
+                    tempField.isActive = true;
+                    SetHexValue(tempField);
+                }
+
+                tempField = fieldsList.Find(f => f.fieldX == field.fieldX + 50 && f.fieldZ == field.fieldZ + 86);
+                if (tempField != null)
+                {
+                    tempField.isActive = true;
+                    SetHexValue(tempField);
+                }
+            }
+        }   
+    }
+
+    public void SetHexValue(Field __field)
+    {
+        GameObject tempField = GameObject.Find("Board/Hex1 [" + __field.fieldId + "].");
+
+        if (__field.fieldType == FieldType.castle)
+        {
+            GameObject newHex = GameObject.Find("BoardTemp/Castle/Castle");
+            tempField.GetComponent<MeshFilter>().mesh = newHex.GetComponent<MeshFilter>().mesh;
+        }
+        if (__field.fieldType == FieldType.house)
+        {
+            GameObject newHex = GameObject.Find("BoardTemp/Town/Town");
+            tempField.GetComponent<MeshFilter>().mesh = newHex.GetComponent<MeshFilter>().mesh;
+        }
+        if (__field.fieldType == FieldType.field)
+        {
+            GameObject newHex = GameObject.Find("BoardTemp/Crops/Crops");
+            tempField.GetComponent<MeshFilter>().mesh = newHex.GetComponent<MeshFilter>().mesh;
+        }
+        if (__field.fieldType == FieldType.mine)
+        {
+            GameObject newHex = GameObject.Find("BoardTemp/RockyEdge");
+            tempField.GetComponent<MeshFilter>().mesh = newHex.GetComponent<MeshFilter>().mesh;
+        }
+        if (__field.fieldType == FieldType.grass)
+        {
+            GameObject newHex = GameObject.Find("BoardTemp/Hex11");
+            tempField.GetComponent<MeshFilter>().mesh = newHex.GetComponent<MeshFilter>().mesh;
+        }
+        if (__field.fieldType == FieldType.forest)
+        {
+            GameObject newHex = GameObject.Find("BoardTemp/Forest/Forest");
+            tempField.GetComponent<MeshFilter>().mesh = newHex.GetComponent<MeshFilter>().mesh;
+        }
+        if (__field.fieldType == FieldType.mountain)
+        {
+            GameObject newHex = GameObject.Find("BoardTemp/SnowyMountain/Mountain");
+            tempField.GetComponent<MeshFilter>().mesh = newHex.GetComponent<MeshFilter>().mesh;
+        }
+        if (__field.fieldType == FieldType.water)
+        {
+            GameObject newHex = GameObject.Find("BoardTemp/Hex19");
+            tempField.GetComponent<MeshFilter>().mesh = newHex.GetComponent<MeshFilter>().mesh;
+        }
+    }
 
     public GameManagerAction GetAvailableAction(int __fieldPosition)
     {
@@ -211,7 +292,7 @@ class GameManager : MonoBehaviour
         {
             //
             //        
-            mainGameUI.BackToMenu();
+            mainGameUI.Exit();
         }
  
     }

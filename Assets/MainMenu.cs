@@ -25,7 +25,7 @@ public class MainMenu : MonoBehaviour
         {
             TMP_InputField nick = GetInput(i);
 
-            if (nick.text.Length != 0)
+            if (nick.text.Length >= 0)
             {
                 if (i == 0)
                 {

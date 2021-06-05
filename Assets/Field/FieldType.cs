@@ -14,5 +14,6 @@ public enum FieldType
     grass,
     mine,
     field,
+    forestcut,
     none
 }
