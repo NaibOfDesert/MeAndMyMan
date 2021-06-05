@@ -12,13 +12,17 @@ class GameManager : MonoBehaviour
     public int currentPlayerId; 
     public int currentRound;
 
-    public int amountOfCitizens = 100;
-    public int amountOfGold = 100;
-    public int amountOfWood = 100;
-    public int amountOfStone = 100;
-    public int amountOfFood = 100;
+    public int amountOfCitizens;
+    public int amountOfGold;
+    public int amountOfWood;
+    public int amountOfStone;
+    public int amountOfFood;
 
-    private MainGameUI mainGameUI;
+    public bool isWin = false;
+
+    public MainGameUI mainGameUI;
+    public MainEndUI mainEndUI;
+
     public List<Player> playersList = new List<Player>();
     public List<Field> fieldsList = new List<Field>();
     public List<Transform> boardHexList = new List<Transform>();
@@ -31,6 +35,11 @@ class GameManager : MonoBehaviour
     }
     public void startGame(List<Player> __playersList)
     {
+        amountOfCitizens = 100;
+        amountOfGold = 100;
+        amountOfWood = 100;
+        amountOfStone = 100;
+        amountOfFood = 100;
         playersList = __playersList;
         fieldsList = new List<Field>();
         currentPlayerId = 0;
@@ -54,6 +63,11 @@ class GameManager : MonoBehaviour
             fieldsList.Add(newField);
         }
         SetActive();
+    }
+
+    public void MainEndUILoad()
+    {
+        mainEndUI = MainEndUI.Instance;
     }
 
     // Fill randomly board.
@@ -90,7 +104,7 @@ class GameManager : MonoBehaviour
                 newFieldType = FieldType.grass;
             }
             // forest
-            if (tempValue < 6)
+            if (tempValue < 8)
             {
                 newFieldType = FieldType.forest;
             }
@@ -122,7 +136,23 @@ class GameManager : MonoBehaviour
         {
             if (field.fieldType == FieldType.house)
             {
-                amountOfCitizens += 200;
+                amountOfCitizens += 30;
+                amountOfGold += 20;
+            }
+            if (field.fieldType == FieldType.houseupgrade)
+            {
+                amountOfCitizens += 70;
+                amountOfGold += 40; 
+            }
+            if (field.fieldType == FieldType.mine)
+            {
+                amountOfCitizens -= 20;
+                amountOfStone += 50;
+            }
+            if (field.fieldType == FieldType.field)
+            {
+                amountOfFood += 80;
+                amountOfGold -= 10;
             }
         }
     }
@@ -159,12 +189,64 @@ class GameManager : MonoBehaviour
             amountOfWood -= 20;
             amountOfStone -= 20;
             amountOfFood -= 30;
+            amountOfCitizens += 10;
+        }
+    }
+
+    public void SetMine()
+    {
+        if (onClickField != null)
+        {
+            onClickField = fieldsList.Where(f => f.fieldId == onClickField.fieldId).FirstOrDefault();
+            GameObject field = GameObject.Find("Board/Hex1 [" + onClickField.fieldId + "].");
+
+            onClickField.fieldType = FieldType.mine;
+
+            GameObject newHex = GameObject.Find("BoardTemp/RockyEdge");
+            field.GetComponent<MeshFilter>().mesh = newHex.GetComponent<MeshFilter>().mesh;
+            amountOfWood -= 20;
+            amountOfStone -= 20;
+            amountOfGold -= 100;
+            amountOfFood -= 30;
+            amountOfCitizens += 10;
+        }
+    }
+    public void UpgradeHouse()
+    {
+        if (onClickField != null)
+        {
+            onClickField = fieldsList.Where(f => f.fieldId == onClickField.fieldId).FirstOrDefault();
+            GameObject field = GameObject.Find("Board/Hex1 [" + onClickField.fieldId + "].");
+
+            onClickField.fieldType = FieldType.houseupgrade;
+
+            GameObject newHex = GameObject.Find("BoardTemp/TownUpgrade");
+            field.GetComponent<MeshFilter>().mesh = newHex.GetComponent<MeshFilter>().mesh;
+            amountOfWood -= 20;
+            amountOfStone -= 20;
+            amountOfFood -= 30;
+            amountOfCitizens += 20;
+        }
+    }
+
+    public void CutForest()
+    {
+        if (onClickField != null)
+        {
+            onClickField = fieldsList.Where(f => f.fieldId == onClickField.fieldId).FirstOrDefault();
+            GameObject field = GameObject.Find("Board/Hex1 [" + onClickField.fieldId + "].");
+
+            onClickField.fieldType = FieldType.forestcut;
+
+            GameObject newHex = GameObject.Find("BoardTemp/ForestCutDown");
+            field.GetComponent<MeshFilter>().mesh = newHex.GetComponent<MeshFilter>().mesh;
+            amountOfWood += 100;
+            amountOfFood -= 10;
         }
     }
 
     public void SetActive()
     {
-
         foreach (Field field in fieldsList)
         {
             Field tempField = null;
@@ -284,14 +366,14 @@ class GameManager : MonoBehaviour
     public void NextRound()
     {
         SetBoardValue();
-        if (currentRound < 11)
+        if (currentRound < 6)
         {
             currentRound++;
         }
         else
         {
-            //
-            //        
+            isWin = false;
+            mainEndUI.isWin = false;
             mainGameUI.Exit();
         }
  
@@ -301,6 +383,11 @@ class GameManager : MonoBehaviour
     public void MainGameUIIsLoaded() 
     {
         mainGameUI = MainGameUI.Instance;
+    }
+
+    public void MainEndUIIsLoaded()
+    {
+        mainEndUI = MainEndUI.Instance;
     }
 
 }

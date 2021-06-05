@@ -23,6 +23,7 @@ public class MainGameUI : MonoBehaviour
 
     private void Start()
     {
+        // Debug.Log(gameManager + " main game" );
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         gameManager.MainGameUILoadBoard();
     }
@@ -88,6 +89,20 @@ public class MainGameUI : MonoBehaviour
         gameManager.SetHouse();
     }
 
+    public void SetMine()
+    {
+        gameManager.SetMine();
+    }
+    public void CutForest()
+    {
+        gameManager.CutForest();
+    }
+
+    public void UpgradeHouse()
+    {
+        gameManager.UpgradeHouse();
+    }
+
     public void RefreshBoard()
     {
 
@@ -96,12 +111,12 @@ public class MainGameUI : MonoBehaviour
     public void EndTurn()
     {
         gameManager.EndTurn();
-        //
-        //
-        //
-
     }
-
+    public void EndByWin()
+    {
+        gameManager.isWin = true;
+        SceneManager.LoadSceneAsync("EndScene");
+    }
     public void Exit()
     {
         SceneManager.LoadSceneAsync("EndScene");

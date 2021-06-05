@@ -8,6 +8,7 @@ public enum FieldType
 {
     castle,
     house,
+    houseupgrade,
     water,
     mountain,
     forest,

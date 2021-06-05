@@ -19,15 +19,23 @@ public class BoardOnClick : MonoBehaviour
     {
         
         Vector3 mousePosition = Input.mousePosition;
-        GameObject boardHexPanel = GameObject.Find("/MainGameUI/Panel/BoardHexPanel");
-        GameObject boardButtonBuild = GameObject.Find("/MainGameUI/Panel/BoardHexPanel/Button Build");
-        GameObject boardButtonBuildHouse= GameObject.Find("/MainGameUI/Panel/BoardHexPanel/Button BuildHouse");
-        GameObject boardButtonCreate = GameObject.Find("/MainGameUI/Panel/BoardHexPanel/Button Create");
+        GameObject boardHexPanel = GameObject.Find("/MainGameUI/Panel");
+        GameObject boardButtonBuild = GameObject.Find("/MainGameUI/Panel/Button Build");
+        GameObject boardButtonBuildHouse= GameObject.Find("/MainGameUI/Panel/Button BuildHouse");
+        GameObject boardButtonBuildMine = GameObject.Find("/MainGameUI/Panel/Button BuildMine");
+        GameObject boardButtonUpgradeHouse = GameObject.Find("/MainGameUI/Panel/Button UpgradeHouse");
+        GameObject boardButtonCut = GameObject.Find("/MainGameUI/Panel/Button Cut");
+        GameObject boardButtonCreate = GameObject.Find("/MainGameUI/Panel/Button Create");
+
         Transform board = GameObject.Find("Board").transform;
 
         boardButtonCreate.SetActive(false);
         boardButtonBuild.SetActive(false);
         boardButtonBuildHouse.SetActive(false);
+        boardButtonBuildMine.SetActive(false);
+        boardButtonUpgradeHouse.SetActive(false);
+        boardButtonCut.SetActive(false);
+
 
         if (IsPointerOverUIElement())
         {
@@ -43,15 +51,28 @@ public class BoardOnClick : MonoBehaviour
             if (tmpHex.isActive == true) { 
                 if (tmpHex.fieldId == 64 && gameManager.currentPlayerId == 0)
                 {
+                    if(gameManager.amountOfCitizens >= 200 && gameManager.amountOfFood >= 200 && gameManager.amountOfGold >= 200 && gameManager.amountOfStone >= 200 && gameManager.amountOfWood >= 200)
                     boardButtonCreate.SetActive(true);
                 }
-                if (tmpHex.fieldType == FieldType.grass && gameManager.currentPlayerId == 2)
+                if ((tmpHex.fieldType == FieldType.grass || tmpHex.fieldType == FieldType.forestcut) && gameManager.currentPlayerId == 1)
+                {
+                    boardButtonBuildHouse.SetActive(true);
+                }
+                if (tmpHex.fieldType == FieldType.mountain && gameManager.currentPlayerId == 1)
+                {
+                    boardButtonBuildMine.SetActive(true);
+                }
+                if (tmpHex.fieldType == FieldType.house && gameManager.currentPlayerId == 1)
+                {
+                    boardButtonUpgradeHouse.SetActive(true);
+                }
+                if ((tmpHex.fieldType == FieldType.grass || tmpHex.fieldType == FieldType.forestcut) && gameManager.currentPlayerId == 2)
                 {
                     boardButtonBuild.SetActive(true);
                 }
-                if (tmpHex.fieldType == FieldType.grass && gameManager.currentPlayerId == 1)
+                if (tmpHex.fieldType == FieldType.forest && gameManager.currentPlayerId == 2)
                 {
-                    boardButtonBuildHouse.SetActive(true);
+                    boardButtonCut.SetActive(true);
                 }
             }
         }

@@ -74,6 +74,11 @@ public class MainMenu : MonoBehaviour
             GameObject MainGameUI = GameObject.Find("MainGameUI");
             Destroy(MainGameUI);
         }
+        if (MainEndUI.Instance != null)
+        {
+            GameObject MainEndUI = GameObject.Find("MainEnd");
+            Destroy(MainEndUI);
+        }
     }
 
     public void QuitGame()
