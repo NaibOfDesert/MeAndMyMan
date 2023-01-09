@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 144873249}
   - component: {fileID: 144873248}
   - component: {fileID: 144873247}
+  - component: {fileID: 144873251}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -224,6 +225,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &144873251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 144873246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3332f4f9ad9344443a3a75e448d8f2a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  infrastructurePrefab: {fileID: 7946733135729079619, guid: 38d4b05c57f11f3489dc8417ee9d77ae, type: 3}
 --- !u!1001 &492979415
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -704,13 +718,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 144873251}
+        m_TargetAssemblyTypeName: GameUiController, Assembly-CSharp
+        m_MethodName: Build
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

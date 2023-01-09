@@ -4,20 +4,11 @@ using UnityEngine;
 
 public class GameUiController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] Infrastructure infrastructurePrefab; 
 
-    // Update is called once per frame
-    void Update()
+    
+    public void Build()
     {
-        
-    }
-
-    void Build()
-    {
-
+        infrastructurePrefab.Initiate(infrastructurePrefab); 
     }
 }
