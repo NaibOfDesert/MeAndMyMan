@@ -142,3 +142,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c79a5c184fca4ed4584439a9e3ef0f56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlaced: 0
+  layersToHit:
+    serializedVersion: 2
+    m_Bits: 64
+  mouseController: {fileID: 0}

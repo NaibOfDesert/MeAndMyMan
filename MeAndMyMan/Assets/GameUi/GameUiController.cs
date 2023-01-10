@@ -4,11 +4,25 @@ using UnityEngine;
 
 public class GameUiController : MonoBehaviour
 {
-    [SerializeField] Infrastructure infrastructurePrefab; 
+    [SerializeField] Infrastructure infrastructurePrefab;
 
-    
-    public void Build()
+    GameController gameController;
+    MouseController mouseController; 
+
+    void Awake()
     {
-        infrastructurePrefab.Initiate(infrastructurePrefab); 
+        gameController = FindObjectOfType<GameController>();
+        mouseController = FindObjectOfType<MouseController>();
+    }
+
+    public void BuildHouse()
+    {
+        if (!gameController.IsBuildActive)
+        {
+
+            gameController.NewInfrastructure = Instantiate(infrastructurePrefab, mouseController.GetWorldPositionInt(gameController.InfrastructureLayersToHit), Quaternion.identity); ;
+            gameController.IsBuildActive = true;
+
+        }
     }
 }

@@ -4,34 +4,30 @@ using UnityEngine;
 
 public class Infrastructure : MonoBehaviour
 {
-    [SerializeField] bool isPlaced = false; 
+    [SerializeField] bool isPlaced;
+    public bool IsPlaced { get { return isPlaced; }  set { isPlaced = value; } }
+
+    GameController gameController; 
+    MouseController mouseController; 
+
     void Awake()
     {
-        
+        gameController = FindObjectOfType<GameController>();
+        mouseController = FindObjectOfType<MouseController>();
+
+    }
+
+    void Start()
+    {
+
     }
 
     void Update()
     {
         if (!isPlaced)
         {
-            transform.position= GetPosition();
-
-
+            transform.position = mouseController.GetWorldPositionInt(gameController.InfrastructureLayersToHit);
         }   
     }
 
-    public void Initiate(Infrastructure infrastructurePrefab)
-    {
-
-        // generate class object
-        Instantiate(infrastructurePrefab, GetPosition(), Quaternion.identity);
-    }
-
-    Vector2 GetPosition()
-    {
-        // convert by screen size
-        Vector3 mousePosition = Input.mousePosition;
-        Vector2 position = new Vector2Int(Mathf.RoundToInt(mousePosition.x), Mathf.RoundToInt(mousePosition.z));
-        return position;
-    }
 }
