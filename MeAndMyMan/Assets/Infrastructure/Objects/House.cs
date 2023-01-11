@@ -4,9 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.Infrastructure.Objects
+
+public class House : System.Object
 {
-    class House : System.Object
+    public House()
     {
+
     }
+
 }
+

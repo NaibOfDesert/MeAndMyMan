@@ -4,13 +4,24 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    [Header("Infrastructure")]
-    [SerializeField] bool isBuildActive;
+    bool isBuildActive;
     public bool IsBuildActive { get { return isBuildActive; } set { isBuildActive = value; } }
 
-    [SerializeField] Infrastructure newInfrastructure;
-    public Infrastructure NewInfrastructure { get { return newInfrastructure; } set { newInfrastructure = value; } }
 
-    [SerializeField] LayerMask infrastructureLayersToHit;
-    public LayerMask InfrastructureLayersToHit { get { return infrastructureLayersToHit; } }
+    GameInfrastructure gameInfrastructure;
+    public GameInfrastructure GameInfrastructure { get { return gameInfrastructure; } }
+
+    GameManager gameManager;
+    public GameManager GameManager { get { return gameManager; } } // is it needed? 
+
+    void Awake()
+    {
+        gameInfrastructure = GetComponent<GameInfrastructure>(); 
+        gameManager = new GameManager(); 
+    }
+
+    void CreateFieldList()
+    {
+        // foreach in object
+    }
 }

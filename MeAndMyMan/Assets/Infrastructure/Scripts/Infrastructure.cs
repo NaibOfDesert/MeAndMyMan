@@ -7,13 +7,21 @@ public class Infrastructure : MonoBehaviour
     [SerializeField] bool isPlaced;
     public bool IsPlaced { get { return isPlaced; }  set { isPlaced = value; } }
 
+
+
+    Object infrastructureObject; 
+
     GameController gameController; 
-    MouseController mouseController; 
+    MouseController mouseController;
+    InfrastructureArea infrastructureArea;
 
     void Awake()
     {
         gameController = FindObjectOfType<GameController>();
         mouseController = FindObjectOfType<MouseController>();
+        infrastructureArea = FindObjectOfType<InfrastructureArea>();
+
+        // infrastructureObject = new House(); // implement depends of type of new Infrastructure
 
     }
 
@@ -26,7 +34,7 @@ public class Infrastructure : MonoBehaviour
     {
         if (!isPlaced)
         {
-            transform.position = mouseController.GetWorldPositionInt(gameController.InfrastructureLayersToHit);
+            transform.position = mouseController.WorldPosition;
         }   
     }
 

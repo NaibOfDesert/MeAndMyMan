@@ -19,8 +19,8 @@ public class GameUiController : MonoBehaviour
     {
         if (!gameController.IsBuildActive)
         {
-
-            gameController.NewInfrastructure = Instantiate(infrastructurePrefab, mouseController.GetWorldPositionInt(gameController.InfrastructureLayersToHit), Quaternion.identity); ;
+            // move to GameInfrastructure
+            gameController.GameInfrastructure.Infrastructure = Instantiate(infrastructurePrefab, mouseController.WorldPosition, Quaternion.identity); ;
             gameController.IsBuildActive = true;
 
         }

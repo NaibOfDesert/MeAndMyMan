@@ -1,4 +1,4 @@
-﻿enum FieldType
+﻿public enum FieldType
 {
     Grass, 
     Forest,

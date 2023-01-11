@@ -36,8 +36,6 @@ public class TileCoordinates : MonoBehaviour
         tileCoordinates.x = Mathf.RoundToInt(transform.parent.position.x / unityGridSize);
         tileCoordinates.y = Mathf.RoundToInt(transform.parent.position.z / unityGridSize);
         tileCoordinatesText.text = tileCoordinates.ToString();
-
-
     }
 
     void UpdateName()

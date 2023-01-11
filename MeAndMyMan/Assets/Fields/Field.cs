@@ -3,9 +3,12 @@ using System.Collections.Generic;
 public class Field 
 {
     int id;
-    FieldType fieldType; 
+    FieldType fieldType;
+    // vector 2 int
+    bool isPlacable; 
+    public bool IsPlacable { get { return isPlacable; } set { isPlacable = value; } }
 
-    Field()
+    public Field(FieldType fieldType)
     {
 
     }

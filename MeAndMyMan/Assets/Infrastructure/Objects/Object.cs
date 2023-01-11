@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-class Object    
+public class Object    
 {
     int id;
     ObjectType objectType;
 
+    int areaFields;
+    int areaFieldsActive; 
 
-    Object()
+    public Object()
     {
 
     }

@@ -6,6 +6,7 @@ public class MouseController : MonoBehaviour
 {
     Vector3 mousePosition;
     Vector3 worldPosition;
+    public Vector3 WorldPosition { get { return worldPosition; } }
     Ray ray;
 
     GameController gameController; 
@@ -17,15 +18,19 @@ public class MouseController : MonoBehaviour
 
     private void Update()
     {
-        if (gameController.IsBuildActive)
+        worldPosition = GetWorldPositionInt(gameController.GameInfrastructure.InfrastructureLayersToHit);
+        Debug.Log(worldPosition);
+
+        if (gameController.IsBuildActive) // as second?
         {
                             
             if (Input.GetMouseButtonDown(0))
             {
-                gameController.NewInfrastructure.IsPlaced = true;
-                Debug.Log(gameController.NewInfrastructure.IsPlaced);
-                gameController.NewInfrastructure = null;
-                gameController.IsBuildActive = false;
+                // check posibility of building
+                // Linq to find element from 
+                gameController.GameInfrastructure.BuildInfrastructure();
+                
+
             }
         }
 
@@ -44,7 +49,7 @@ public class MouseController : MonoBehaviour
         return worldPosition; 
     }
 
-    public Vector3 GetWorldPositionInt(LayerMask layersToHit)
+    private Vector3 GetWorldPositionInt(LayerMask layersToHit)
     {
         worldPosition = GetWorldPosition(layersToHit); 
 
