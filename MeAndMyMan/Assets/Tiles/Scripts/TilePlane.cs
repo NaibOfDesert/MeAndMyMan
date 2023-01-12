@@ -32,7 +32,7 @@ public class TilePlane : MonoBehaviour
     {
         tileMesh.enabled = true;
         Debug.Log(transform.parent.name);
-        if (tile.IsPlaceable)
+        if (tile.Field.IsPlacable)
         {
             tileMesh.material = greenMaterial;
         }

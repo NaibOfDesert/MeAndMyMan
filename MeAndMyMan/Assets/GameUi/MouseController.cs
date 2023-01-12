@@ -16,19 +16,19 @@ public class MouseController : MonoBehaviour
     }
 
 
-    private void Update()
+    void Update()
     {
-        worldPosition = GetWorldPositionInt(gameController.GameInfrastructure.InfrastructureLayersToHit);
-        Debug.Log(worldPosition);
+        worldPosition = GetWorldPositionInt(gameController.InfrastructureController.InfrastructureLayersToHit);
 
         if (gameController.IsBuildActive) // as second?
         {
                             
             if (Input.GetMouseButtonDown(0))
             {
-                // check posibility of building
+                Debug.Log(worldPosition);
                 // Linq to find element from 
-                gameController.GameInfrastructure.BuildInfrastructure();
+                gameController.InfrastructureController.BuildInfrastructure(worldPosition);
+
                 
 
             }

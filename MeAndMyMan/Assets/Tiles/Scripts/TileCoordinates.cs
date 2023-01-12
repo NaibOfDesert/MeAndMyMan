@@ -23,10 +23,12 @@ public class TileCoordinates : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        UpdateCoordinates();
+        UpdateName();
+
         if (!Application.isPlaying)
         {
-            UpdateCoordinates();
-            UpdateName();
+            
         }
 
     }
