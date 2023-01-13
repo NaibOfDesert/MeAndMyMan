@@ -5,18 +5,35 @@ using System.Linq;
 
 public class InfrastructureController : MonoBehaviour
 {
+    [Header("Prefabs")]
+    [SerializeField] GameObject housePrefab;
+    public GameObject HousePrefab { get { return housePrefab; } }
+    int houseSize = 1;
+    Infrastructure[] houseList; // list !!!
+    
+    [SerializeField] GameObject farmPrefab;
+    public GameObject FarmPrefab { get { return farmPrefab; } }
+    int farmSize = 2;
+    Infrastructure[] farmList; // list !!!
+
     [Header("Infrastructure")]
     [SerializeField] LayerMask infrastructureLayersToHit;
     public LayerMask InfrastructureLayersToHit { get { return infrastructureLayersToHit; } }
 
-    Infrastructure infrastructure;
-    public Infrastructure Infrastructure { get { return infrastructure; } set { infrastructure = value; } }
+    GameObject newInfrastructureObject; 
+    
+    Infrastructure newInfrastructure;
+    public Infrastructure NewInfrastructure { get { return newInfrastructure; } set { newInfrastructure = value; } }
 
-    GameController gameController; 
+    GameController gameController;
+    BoardController boardController;
+    MouseController mouseController; 
 
     void Awake()
     {
-        gameController = FindObjectOfType<GameController>();    
+        gameController = FindObjectOfType<GameController>();
+        boardController = gameController.BoardController;
+        mouseController = gameController.MouseController; 
 
     }
 /*
@@ -28,19 +45,65 @@ public class InfrastructureController : MonoBehaviour
         return (fieldCheck.Field.IsPlacable);
 
     }*/
-    public void BuildInfrastructure(Vector3 worldPositon){
-        Tile tileToBuild = gameController.BoardController.GetBoardTile(worldPositon); 
+
+    public void CreateInfrastructure(ObjectType objectType)
+    {
+        Object infrastructureObject;
+
+        switch (objectType)
+        {
+            
+            case ObjectType.House:
+                infrastructureObject = new House(objectType);
+                InstantiateInfrastructure(housePrefab, infrastructureObject, houseSize);
+
+                break;
+            case ObjectType.Farm:
+                infrastructureObject = new Farm(objectType);
+                InstantiateInfrastructure(farmPrefab, infrastructureObject, farmSize);
+
+                break;
+            default:
+                Debug.Log("InitiateInfrastructure error");
+                break;
+        }
+
+
+
+
+    }
+
+    Infrastructure InstantiateInfrastructure(GameObject prefabObject, Object infrastructureObject, int infrastructureSize)
+    {
+        newInfrastructureObject = Instantiate(prefabObject, mouseController.WorldPosition, Quaternion.identity); // is newInfrastructure needed??
+        newInfrastructure = newInfrastructureObject.GetComponent<Infrastructure>();
+        newInfrastructure.InitiateInfrastructure(infrastructureObject, infrastructureSize); 
+
+        gameController.BuildState = true;
+
+        return newInfrastructure; 
+    }
+
+    public void BuildInfrastructure(Vector3 worldPositon)
+    {
+        Tile tileToBuild = boardController.GetBoardTile(worldPositon); 
 
         if (tileToBuild.Field.IsPlacable)
         {
             tileToBuild.Field.IsPlacable = false;
-            infrastructure.IsPlaced = true;
-            infrastructure = null;
-            gameController.IsBuildActive = false;
+            newInfrastructure.IsPlaced = true;
+            newInfrastructure = null;
+            gameController.BuildState = false;
         }
 
     }
 
+    public bool BoardCheck()
+    {
+
+
+        return true; 
+    }
 
 }
 

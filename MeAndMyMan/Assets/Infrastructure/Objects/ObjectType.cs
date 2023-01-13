@@ -1,4 +1,4 @@
-﻿enum ObjectType
+﻿public enum ObjectType
 {
     Castle,
     House,

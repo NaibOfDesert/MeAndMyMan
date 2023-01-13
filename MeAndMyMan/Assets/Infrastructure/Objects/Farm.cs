@@ -4,14 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
-public class House: Object
+public class Farm : Object
 {
 
-    public House(ObjectType objectType) : base(objectType)
+    public Farm(ObjectType objectType) : base(objectType)
     {
-        areaFields = 0; 
+        areaFields = 4;
     }
 
 }
-

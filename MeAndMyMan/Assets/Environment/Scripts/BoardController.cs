@@ -6,7 +6,7 @@ using System.Linq;
 public class BoardController : MonoBehaviour
 {
     [SerializeField] Tile[] tilesList;
-    public Tile[] TilesList { get { return tilesList; } }
+    public Tile[] TilesList { get { return tilesList; } } // convert to List
 
     GameController gameController;
 
@@ -24,6 +24,7 @@ public class BoardController : MonoBehaviour
     public void BoardInitialization()
     {
         
+        // --
     }
 
     public Tile GetBoardTile(Vector3 worldPositon)
@@ -31,4 +32,10 @@ public class BoardController : MonoBehaviour
         Tile fieldCheck = TilesList.Single(n => n.gameObject.transform.position == worldPositon);
         return (fieldCheck);
     }
+
+    bool BoardCheck()
+    {
+        return true;
+    }
+
 }

@@ -7,9 +7,8 @@ public class GameController : MonoBehaviour
     [SerializeField] int gameSize;
     public int GameSize { get { return gameSize; } }
 
-    [SerializeField] bool isBuildActive;
-    public bool IsBuildActive { get { return isBuildActive; } set { isBuildActive = value; } }
-
+    [SerializeField] bool buildState;
+    public bool BuildState { get { return buildState; } set { buildState = value; } }
 
     GameManager gameManager;
     public GameManager GameManager { get { return gameManager; } }
@@ -20,11 +19,15 @@ public class GameController : MonoBehaviour
     [SerializeField] BoardController boardController;
     public BoardController BoardController { get { return boardController; } }
 
+    MouseController mouseController;
+    public MouseController MouseController { get { return mouseController; } }
+
     void Awake()
     {
         gameManager = new GameManager();
         infrastructureController = FindObjectOfType<InfrastructureController>();
         boardController = FindObjectOfType<BoardController>();
+        mouseController = FindObjectOfType<MouseController>();
 
 
 

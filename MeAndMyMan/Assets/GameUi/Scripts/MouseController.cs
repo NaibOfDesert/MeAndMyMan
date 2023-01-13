@@ -9,25 +9,28 @@ public class MouseController : MonoBehaviour
     public Vector3 WorldPosition { get { return worldPosition; } }
     Ray ray;
 
-    GameController gameController; 
+    GameController gameController;
+    InfrastructureController infrastructureController;
     void Awake()
     {
         gameController = FindObjectOfType<GameController>();
+        infrastructureController = gameController.InfrastructureController;
+
+
     }
 
 
     void Update()
     {
-        worldPosition = GetWorldPositionInt(gameController.InfrastructureController.InfrastructureLayersToHit);
+        worldPosition = GetWorldPositionInt(infrastructureController.InfrastructureLayersToHit);
 
-        if (gameController.IsBuildActive) // as second?
+        if (gameController.BuildState) // as second?
         {
                             
             if (Input.GetMouseButtonDown(0))
             {
-                Debug.Log(worldPosition);
-                // Linq to find element from 
-                gameController.InfrastructureController.BuildInfrastructure(worldPosition);
+                // which building? 
+                infrastructureController.BuildInfrastructure(worldPosition);
 
                 
 

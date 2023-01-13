@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-public class Object    
+public abstract class Object    
 {
-    int id;
-    ObjectType objectType;
+    // virtual int id { get; set; }
+    public ObjectType objectType { get; }
 
-    int areaFields;
-    int areaFieldsActive; 
+    public int areaFields;
+    protected int areaFieldsActive; 
 
-    public Object()
+    public Object(ObjectType objectType)
     {
-
+        this.objectType = objectType;
     }
+ 
 }
 
