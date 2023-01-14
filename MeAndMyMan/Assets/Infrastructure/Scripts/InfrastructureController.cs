@@ -9,12 +9,14 @@ public class InfrastructureController : MonoBehaviour
     [SerializeField] GameObject housePrefab;
     public GameObject HousePrefab { get { return housePrefab; } }
     int houseSize = 1;
-    Infrastructure[] houseList; // list !!!
+    int houseAreaSize = 0;
+    List<Infrastructure> houseList; // list !!!
     
     [SerializeField] GameObject farmPrefab;
     public GameObject FarmPrefab { get { return farmPrefab; } }
     int farmSize = 2;
-    Infrastructure[] farmList; // list !!!
+    int farmAreaSize = 2;
+    List<Infrastructure> farmList; // list !!!
 
     [Header("Infrastructure")]
     [SerializeField] LayerMask infrastructureLayersToHit;
@@ -33,7 +35,10 @@ public class InfrastructureController : MonoBehaviour
     {
         gameController = FindObjectOfType<GameController>();
         boardController = gameController.BoardController;
-        mouseController = gameController.MouseController; 
+        mouseController = gameController.MouseController;
+
+        houseList = new List<Infrastructure>();
+        farmList = new List<Infrastructure>(); 
 
     }
 /*
@@ -54,13 +59,15 @@ public class InfrastructureController : MonoBehaviour
         {
             
             case ObjectType.House:
-                infrastructureObject = new House(objectType);
+                infrastructureObject = new House(objectType, houseAreaSize);
                 InstantiateInfrastructure(housePrefab, infrastructureObject, houseSize);
+                // add to list
 
                 break;
             case ObjectType.Farm:
-                infrastructureObject = new Farm(objectType);
+                infrastructureObject = new Farm(objectType, farmAreaSize);
                 InstantiateInfrastructure(farmPrefab, infrastructureObject, farmSize);
+                //add to list
 
                 break;
             default:
@@ -84,13 +91,15 @@ public class InfrastructureController : MonoBehaviour
         return newInfrastructure; 
     }
 
-    public void BuildInfrastructure(Vector3 worldPositon)
+    public void BuildInfrastructure(Vector3 worldPosition)
     {
-        Tile tileToBuild = boardController.GetBoardTile(worldPositon); 
+        Tile tileToBuild = boardController.GetBoardTile(worldPosition); 
 
-        if (tileToBuild.Field.IsPlacable)
+        if (tileToBuild.Field.IsPlacable) //boardcheck for infrastructure size
         {
             tileToBuild.Field.IsPlacable = false;
+
+            // place infrastructure in Tile
             newInfrastructure.IsPlaced = true;
             newInfrastructure = null;
             gameController.BuildState = false;
@@ -98,12 +107,12 @@ public class InfrastructureController : MonoBehaviour
 
     }
 
-    public bool BoardCheck()
+    public bool BoardCheck(Vector3 worldPosition)
     {
-
 
         return true; 
     }
+
 
 }
 

@@ -7,8 +7,8 @@ public class Field
     int area;
     FieldType fieldType;
 
-    bool isPlacable; 
-    public bool IsPlacable { get { return isPlacable; } set { isPlacable = value; } }
+    bool isPlacable; //--
+    public bool IsPlacable { get { return isPlacable; } set { isPlacable = value; } } //--
 
     bool isProductional;
     public bool IsProductional { get { return isProductional; } set { isProductional = value; } }

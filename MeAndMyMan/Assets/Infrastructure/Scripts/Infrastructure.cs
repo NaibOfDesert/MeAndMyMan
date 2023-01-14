@@ -40,31 +40,25 @@ public class Infrastructure : MonoBehaviour
     {
         if (!isPlaced)
         {
-            transform.position = WorldPositionConvert();
-            infrastructureController.BoardCheck(); 
+            transform.position = mouseController.WorldPositionConvert(infrastructureSize);
+            gameController.BoardController.BoardAreaCheck(mouseController.WorldPosition, infrastructureSize, infrastructureObject.AreaSize);
+            
 
             // red if !IsPlacable
 
 
-        }   
+        }
     }
 
     public void InitiateInfrastructure(Object infrastructureObject, int infrastructureSize)
     {
         this.infrastructureObject = infrastructureObject;
         this.infrastructureSize = infrastructureSize;
-        Debug.Log(infrastructureObject.objectType); 
+        Debug.Log(infrastructureObject.AreaSize + " infrastructureObject.AreaSize"); 
 
 
     }
 
-    Vector3 WorldPositionConvert()
-    {
-        Vector3 worldPositionConvert = mouseController.WorldPosition;
-        float convertValue = ((infrastructureSize + 1) % 2f) / 2f;
-        worldPositionConvert += new Vector3(convertValue, 0 , convertValue);
-        Debug.Log(convertValue); 
-        return worldPositionConvert; 
-    }
+
 
 }

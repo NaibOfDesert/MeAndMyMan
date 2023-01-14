@@ -26,7 +26,6 @@ public class MouseController : MonoBehaviour
 
         if (gameController.BuildState) // as second?
         {
-                            
             if (Input.GetMouseButtonDown(0))
             {
                 // which building? 
@@ -37,6 +36,15 @@ public class MouseController : MonoBehaviour
             }
         }
 
+    }
+
+    private Vector3 GetWorldPositionInt(LayerMask layersToHit)
+    {
+        worldPosition = GetWorldPosition(layersToHit);
+
+        Vector3 worldPositionInt = new Vector3(Mathf.RoundToInt(worldPosition.x), Mathf.RoundToInt(worldPosition.y), Mathf.RoundToInt(worldPosition.z));
+
+        return worldPositionInt;
     }
 
     public Vector3 GetWorldPosition(LayerMask layersToHit)
@@ -52,13 +60,15 @@ public class MouseController : MonoBehaviour
         return worldPosition; 
     }
 
-    private Vector3 GetWorldPositionInt(LayerMask layersToHit)
+  
+
+    public Vector3 WorldPositionConvert(int infrastructureSize)
     {
-        worldPosition = GetWorldPosition(layersToHit); 
-
-        Vector3 worldPositionInt = new Vector3(Mathf.RoundToInt(worldPosition.x), Mathf.RoundToInt(worldPosition.y), Mathf.RoundToInt(worldPosition.z)); 
-
-        return worldPositionInt; 
+        Vector3 worldPositionConvert = worldPosition;
+        float convertValue = ((infrastructureSize + 1) % 2f) / 2f;
+        worldPositionConvert += new Vector3(convertValue, 0, convertValue);
+        Debug.Log(convertValue);
+        return worldPositionConvert;
     }
 
 }

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 public class Farm : Object
 {
 
-    public Farm(ObjectType objectType) : base(objectType)
+    public Farm(ObjectType objectType, int areaSize) : base(objectType, areaSize)
     {
-        areaFields = 4;
+
     }
 
 }
