@@ -9,10 +9,10 @@ public class Tile : MonoBehaviour
     Field field;
     public Field Field { get { return field; } }
 
-    bool isPlacable;
+    [SerializeField] bool isPlacable = true;
     public bool IsPlacable { get { return isPlacable; } set { isPlacable = value; } }
 
-    Infrastructure usedByInfrastructure;
+    [SerializeField] Infrastructure usedByInfrastructure;
     public Infrastructure UsedByInfrastructure { get { return usedByInfrastructure; } set { usedByInfrastructure = value; } }
 
     void Awake()

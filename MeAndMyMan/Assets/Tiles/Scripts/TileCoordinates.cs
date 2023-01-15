@@ -6,6 +6,7 @@ using TMPro;
 [ExecuteAlways]
 public class TileCoordinates : MonoBehaviour
 {
+
     [SerializeField] int unityGridSize = 1;
     
     
@@ -43,5 +44,10 @@ public class TileCoordinates : MonoBehaviour
     void UpdateName()
     {
         transform.parent.name = tileCoordinates.ToString();
+    }
+
+    public void AbleCoordinates()
+    {
+        gameObject.GetComponent<MeshRenderer>().enabled = !gameObject.GetComponent<MeshRenderer>().enabled; 
     }
 }

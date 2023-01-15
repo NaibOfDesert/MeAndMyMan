@@ -10,17 +10,28 @@ public class InfrastructureController : MonoBehaviour
     public GameObject HousePrefab { get { return housePrefab; } }
     int houseSize = 1;
     int houseAreaSize = 0;
-    List<Infrastructure> houseList; // list !!!
+    List<Infrastructure> houseList;
     
     [SerializeField] GameObject farmPrefab;
     public GameObject FarmPrefab { get { return farmPrefab; } }
     int farmSize = 2;
-    int farmAreaSize = 2;
-    List<Infrastructure> farmList; // list !!!
+    int farmAreaSize = 1;
+    List<Infrastructure> farmList; 
 
     [Header("Infrastructure")]
     [SerializeField] LayerMask infrastructureLayersToHit;
     public LayerMask InfrastructureLayersToHit { get { return infrastructureLayersToHit; } }
+
+    [Header("Infrastructure")]
+    [SerializeField] Material redMaterial;
+    public Material RedMaterial { get { return redMaterial; } }
+
+    [SerializeField] Material greenMaterial;
+    public Material GreenMaterial { get { return greenMaterial; } }
+
+    [SerializeField] Material greyMaterial;
+    public Material GreyMaterial { get { return greyMaterial; } }
+
 
     GameObject newInfrastructureObject; 
     
@@ -41,15 +52,6 @@ public class InfrastructureController : MonoBehaviour
         farmList = new List<Infrastructure>(); 
 
     }
-/*
-    bool BuildCheckField(Vector3 worldPositon)
-    {
-        var fieldCheck = gameController.BoardController.TilesList.Single(n => n.gameObject.transform.position == worldPositon);
-        Debug.Log(fieldCheck.gameObject.transform.position);
-
-        return (fieldCheck.Field.IsPlacable);
-
-    }*/
 
     public void CreateInfrastructure(ObjectType objectType)
     {
@@ -61,13 +63,11 @@ public class InfrastructureController : MonoBehaviour
             case ObjectType.House:
                 infrastructureObject = new House(objectType, houseAreaSize);
                 InstantiateInfrastructure(housePrefab, infrastructureObject, houseSize);
-                // add to list
 
                 break;
             case ObjectType.Farm:
                 infrastructureObject = new Farm(objectType, farmAreaSize);
                 InstantiateInfrastructure(farmPrefab, infrastructureObject, farmSize);
-                //add to list
 
                 break;
             default:
@@ -93,25 +93,61 @@ public class InfrastructureController : MonoBehaviour
 
     public void BuildInfrastructure(Vector3 worldPosition)
     {
-        Tile tileToBuild = boardController.GetBoardTile(worldPosition); 
+        List<Tile> boardCheckList = gameController.BoardController.BoardCheck(worldPosition, newInfrastructure.InfrastructureSize);
 
-        if (tileToBuild.Field.IsPlacable) //boardcheck for infrastructure size
+        if (!boardCheckList.Any(n => n.IsPlacable == false) && boardCheckList.Count() == Mathf.Pow(newInfrastructure.InfrastructureSize, 2)) /// implemented as square objects
         {
-            tileToBuild.Field.IsPlacable = false;
+            foreach (var tile in boardCheckList)
+            {
+                tile.UsedByInfrastructure = newInfrastructure; 
+                tile.IsPlacable = false;
+            }
 
-            // place infrastructure in Tile
             newInfrastructure.IsPlaced = true;
+            newInfrastructure.SetDefaultMaterial();
             newInfrastructure = null;
-            gameController.BuildState = false;
-        }
+            AddNewInfrastructureToList();
 
+            gameController.BuildState = false;
+            gameController.BoardController.BoardAreaClear();
+        }
     }
 
-    public bool BoardCheck(Vector3 worldPosition)
+    void AddNewInfrastructureToList()
+    {
+        if(newInfrastructure != null)
+        {
+            switch (newInfrastructure.InfrastructureObject.ObjectType)
+            {
+                case ObjectType.House:
+                    houseList.Add(newInfrastructure); 
+                    break;
+
+                case ObjectType.Farm:
+                    farmList.Add(newInfrastructure);
+                    break;
+
+                default:
+                    Debug.Log("AddNewInfrastructureToList error");
+                    break;
+            }
+        }
+    }
+
+    public void DestroyNewInfrastructure()
+    {
+        gameController.BoardController.BoardAreaClear();
+
+        Destroy(newInfrastructure.gameObject);
+        newInfrastructure = null;
+        gameController.BuildState = false;
+    }
+
+    public void DestroyInfrastructure()
     {
 
-        return true; 
     }
+
 
 
 }

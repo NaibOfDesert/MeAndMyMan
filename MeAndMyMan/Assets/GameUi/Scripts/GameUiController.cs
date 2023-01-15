@@ -21,6 +21,32 @@ public class GameUiController : MonoBehaviour
 
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (gameController.BuildState)
+            {
+                gameController.InfrastructureController.DestroyNewInfrastructure();
+                gameController.BuildState = false;
+            }
+            else
+            {
+                
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            foreach(var tile in gameController.BoardController.TilesList)
+            {
+                tile.GetComponentInChildren<TileCoordinates>().AbleCoordinates(); 
+            }
+        }
+            
+
+    }
+
     public void BuildHouse()
     {
         if (!gameController.BuildState)
@@ -40,4 +66,8 @@ public class GameUiController : MonoBehaviour
 
         }
     }
+
+
+
+
 }

@@ -38,7 +38,7 @@ public class MouseController : MonoBehaviour
 
     }
 
-    private Vector3 GetWorldPositionInt(LayerMask layersToHit)
+    private Vector3 GetWorldPositionInt(LayerMask layersToHit) // return List of posible position by infrastructure size
     {
         worldPosition = GetWorldPosition(layersToHit);
 

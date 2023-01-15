@@ -8,6 +8,7 @@ public abstract class Object
     // virtual int id { get; set; }
     protected ObjectType objectType;
     public ObjectType ObjectType { get { return objectType;  } }
+
     protected int areaSize { get; }
     public int AreaSize { get { return areaSize; } }
 

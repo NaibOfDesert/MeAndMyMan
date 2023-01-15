@@ -6,13 +6,13 @@ using System.Linq;
 public class BoardController : MonoBehaviour
 {
     [SerializeField] Material redMaterial;
-    public Material RedMaterial { get { return redMaterial; } } //--
+    public Material RedMaterial { get { return redMaterial; } } 
 
     [SerializeField] Material greenMaterial;
-    public Material GreenMaterial { get { return greenMaterial; } } //--
+    public Material GreenMaterial { get { return greenMaterial; } }
 
     [SerializeField] Material greyMaterial;
-    public Material GreyMaterial { get { return greyMaterial; } } //--
+    public Material GreyMaterial { get { return greyMaterial; } } 
 
     [SerializeField] List<Tile> tilesList;
     public List<Tile> TilesList { get { return tilesList; } }
@@ -20,6 +20,8 @@ public class BoardController : MonoBehaviour
     GameController gameController;
 
     List<Tile> lastBoardAreaCheckList;
+    public List<Tile> LastBoardAreaCheckList { get { return lastBoardAreaCheckList; ; } }
+
 
     void Awake()
     {
@@ -43,13 +45,29 @@ public class BoardController : MonoBehaviour
 
     public Tile GetBoardTile(Vector3 worldPositon)
     {
-        Tile fieldCheck = TilesList.SingleOrDefault(n => n.gameObject.transform.position == worldPositon);
+        Tile fieldCheck = tilesList.SingleOrDefault(n => n.gameObject.transform.position == worldPositon);
+        Debug.Log(tilesList.Count()); 
         return (fieldCheck);
     }
 
-    bool BoardCheck()
+    public List<Tile> BoardCheck(Vector3 worldPosition, int infrastructureSize)
     {
-        return true;
+        List<Tile> boardCheckList = new List<Tile>();
+        for(int i = 0; i < infrastructureSize; i++)
+        {
+            for (int j = 0; j < infrastructureSize; j++)
+            {
+                Vector3 tilePosition = new Vector3(i, 0, j);
+                Tile tileCheck = GetBoardTile(worldPosition + tilePosition);
+
+                if(tileCheck != null)
+                {
+                    boardCheckList.Add(tileCheck);
+                }
+            }
+        }
+
+        return boardCheckList;
     }
 
     public void BoardAreaCheck(Vector3 worldPosition, int infrastructureSize, int infrastructureArea)
@@ -57,11 +75,9 @@ public class BoardController : MonoBehaviour
         List<Tile> boardAreaCheckList = new List<Tile>(); 
 
 
-        //++ add dependece od infrastructure size
-        for (int i = -infrastructureArea; i <= infrastructureArea; i++)
+        for (int i = -infrastructureArea; i <= (infrastructureArea + infrastructureSize -1); i++)
         {
-            for (int j = -infrastructureArea; j <= infrastructureArea; j++)
-            // tilePositon += new Vector3(i, 0, i);
+            for (int j = -infrastructureArea; j <= (infrastructureArea + infrastructureSize - 1); j++)
             {
                 Vector3 tilePositon = worldPosition;
                 tilePositon += new Vector3(i, 0, j);
@@ -86,12 +102,19 @@ public class BoardController : MonoBehaviour
         lastBoardAreaCheckList = boardAreaCheckList;
     }
 
-
-    void SetMaterial(Tile tileToSetMaterial)
+    public void BoardAreaClear()
     {
-        MeshRenderer meshRenderer = tileToSetMaterial.GetComponentInChildren<TilePlane>().TileMesh; // >=> 
+        foreach (var tile in lastBoardAreaCheckList)
+        {
+            SetMaterialAsDisable(tile);
+        }
+        lastBoardAreaCheckList.Clear(); 
+    }
+    public void SetMaterial(Tile tileToSetMaterial)
+    {
+        MeshRenderer meshRenderer = tileToSetMaterial.GetComponentInChildren<TilePlane>().TileMesh; 
 
-        if (tileToSetMaterial.Field.IsPlacable)
+        if (tileToSetMaterial.IsPlacable)
         {
             meshRenderer.material = greenMaterial;
         }
@@ -100,13 +123,11 @@ public class BoardController : MonoBehaviour
             meshRenderer.material = redMaterial;
         }
         // to expand
-     }
+    }
 
-    void SetMaterialAsDisable(Tile tileToSetMaterial)
+    public void SetMaterialAsDisable(Tile tileToSetMaterial)
     {
         MeshRenderer meshRenderer = tileToSetMaterial.GetComponentInChildren<TilePlane>().TileMesh;
-
-
         meshRenderer.material = redMaterial;
 
         // to expand
