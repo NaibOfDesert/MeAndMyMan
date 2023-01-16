@@ -6,11 +6,18 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    [SerializeField] bool isPlaceable = false; // --
-    public bool IsPlaceable { get { return isPlaceable; } set { isPlaceable = value; } }
+    Field field;
+    public Field Field { get { return field; } }
+
+    [SerializeField] bool isPlacable = true;
+    public bool IsPlacable { get { return isPlacable; } set { isPlacable = value; } }
+
+    [SerializeField] Infrastructure usedByInfrastructure;
+    public Infrastructure UsedByInfrastructure { get { return usedByInfrastructure; } set { usedByInfrastructure = value; } }
+
     void Awake()
-    {   
-        
+    {
+        field = new Field();
     }
 
     void Update()

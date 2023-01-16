@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class TilePlane : MonoBehaviour
 {
-    [SerializeField] Material redMaterial;
+/*    [SerializeField] Material redMaterial;
+    public Material RedMaterial { get { return redMaterial; } }
+
     [SerializeField] Material greenMaterial;
+    public Material GreenMaterial { get { return greenMaterial; } }
+
     [SerializeField] Material greyMaterial;
+    public Material GreyMaterial { get { return greyMaterial; } }*/
 
 
 
     Tile tile;
     MeshRenderer tileMesh;
-
+    public MeshRenderer TileMesh { get { return tileMesh; } }
 
 
     void Awake()
@@ -28,11 +33,13 @@ public class TilePlane : MonoBehaviour
     }
 
 
-    void OnMouseEnter()
+    /*void OnMouseEnter()
     {
+
+        // to move
         tileMesh.enabled = true;
         Debug.Log(transform.parent.name);
-        if (tile.IsPlaceable)
+        if (tile.Field.IsPlacable)
         {
             tileMesh.material = greenMaterial;
         }
@@ -40,13 +47,13 @@ public class TilePlane : MonoBehaviour
         {
             tileMesh.material = greyMaterial;
         }
-    }
+    }*/
 
     private void OnMouseExit()
     {
         // tileMesh.enabled = false;
         // temporarily unlit implementation of system tiles verification
-        tileMesh.material = redMaterial; 
+        // tileMesh.material = redMaterial; 
     }
 
     void MeshEnable()

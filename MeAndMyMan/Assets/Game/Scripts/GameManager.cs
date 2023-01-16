@@ -4,13 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
-public class House: Object
+public class GameManager
 {
 
-    public House(ObjectType objectType, int areaSize) : base(objectType, areaSize)
+
+    public GameManager()
     {
-        
+
+
+
+
     }
 
 }
