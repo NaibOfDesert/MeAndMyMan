@@ -18,7 +18,6 @@ public class InfrastructureController : MonoBehaviour
     int farmAreaSize = 1;
     List<Infrastructure> farmList;
 
-    List<float> infrastructureRotationsList;
 
 
     [Header("Infrastructure")]
@@ -34,6 +33,9 @@ public class InfrastructureController : MonoBehaviour
 
     [SerializeField] Material greyMaterial;
     public Material GreyMaterial { get { return greyMaterial; } }
+
+    List<float> infrastructureRotationsList;
+
 
 
     GameObject newInfrastructureObject; 
@@ -86,13 +88,14 @@ public class InfrastructureController : MonoBehaviour
 
     Infrastructure InstantiateInfrastructure(GameObject prefabObject, Object infrastructureObject, int infrastructureSize)
     {
-        int infrastructureRotation = Random.Range(0, infrastructureRotationsList.Count());
+        int infrastructureRotation = Random.Range(0, infrastructureRotationsList.Count() - 1);
 
-        newInfrastructureObject = Instantiate(prefabObject, mouseController.WorldPosition, Quaternion.identity); // is newInfrastructure needed??
+        newInfrastructureObject = Instantiate(prefabObject, mouseController.WorldPosition, Quaternion.identity); // is newInfrastructure needed?? use infrastructureRotation ???
         newInfrastructure = newInfrastructureObject.GetComponent<Infrastructure>();
         newInfrastructure.InitiateInfrastructure(infrastructureObject, infrastructureSize, infrastructureRotationsList[infrastructureRotation]); 
 
         gameController.BuildState = true;
+        gameController.BoardController.AbleBoardPlane(); 
 
         return newInfrastructure; 
     }
@@ -115,6 +118,7 @@ public class InfrastructureController : MonoBehaviour
             AddNewInfrastructureToList();
 
             gameController.BuildState = false;
+            gameController.BoardController.AbleBoardPlane();
             gameController.BoardController.BoardAreaClear();
         }
     }

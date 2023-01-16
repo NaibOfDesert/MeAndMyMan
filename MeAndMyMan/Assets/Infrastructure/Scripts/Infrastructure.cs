@@ -66,7 +66,7 @@ public class Infrastructure : MonoBehaviour
                 }
                 else
                 {
-                    // meshRenderer.material = infrastructureController.GreenMaterial; // to rebuild, object should be a bit grey
+                    meshRenderer.material = infrastructureController.GreenMaterial; // to rebuild, object should be a bit grey
 
                 }
                 gameController.BoardController.BoardAreaCheck(mouseController.WorldPosition, infrastructureSize, infrastructureObject.AreaSize);

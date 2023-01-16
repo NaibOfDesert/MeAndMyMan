@@ -5,6 +5,8 @@ using System.Linq;
 
 public class BoardController : MonoBehaviour
 {
+    [SerializeField] GameObject forestPrefab;
+
     [SerializeField] Material redMaterial;
     public Material RedMaterial { get { return redMaterial; } } 
 
@@ -22,14 +24,19 @@ public class BoardController : MonoBehaviour
     List<Tile> lastBoardAreaCheckList;
     public List<Tile> LastBoardAreaCheckList { get { return lastBoardAreaCheckList; ; } }
 
+    List<float> environmentRotationsList;
 
     void Awake()
     {
-        
-        tilesList = FindObjectsOfType<Tile>().ToList(); // change to List
-        BoardInitialization();
-
+        tilesList = FindObjectsOfType<Tile>().ToList();
         lastBoardAreaCheckList = new List<Tile>();
+        environmentRotationsList = new List<float>() { 0f, 90f, 180f, 270f };
+      
+        BoardInitialization(); 
+        AbleBoardPlane();
+
+
+
     }
 
     void Update()
@@ -39,7 +46,21 @@ public class BoardController : MonoBehaviour
 
     public void BoardInitialization()
     {
-        
+        foreach (var tile in tilesList)
+        {
+            if(tile.Field.FieldType == FieldType.Rocks){
+                tile.IsPlacable = false;
+                SetMaterialAsDisable(tile);
+                // generate rock
+            }
+            else if (tile.Field.FieldType == FieldType.Forest)
+            {
+                tile.IsPlacable = false;
+                SetMaterialAsDisable(tile);
+                GenerateForest(tile.transform.position); 
+            }
+
+        }
         // --
     }
 
@@ -128,8 +149,32 @@ public class BoardController : MonoBehaviour
     public void SetMaterialAsDisable(Tile tileToSetMaterial)
     {
         MeshRenderer meshRenderer = tileToSetMaterial.GetComponentInChildren<TilePlane>().TileMesh;
-        meshRenderer.material = redMaterial;
+        if (tileToSetMaterial.IsPlacable)
+        {
+            meshRenderer.material = redMaterial;
+        }
+        /*else
+        {
+            meshRenderer.material = greyMaterial;
+        }*/
 
         // to expand
+    }
+
+    public void AbleBoardPlane()
+    {
+        foreach (var tile in tilesList)
+        {
+            tile.GetComponentInChildren<MeshRenderer>().enabled = !tile.GetComponentInChildren<MeshRenderer>().enabled;
+        }
+    }
+
+    void GenerateForest(Vector3 position)
+    {
+        int environmentRotation = Random.Range(0, environmentRotationsList.Count() - 1);
+
+        Quaternion environmentQuaterion = Quaternion.Euler(Quaternion.identity.x, environmentRotation, Quaternion.identity.z);
+
+        Instantiate(forestPrefab, position, environmentQuaterion);
     }
 }

@@ -15,9 +15,11 @@ public class Tile : MonoBehaviour
     [SerializeField] Infrastructure usedByInfrastructure;
     public Infrastructure UsedByInfrastructure { get { return usedByInfrastructure; } set { usedByInfrastructure = value; } }
 
+    [SerializeField] FieldType fieldType; 
+
     void Awake()
     {
-        field = new Field();
+        field = new Field(fieldType);
     }
 
     void Update()
