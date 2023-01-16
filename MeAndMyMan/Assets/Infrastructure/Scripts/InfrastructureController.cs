@@ -16,7 +16,10 @@ public class InfrastructureController : MonoBehaviour
     public GameObject FarmPrefab { get { return farmPrefab; } }
     int farmSize = 2;
     int farmAreaSize = 1;
-    List<Infrastructure> farmList; 
+    List<Infrastructure> farmList;
+
+    List<float> infrastructureRotationsList;
+
 
     [Header("Infrastructure")]
     [SerializeField] LayerMask infrastructureLayersToHit;
@@ -49,13 +52,14 @@ public class InfrastructureController : MonoBehaviour
         mouseController = gameController.MouseController;
 
         houseList = new List<Infrastructure>();
-        farmList = new List<Infrastructure>(); 
-
+        farmList = new List<Infrastructure>();
+        infrastructureRotationsList = new List<float>() { 0f, 90f, 180f, 270f}; 
     }
 
     public void CreateInfrastructure(ObjectType objectType)
     {
         Object infrastructureObject;
+
 
         switch (objectType)
         {
@@ -82,9 +86,11 @@ public class InfrastructureController : MonoBehaviour
 
     Infrastructure InstantiateInfrastructure(GameObject prefabObject, Object infrastructureObject, int infrastructureSize)
     {
+        int infrastructureRotation = Random.Range(0, infrastructureRotationsList.Count());
+
         newInfrastructureObject = Instantiate(prefabObject, mouseController.WorldPosition, Quaternion.identity); // is newInfrastructure needed??
         newInfrastructure = newInfrastructureObject.GetComponent<Infrastructure>();
-        newInfrastructure.InitiateInfrastructure(infrastructureObject, infrastructureSize); 
+        newInfrastructure.InitiateInfrastructure(infrastructureObject, infrastructureSize, infrastructureRotationsList[infrastructureRotation]); 
 
         gameController.BuildState = true;
 

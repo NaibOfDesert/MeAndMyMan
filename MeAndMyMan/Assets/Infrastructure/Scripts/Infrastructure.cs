@@ -66,7 +66,7 @@ public class Infrastructure : MonoBehaviour
                 }
                 else
                 {
-                    meshRenderer.material = infrastructureController.GreenMaterial;
+                    // meshRenderer.material = infrastructureController.GreenMaterial; // to rebuild, object should be a bit grey
 
                 }
                 gameController.BoardController.BoardAreaCheck(mouseController.WorldPosition, infrastructureSize, infrastructureObject.AreaSize);
@@ -80,12 +80,12 @@ public class Infrastructure : MonoBehaviour
         }
     }
 
-    public void InitiateInfrastructure(Object infrastructureObject, int infrastructureSize)
+    public void InitiateInfrastructure(Object infrastructureObject, int infrastructureSize, float rotationAxisY)
     {
+
         this.infrastructureObject = infrastructureObject;
         this.infrastructureSize = infrastructureSize;
-        Debug.Log(infrastructureObject.AreaSize + " infrastructureObject.AreaSize"); 
-
+        transform.rotation = Quaternion.Euler(transform.rotation.x, rotationAxisY, transform.rotation.z); 
 
     }
 
