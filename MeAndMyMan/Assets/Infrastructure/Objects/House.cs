@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 public class House: Object
 {
 
-    public House(ObjectType objectType, int areaSize) : base(objectType, areaSize)
+    public House(ObjectType objectType, int areaSize, ObjectLevel objectLevel) : base(objectType, areaSize, objectLevel)
     {
         
     }

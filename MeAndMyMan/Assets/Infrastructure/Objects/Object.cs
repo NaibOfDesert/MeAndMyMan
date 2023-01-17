@@ -13,12 +13,16 @@ public abstract class Object
     public int AreaSize { get { return areaSize; } }
 
     protected int areaActiveCount; 
-    public int AreaActiveCount { get { return areaActiveCount; } set { areaActiveCount = value; } } 
+    public int AreaActiveCount { get { return areaActiveCount; } set { areaActiveCount = value; } }
 
-    public Object(ObjectType objectType, int areaSize)
+    protected ObjectLevel objectLevel;
+    public ObjectLevel ObjectLevel { get { return objectLevel; } set { objectLevel = value; } }
+
+    public Object(ObjectType objectType, int areaSize, ObjectLevel objectLevel)
     {
         this.objectType = objectType;
-        this.areaSize = areaSize; 
+        this.areaSize = areaSize;
+        this.objectLevel = objectLevel;
     }
  
 }

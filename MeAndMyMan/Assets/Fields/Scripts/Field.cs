@@ -5,8 +5,8 @@ public class Field
     FieldType fieldType;
     public FieldType FieldType { get { return fieldType; } }
 
-    bool isProductional;
-    public bool IsProductional { get { return isProductional; } set { isProductional = value; } }
+    bool isProductional; //--??
+    public bool IsProductional { get { return isProductional; } set { isProductional = value; } } //--??
     public Field()
     {
 

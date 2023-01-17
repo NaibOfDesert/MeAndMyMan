@@ -19,6 +19,9 @@ public class GameController : MonoBehaviour
     [SerializeField] BoardController boardController;
     public BoardController BoardController { get { return boardController; } }
 
+    GameCameraController gameCameraController;
+    public GameCameraController GameCameraController { get { return gameCameraController; } }
+
     MouseController mouseController;
     public MouseController MouseController { get { return mouseController; } }
 
@@ -28,7 +31,7 @@ public class GameController : MonoBehaviour
         infrastructureController = FindObjectOfType<InfrastructureController>();
         boardController = FindObjectOfType<BoardController>();
         mouseController = FindObjectOfType<MouseController>();
-
+        gameCameraController = FindObjectOfType<GameCameraController>();
 
 
 
