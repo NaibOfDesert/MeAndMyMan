@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq; 
+using System.Linq;
+using TMPro; 
 
 public class Infrastructure : MonoBehaviour
 {
@@ -11,35 +12,44 @@ public class Infrastructure : MonoBehaviour
     int infrastructureSize = 0;
     public int InfrastructureSize { get { return infrastructureSize; } }
 
-
     InfrastructureArea infrastructureArea;
-
 
     Object infrastructureObject;
     public Object InfrastructureObject { get { return infrastructureObject; } }
 
     MeshRenderer meshRenderer;
-    public MeshRenderer MeshRenderer { get { return meshRenderer; } }
+    // public MeshRenderer MeshRenderer { get { return meshRenderer; } } //--
 
-    Material material;
-    public Material Material { get { return material; } }
+    Material infrastructureMaterial;
+    // public Material InfrastructureMaterial { get { return infrastructureMaterial; } } //--
 
+    List<Tile> boardList;
+    public List<Tile> BoardList { get { return boardList; } set { boardList = value;} }
 
-    GameController gameController; 
+    List<Tile> boardAreaList;
+    public List<Tile> BoardAreaList { get { return boardAreaList; } set { boardAreaList = value; } }
+
+    [SerializeField] TextMeshProUGUI textCount;
+
+    GameController gameController;
+    BoardController boardController; 
     MouseController mouseController;
     InfrastructureController infrastructureController; 
 
     void Awake()
     {
         gameController = FindObjectOfType<GameController>();
+        boardController = gameController.BoardController; 
         mouseController = gameController.MouseController;
         infrastructureController = gameController.InfrastructureController;
 
         meshRenderer = GetComponentInChildren<MeshRenderer>();
-        material = meshRenderer.material;
-        infrastructureArea = FindObjectOfType<InfrastructureArea>(); //--
+        infrastructureMaterial = meshRenderer.material;
+        infrastructureArea = FindObjectOfType<InfrastructureArea>(); //-- ???????
+        textCount = GetComponentInChildren<TextMeshProUGUI>();
 
-
+        boardList = new List<Tile>();
+        boardAreaList = new List<Tile>();
 
 
         // infrastructureObject = new House(); // implement depends of type of new Infrastructure
@@ -55,21 +65,23 @@ public class Infrastructure : MonoBehaviour
     {
         if (!isPlaced)
         {
-            List<Tile> boardCheckList = gameController.BoardController.BoardCheck(mouseController.WorldPosition, infrastructureSize);
+            boardList = boardController.BoardCheck(mouseController.WorldPosition, infrastructureSize);
 
-            if(!(boardCheckList.Count() < Mathf.Pow(infrastructureSize, 2)))
+            if(!(boardList.Count() < Mathf.Pow(infrastructureSize, 2) - 1))
             {
                 transform.position = mouseController.WorldPositionConvert(infrastructureSize);
-                if (boardCheckList.Any(n => n.IsPlacable == false)) /// implemented as square objects
+                if (boardList.Any(n => n.IsPlaceable == false)) /// implemented as square objects
                 {
                     meshRenderer.material = infrastructureController.GreyMaterial;
                 }
                 else
                 {
-                    meshRenderer.material = infrastructureController.GreenMaterial;
+                    meshRenderer.material = infrastructureMaterial; // to rebuild, object should be a bit grey
 
                 }
-                gameController.BoardController.BoardAreaCheck(mouseController.WorldPosition, infrastructureSize, infrastructureObject.AreaSize);
+
+                boardAreaList = boardController.BoardAreaCheck(mouseController.WorldPosition, infrastructureSize, infrastructureObject.AreaSize);
+                SetAreaValue();
 
             }
 
@@ -80,18 +92,28 @@ public class Infrastructure : MonoBehaviour
         }
     }
 
-    public void InitiateInfrastructure(Object infrastructureObject, int infrastructureSize)
+    public void InitiateInfrastructure(Object infrastructureObject, int infrastructureSize, float rotationAxisY)
     {
+
         this.infrastructureObject = infrastructureObject;
         this.infrastructureSize = infrastructureSize;
-        Debug.Log(infrastructureObject.AreaSize + " infrastructureObject.AreaSize"); 
-
+        transform.rotation = Quaternion.Euler(transform.rotation.x, rotationAxisY, transform.rotation.z); 
 
     }
 
 
     public void SetDefaultMaterial()
     {
-        meshRenderer.material = material;
+        meshRenderer.material = infrastructureMaterial;
+    }
+
+    public void SetAreaValue()
+    {
+        textCount.text =  $"{boardAreaList.Count() }";
+    }
+
+    public void TextAreaValueAble() // not working
+    {
+        textCount.enabled = !textCount.enabled;
     }
 }

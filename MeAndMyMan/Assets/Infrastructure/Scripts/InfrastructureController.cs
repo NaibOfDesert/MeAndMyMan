@@ -16,7 +16,9 @@ public class InfrastructureController : MonoBehaviour
     public GameObject FarmPrefab { get { return farmPrefab; } }
     int farmSize = 2;
     int farmAreaSize = 1;
-    List<Infrastructure> farmList; 
+    List<Infrastructure> farmList;
+
+
 
     [Header("Infrastructure")]
     [SerializeField] LayerMask infrastructureLayersToHit;
@@ -32,8 +34,11 @@ public class InfrastructureController : MonoBehaviour
     [SerializeField] Material greyMaterial;
     public Material GreyMaterial { get { return greyMaterial; } }
 
+    List<float> infrastructureRotationsList;
 
-    GameObject newInfrastructureObject; 
+
+
+    // GameObject newInfrastructureObject; 
     
     Infrastructure newInfrastructure;
     public Infrastructure NewInfrastructure { get { return newInfrastructure; } set { newInfrastructure = value; } }
@@ -49,24 +54,25 @@ public class InfrastructureController : MonoBehaviour
         mouseController = gameController.MouseController;
 
         houseList = new List<Infrastructure>();
-        farmList = new List<Infrastructure>(); 
-
+        farmList = new List<Infrastructure>();
+        infrastructureRotationsList = new List<float>() { 0f, 90f, 180f, 270f}; 
     }
 
     public void CreateInfrastructure(ObjectType objectType)
     {
         Object infrastructureObject;
 
+
         switch (objectType)
         {
             
             case ObjectType.House:
-                infrastructureObject = new House(objectType, houseAreaSize);
+                infrastructureObject = new House(objectType, houseAreaSize, ObjectLevel.Level1);
                 InstantiateInfrastructure(housePrefab, infrastructureObject, houseSize);
 
                 break;
             case ObjectType.Farm:
-                infrastructureObject = new Farm(objectType, farmAreaSize);
+                infrastructureObject = new Farm(objectType, farmAreaSize, ObjectLevel.Level1);
                 InstantiateInfrastructure(farmPrefab, infrastructureObject, farmSize);
 
                 break;
@@ -82,34 +88,41 @@ public class InfrastructureController : MonoBehaviour
 
     Infrastructure InstantiateInfrastructure(GameObject prefabObject, Object infrastructureObject, int infrastructureSize)
     {
-        newInfrastructureObject = Instantiate(prefabObject, mouseController.WorldPosition, Quaternion.identity); // is newInfrastructure needed??
+        int infrastructureRotation = Random.Range(0, infrastructureRotationsList.Count() - 1);
+
+        GameObject newInfrastructureObject = Instantiate(prefabObject, mouseController.WorldPosition, Quaternion.identity); // is newInfrastructure needed?? use infrastructureRotation ???
         newInfrastructure = newInfrastructureObject.GetComponent<Infrastructure>();
-        newInfrastructure.InitiateInfrastructure(infrastructureObject, infrastructureSize); 
+        newInfrastructure.InitiateInfrastructure(infrastructureObject, infrastructureSize, infrastructureRotationsList[infrastructureRotation]);
+        // newInfrastructure.TextAreaValueAble(); 
 
         gameController.BuildState = true;
+        boardController.AbleBoardPlane(); 
 
         return newInfrastructure; 
     }
 
     public void BuildInfrastructure(Vector3 worldPosition)
     {
-        List<Tile> boardCheckList = gameController.BoardController.BoardCheck(worldPosition, newInfrastructure.InfrastructureSize);
+        // newInfrastructure.BoardList = boardController.BoardCheck(worldPosition, newInfrastructure.InfrastructureSize);
+        // newInfrastructure.BoardAreaList = boardController.BoardAreaCheck(mouseController.WorldPosition, newInfrastructure.InfrastructureSize, newInfrastructure.InfrastructureObject.AreaSize);
 
-        if (!boardCheckList.Any(n => n.IsPlacable == false) && boardCheckList.Count() == Mathf.Pow(newInfrastructure.InfrastructureSize, 2)) /// implemented as square objects
+        if (!newInfrastructure.BoardList.Any(n => n.IsPlaceable == false) && newInfrastructure.BoardList.Count() == Mathf.Pow(newInfrastructure.InfrastructureSize, 2)) /// implemented as square objects
         {
-            foreach (var tile in boardCheckList)
-            {
-                tile.UsedByInfrastructure = newInfrastructure; 
-                tile.IsPlacable = false;
-            }
+
+            boardController.BoardAreaSetAsUsedByInfrastructure(newInfrastructure.BoardList, newInfrastructure);
+            boardController.BoardAreaSetAsUsedByInfrastructureArea(newInfrastructure.BoardAreaList, newInfrastructure); 
+
+            boardController.AbleBoardPlane();
+            boardController.BoardAreaClear(newInfrastructure.BoardAreaList);
 
             newInfrastructure.IsPlaced = true;
             newInfrastructure.SetDefaultMaterial();
+            // newInfrastructure.TextAreaValueAble(); 
             newInfrastructure = null;
             AddNewInfrastructureToList();
 
             gameController.BuildState = false;
-            gameController.BoardController.BoardAreaClear();
+
         }
     }
 
@@ -136,7 +149,9 @@ public class InfrastructureController : MonoBehaviour
 
     public void DestroyNewInfrastructure()
     {
-        gameController.BoardController.BoardAreaClear();
+        List<Tile> boardAreaCheckList = boardController.BoardAreaCheck(mouseController.WorldPosition, newInfrastructure.InfrastructureSize, newInfrastructure.InfrastructureObject.AreaSize);
+
+        boardController.BoardAreaClear(boardAreaCheckList);
 
         Destroy(newInfrastructure.gameObject);
         newInfrastructure = null;
