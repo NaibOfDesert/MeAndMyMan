@@ -93,7 +93,6 @@ public class InfrastructureController : MonoBehaviour
         GameObject newInfrastructureObject = Instantiate(prefabObject, mouseController.WorldPosition, Quaternion.identity); // is newInfrastructure needed?? use infrastructureRotation ???
         newInfrastructure = newInfrastructureObject.GetComponent<Infrastructure>();
         newInfrastructure.InitiateInfrastructure(infrastructureObject, infrastructureSize, infrastructureRotationsList[infrastructureRotation]);
-        // newInfrastructure.TextAreaValueAble(); 
 
         gameController.BuildState = true;
         boardController.AbleBoardPlane(); 
@@ -111,13 +110,12 @@ public class InfrastructureController : MonoBehaviour
 
             boardController.BoardAreaSetAsUsedByInfrastructure(newInfrastructure.BoardList, newInfrastructure);
             boardController.BoardAreaSetAsUsedByInfrastructureArea(newInfrastructure.BoardAreaList, newInfrastructure); 
-
             boardController.AbleBoardPlane();
-            boardController.BoardAreaClear(newInfrastructure.BoardAreaList);
+            boardController.BoardAreaClear(newInfrastructure.BoardAreaList, newInfrastructure.BoardAreaList);
 
             newInfrastructure.IsPlaced = true;
             newInfrastructure.SetDefaultMaterial();
-            // newInfrastructure.TextAreaValueAble(); 
+            newInfrastructure.TextAreaValueAble(); 
             newInfrastructure = null;
             AddNewInfrastructureToList();
 
@@ -151,7 +149,7 @@ public class InfrastructureController : MonoBehaviour
     {
         List<Tile> boardAreaCheckList = boardController.BoardAreaCheck(mouseController.WorldPosition, newInfrastructure.InfrastructureSize, newInfrastructure.InfrastructureObject.AreaSize);
 
-        boardController.BoardAreaClear(boardAreaCheckList);
+        boardController.BoardAreaClear(boardAreaCheckList, newInfrastructure.BoardAreaList);
 
         Destroy(newInfrastructure.gameObject);
         newInfrastructure = null;

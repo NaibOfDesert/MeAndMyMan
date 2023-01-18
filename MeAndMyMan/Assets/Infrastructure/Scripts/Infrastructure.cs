@@ -29,7 +29,7 @@ public class Infrastructure : MonoBehaviour
     List<Tile> boardAreaList;
     public List<Tile> BoardAreaList { get { return boardAreaList; } set { boardAreaList = value; } }
 
-    [SerializeField] TextMeshProUGUI textCount;
+    [SerializeField] TextMeshPro textCount;
 
     GameController gameController;
     BoardController boardController; 
@@ -46,7 +46,7 @@ public class Infrastructure : MonoBehaviour
         meshRenderer = GetComponentInChildren<MeshRenderer>();
         infrastructureMaterial = meshRenderer.material;
         infrastructureArea = FindObjectOfType<InfrastructureArea>(); //-- ???????
-        textCount = GetComponentInChildren<TextMeshProUGUI>();
+        textCount = GetComponentInChildren<TextMeshPro>();
 
         boardList = new List<Tile>();
         boardAreaList = new List<Tile>();
@@ -63,11 +63,15 @@ public class Infrastructure : MonoBehaviour
 
     void Update()
     {
+        SetTextRotation();
+
         if (!isPlaced)
         {
-            boardList = boardController.BoardCheck(mouseController.WorldPosition, infrastructureSize);
 
-            if(!(boardList.Count() < Mathf.Pow(infrastructureSize, 2) - 1))
+            boardList = boardController.BoardCheck(mouseController.WorldPosition, infrastructureSize);
+            boardAreaList = boardController.BoardAreaCheck(mouseController.WorldPosition, infrastructureSize, infrastructureObject.AreaSize);
+
+            if (!(boardList.Count() < Mathf.Pow(infrastructureSize, 2) - 1))
             {
                 transform.position = mouseController.WorldPositionConvert(infrastructureSize);
                 if (boardList.Any(n => n.IsPlaceable == false)) /// implemented as square objects
@@ -80,7 +84,6 @@ public class Infrastructure : MonoBehaviour
 
                 }
 
-                boardAreaList = boardController.BoardAreaCheck(mouseController.WorldPosition, infrastructureSize, infrastructureObject.AreaSize);
                 SetAreaValue();
 
             }
@@ -101,6 +104,10 @@ public class Infrastructure : MonoBehaviour
 
     }
 
+    public void SetTextRotation()
+    { 
+        // to improve
+    }
 
     public void SetDefaultMaterial()
     {

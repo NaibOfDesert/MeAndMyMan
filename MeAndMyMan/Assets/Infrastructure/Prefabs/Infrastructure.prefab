@@ -101,6 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlaced: 0
+  textCount: {fileID: 0}
 --- !u!1 &7930712580491992465
 GameObject:
   m_ObjectHideFlags: 0
@@ -118,7 +119,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3274439846427385251
 RectTransform:
   m_ObjectHideFlags: 0

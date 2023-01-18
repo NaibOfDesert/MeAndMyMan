@@ -29,6 +29,9 @@ public class BoardController : MonoBehaviour
     List<Tile> lastBoardAreaCheckList;
     public List<Tile> LastBoardAreaCheckList { get { return lastBoardAreaCheckList; ; } }
 
+    List<Tile> lastBoardCheckList;
+    public List<Tile> LastBoardCheckList { get { return lastBoardCheckList; ; } }
+
     List<float> environmentRotationsList; 
     List<float> environmentScaleList; // ?? is it needed? 
 
@@ -115,15 +118,18 @@ public class BoardController : MonoBehaviour
             for (int j = 0; j < infrastructureSize; j++)
             {
                 Vector3 tilePosition = new Vector3(i, 0, j);
-                Tile tileCheck = GetBoardTile(worldPosition + tilePosition);
+                Tile tileToCheck = GetBoardTile(worldPosition + tilePosition);
 
-                if(tileCheck != null)
+                if(tileToCheck != null)
                 {
-                    boardCheckList.Add(tileCheck);
+                    boardCheckList.Add(tileToCheck);
+                    SetMaterialAsPlaceable(tileToCheck);
                 }
             }
         }
 
+        BoardAreaClear(boardCheckList, lastBoardAreaCheckList);
+        lastBoardCheckList = boardCheckList;
         return boardCheckList;
     }
 
@@ -140,7 +146,7 @@ public class BoardController : MonoBehaviour
                 tilePositon += new Vector3(i, 0, j);
                 Tile tileToCheck = GetBoardTile(tilePositon);
                 
-                if (tileToCheck != null && tileToCheck.IsPlaceable && !tileToCheck.UsedByInfrastructureArea)
+                if (tileToCheck != null && tileToCheck.IsPlaceable && !tileToCheck.UsedByInfrastructureArea && !lastBoardCheckList.Contains(tileToCheck))
                 {
                     boardAreaCheckList.Add(tileToCheck);
                     SetMaterialAsPlaceable(tileToCheck);
@@ -152,15 +158,15 @@ public class BoardController : MonoBehaviour
         // to add cheeck if area is palceable but used by field for infrastrcutre=> yellow color
         // is area is used by field fora area => gery 
 
-        BoardAreaClear(boardAreaCheckList);
+        BoardAreaClear(boardAreaCheckList, lastBoardAreaCheckList);
 
         lastBoardAreaCheckList = boardAreaCheckList;
         return boardAreaCheckList; 
     }
 
-    public void BoardAreaClear(List<Tile> boardArea)
+    public void BoardAreaClear(List<Tile> boardArea, List<Tile> lastBoardArea)
     {
-        foreach (var tile in lastBoardAreaCheckList)
+        foreach (var tile in lastBoardArea)
         {
             if (!boardArea.Contains(tile))
             {
@@ -175,8 +181,6 @@ public class BoardController : MonoBehaviour
         {
             tile.IsPlaceable = false;
             tile.UsedByInfrastructure = infrastructure;
-
-
         }
     }
 
