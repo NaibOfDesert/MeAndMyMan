@@ -62,7 +62,7 @@ public class MouseController : MonoBehaviour
 
   
 
-    public Vector3 WorldPositionConvert(int infrastructureSize)
+    public Vector3 WorldPositionConvert(int infrastructureSize, Vector3 worldPosition)
     {
         Vector3 worldPositionConvert = worldPosition;
         float convertValue = ((infrastructureSize + 1) % 2f) / 2f;

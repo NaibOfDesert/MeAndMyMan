@@ -10,27 +10,34 @@ public class BoardController : MonoBehaviour
 
 
     [SerializeField] Material redMaterial;
-    public Material RedMaterial { get { return redMaterial; } } 
+    public Material RedMaterial { get { return redMaterial; } } //-- 
 
     [SerializeField] Material greenMaterial;
-    public Material GreenMaterial { get { return greenMaterial; } }
+    public Material GreenMaterial { get { return greenMaterial; } } //--
+
+    [SerializeField] Material blueMaterial;
+    public Material BlueMaterial { get { return blueMaterial; } } //--
+
 
     [SerializeField] Material greyMaterial;
-    public Material GreyMaterial { get { return greyMaterial; } }
+    public Material GreyMaterial { get { return greyMaterial; } } //--
 
     [SerializeField] Material yellowMaterial;
-    public Material YellowMaterial { get { return yellowMaterial; } }
+    public Material YellowMaterial { get { return yellowMaterial; } } //--
 
     [SerializeField] List<Tile> tilesList;
     public List<Tile> TilesList { get { return tilesList; } }
 
     GameController gameController;
 
-    List<Tile> lastBoardAreaCheckList;
-    public List<Tile> LastBoardAreaCheckList { get { return lastBoardAreaCheckList; ; } }
+    List<Tile> lastBoardList;
+    public List<Tile> LastBoardList { get { return lastBoardList; ; } }
 
-    List<Tile> lastBoardCheckList;
-    public List<Tile> LastBoardCheckList { get { return lastBoardCheckList; ; } }
+    List<Tile> lastBoardAreaList;
+    public List<Tile> LastBoardAreaList { get { return lastBoardAreaList; ; } }
+
+    List<Tile> rockList;
+    List<Tile> forestList;
 
     List<float> environmentRotationsList; 
     List<float> environmentScaleList; // ?? is it needed? 
@@ -40,7 +47,11 @@ public class BoardController : MonoBehaviour
     void Awake()
     {
         tilesList = FindObjectsOfType<Tile>().ToList();
-        lastBoardAreaCheckList = new List<Tile>();
+        lastBoardList = new List<Tile>();
+        lastBoardAreaList = new List<Tile>();
+        rockList = new List<Tile>(); ;
+
+        forestList = new List<Tile>(); ;
         environmentRotationsList = new List<float>() { 0f, 90f, 180f, 270f };
       
         BoardInitialization(); 
@@ -61,22 +72,20 @@ public class BoardController : MonoBehaviour
         foreach (var tile in tilesList)
         {
             if(tile.Field.FieldType == FieldType.Rocks){
-                tile.IsPlaceable = false;
-                SetMaterialAsDisplaceable(tile);
+                tile.IsUsedByInfrastructure = true;
+                SetMaterial(tile);
                 GenerateEnvironmentObject(tile.transform.position, rockPrefab);
+                rockList.Add(tile);
             }
             else if (tile.Field.FieldType == FieldType.Forest)
             {
-                tile.IsPlaceable = false;
-                SetMaterialAsDisplaceable(tile);
-                GenerateEnvironmentObject(tile.transform.position, forestPrefab); 
+                tile.IsUsedByInfrastructure = true;
+                SetMaterial(tile);
+                GenerateEnvironmentObject(tile.transform.position, forestPrefab);
+                forestList.Add(tile);
             }
-
         }
-        // --
     }
-
-
 
     void GenerateEnvironmentObject(Vector3 position, GameObject environmentPrefab)
     {
@@ -113,6 +122,7 @@ public class BoardController : MonoBehaviour
     public List<Tile> BoardCheck(Vector3 worldPosition, int infrastructureSize)
     {
         List<Tile> boardCheckList = new List<Tile>();
+
         for(int i = 0; i < infrastructureSize; i++)
         {
             for (int j = 0; j < infrastructureSize; j++)
@@ -123,20 +133,15 @@ public class BoardController : MonoBehaviour
                 if(tileToCheck != null)
                 {
                     boardCheckList.Add(tileToCheck);
-                    SetMaterialAsPlaceable(tileToCheck);
                 }
             }
         }
-
-        BoardAreaClear(boardCheckList, lastBoardAreaCheckList);
-        lastBoardCheckList = boardCheckList;
         return boardCheckList;
     }
 
     public List<Tile> BoardAreaCheck(Vector3 worldPosition, int infrastructureSize, int infrastructureArea)
     {
         List<Tile> boardAreaCheckList = new List<Tile>(); 
-
 
         for (int i = -infrastructureArea; i <= (infrastructureArea + infrastructureSize -1); i++)
         {
@@ -146,41 +151,103 @@ public class BoardController : MonoBehaviour
                 tilePositon += new Vector3(i, 0, j);
                 Tile tileToCheck = GetBoardTile(tilePositon);
                 
-                if (tileToCheck != null && tileToCheck.IsPlaceable && !tileToCheck.UsedByInfrastructureArea && !lastBoardCheckList.Contains(tileToCheck))
+                if (tileToCheck != null && !tileToCheck.IsUsedByInfrastructure && !lastBoardList.Contains(tileToCheck))
                 {
                     boardAreaCheckList.Add(tileToCheck);
-                    SetMaterialAsPlaceable(tileToCheck);
                 }
             }
         }
-
-
-        // to add cheeck if area is palceable but used by field for infrastrcutre=> yellow color
-        // is area is used by field fora area => gery 
-
-        BoardAreaClear(boardAreaCheckList, lastBoardAreaCheckList);
-
-        lastBoardAreaCheckList = boardAreaCheckList;
         return boardAreaCheckList; 
     }
 
-    public void BoardAreaClear(List<Tile> boardArea, List<Tile> lastBoardArea)
+    public void BoardClear(List<Tile> boardList)
     {
-        foreach (var tile in lastBoardArea)
+        SetMaterialToLastList(lastBoardList);
+        SetMaterialToNewList(boardList);
+        lastBoardList = boardList;
+    }
+
+    public void BoardAreaClear(List<Tile> boardAreaList)
+    {
+        SetMaterialToLastList(lastBoardAreaList);
+        SetMaterialToNewList(boardAreaList);
+        lastBoardAreaList = boardAreaList;
+    }
+
+    public void StartBuildState()
+    {
+        AbleBoardPlane();
+
+
+    }
+    public void EndBuildState()
+    {
+        AbleBoardPlane();
+        BoardClear(lastBoardList);
+        BoardAreaClear(lastBoardAreaList);
+        lastBoardList.Clear();
+        lastBoardAreaList.Clear();
+
+    }
+
+    public void SetMaterialToNewList(List<Tile> boardArea)
+    {
+        foreach (var tile in boardArea)
         {
-            if (!boardArea.Contains(tile))
+            if (!tile.IsUsedByInfrastructure)
             {
-                SetMaterialAsDisplaceable(tile);
+                if (tile.IsUsedByInfrastructureArea)
+                {
+                    tile.GetComponentInChildren<TilePlane>().TileMesh.material = blueMaterial;
+                }
+                else
+                {
+                    tile.GetComponentInChildren<TilePlane>().TileMesh.material = greenMaterial;
+                }
             }
-        } 
+        }
+    }
+
+    void SetMaterialToLastList(List<Tile> boardArea)
+    {
+        foreach (var tile in boardArea)
+        {
+            if (!tile.IsUsedByInfrastructure)
+            {
+                if (tile.IsUsedByInfrastructureArea)
+                {
+                    tile.GetComponentInChildren<TilePlane>().TileMesh.material = blueMaterial;
+                }
+                else
+                {
+                    tile.GetComponentInChildren<TilePlane>().TileMesh.material = redMaterial;
+                }
+            }
+            else 
+            {
+                tile.GetComponentInChildren<TilePlane>().TileMesh.material = greyMaterial;
+            }
+        }
+    }
+
+    void SetMaterial(Tile tile)
+    {
+        if (!tile.IsUsedByInfrastructure)
+        {
+            tile.GetComponentInChildren<TilePlane>().TileMesh.material = redMaterial;
+        }
+        else
+        {
+            tile.GetComponentInChildren<TilePlane>().TileMesh.material = greyMaterial;
+        }
     }
 
     public void BoardAreaSetAsUsedByInfrastructure(List<Tile> boardAreaUsedByInfrastructure, Infrastructure infrastructure)
     {
         foreach(var tile in boardAreaUsedByInfrastructure)
         {
-            tile.IsPlaceable = false;
             tile.UsedByInfrastructure = infrastructure;
+            tile.IsUsedByInfrastructure = true;
         }
     }
 
@@ -189,32 +256,11 @@ public class BoardController : MonoBehaviour
         foreach (var tile in boardAreaUsedByInfrastructureArea)
         {
             tile.UsedByInfrastructure = infrastructure; 
-            tile.UsedByInfrastructureArea = true; 
+            tile.IsUsedByInfrastructureArea = true; 
         }
     }
 
-    public void SetMaterialAsPlaceable(Tile tileToSetMaterial)
-    {
-        MeshRenderer meshRenderer = tileToSetMaterial.GetComponentInChildren<TilePlane>().TileMesh; 
 
-        if (tileToSetMaterial.IsPlaceable)
-        {
-            meshRenderer.material = greenMaterial;
-        }
-    }
-
-    public void SetMaterialAsDisplaceable(Tile tileToSetMaterial)
-    {
-        MeshRenderer meshRenderer = tileToSetMaterial.GetComponentInChildren<TilePlane>().TileMesh;
-        if (tileToSetMaterial.IsPlaceable)
-        {
-            meshRenderer.material = redMaterial;
-        }
-        else 
-        {
-            meshRenderer.material = greyMaterial;
-        }
-    }
 
 
 }

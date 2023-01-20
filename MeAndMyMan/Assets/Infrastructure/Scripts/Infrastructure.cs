@@ -67,14 +67,17 @@ public class Infrastructure : MonoBehaviour
 
         if (!isPlaced)
         {
+            Vector3 worldPosition = mouseController.WorldPosition;
+            boardList = boardController.BoardCheck(worldPosition, infrastructureSize);
 
-            boardList = boardController.BoardCheck(mouseController.WorldPosition, infrastructureSize);
-            boardAreaList = boardController.BoardAreaCheck(mouseController.WorldPosition, infrastructureSize, infrastructureObject.AreaSize);
-
-            if (!(boardList.Count() < Mathf.Pow(infrastructureSize, 2) - 1))
+            if (boardList.Count() == Mathf.Pow(infrastructureSize, 2))
             {
-                transform.position = mouseController.WorldPositionConvert(infrastructureSize);
-                if (boardList.Any(n => n.IsPlaceable == false)) /// implemented as square objects
+                boardAreaList = boardController.BoardAreaCheck(worldPosition, infrastructureSize, infrastructureObject.AreaSize);
+                boardController.BoardClear(boardList);
+                boardController.BoardAreaClear(boardAreaList);
+                transform.position = mouseController.WorldPositionConvert(infrastructureSize, worldPosition);
+
+                if (boardList.Any(n => n.IsUsedByInfrastructure == true)) /// implemented as square objects  // set material method
                 {
                     meshRenderer.material = infrastructureController.GreyMaterial;
                 }
@@ -82,44 +85,50 @@ public class Infrastructure : MonoBehaviour
                 {
                     meshRenderer.material = infrastructureMaterial; // to rebuild, object should be a bit grey
 
+
                 }
-
                 SetAreaValue();
-
             }
-
-
-
-
-
         }
     }
 
     public void InitiateInfrastructure(Object infrastructureObject, int infrastructureSize, float rotationAxisY)
     {
-
         this.infrastructureObject = infrastructureObject;
         this.infrastructureSize = infrastructureSize;
-        transform.rotation = Quaternion.Euler(transform.rotation.x, rotationAxisY, transform.rotation.z); 
+        transform.rotation = Quaternion.Euler(transform.rotation.x, rotationAxisY, transform.rotation.z);
+        SetAreaCount();
 
     }
 
-    public void SetTextRotation()
+    void SetAreaCount()
+    {
+        infrastructureObject.AreaActiveCount = boardAreaList.Count();
+    }
+
+    public void SetTextRotation() // move to plane
     { 
         // to improve
     }
 
-    public void SetDefaultMaterial()
+    void SetMaterial() // move to plane
+    {
+
+    }
+
+
+    public void SetDefaultMaterial() // move to plane
     {
         meshRenderer.material = infrastructureMaterial;
     }
 
-    public void SetAreaValue()
+    public void SetAreaValue() // move to plane
     {
+        boardAreaList.RemoveAll(n => n.IsUsedByInfrastructureArea == true);
         textCount.text =  $"{boardAreaList.Count() }";
     }
 
-    public void TextAreaValueAble() // not working
+    public void TextAreaValueAble() // move to plane
     {
         textCount.enabled = !textCount.enabled;
     }

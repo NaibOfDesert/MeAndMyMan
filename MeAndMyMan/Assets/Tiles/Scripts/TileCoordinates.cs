@@ -9,29 +9,19 @@ public class TileCoordinates : MonoBehaviour
 
     [SerializeField] int unityGridSize = 1;
     
-    
     TextMeshPro tileCoordinatesText;
 
     Vector2Int tileCoordinates;
-
-
 
     void Awake()
     {  
         tileCoordinatesText = GetComponent<TextMeshPro>(); 
     }
 
-    // Update is called once per frame
     void Update()
     {
         UpdateCoordinates();
         UpdateName();
-
-        if (!Application.isPlaying)
-        {
-            
-        }
-
     }
 
     void UpdateCoordinates()

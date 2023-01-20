@@ -9,14 +9,14 @@ public class Tile : MonoBehaviour
     Field field;
     public Field Field { get { return field; } }
 
-    [SerializeField] bool isPlaceable = true;
-    public bool IsPlaceable { get { return isPlaceable; } set { isPlaceable = value; } }
+    [SerializeField] bool isUsedByInfrastructure; // to rename isUsedByInfrastructure
+    public bool IsUsedByInfrastructure { get { return isUsedByInfrastructure; } set { isUsedByInfrastructure = value; } }
 
     [SerializeField] Infrastructure usedByInfrastructure;
     public Infrastructure UsedByInfrastructure { get { return usedByInfrastructure; } set { usedByInfrastructure = value; } }
 
-    [SerializeField] bool usedByInfrastructureArea;
-    public bool UsedByInfrastructureArea { get { return usedByInfrastructureArea; } set { usedByInfrastructureArea = value; } }
+    [SerializeField] bool isUsedByInfrastructureArea;
+    public bool IsUsedByInfrastructureArea { get { return isUsedByInfrastructureArea; } set { isUsedByInfrastructureArea = value; } }
 
     [SerializeField] FieldType fieldType;
 
@@ -28,7 +28,8 @@ public class Tile : MonoBehaviour
     {
         field = new Field(fieldType);
         usedByInfrastructure = null;
-        usedByInfrastructureArea = false; 
+        isUsedByInfrastructure = false;
+        isUsedByInfrastructureArea = false; 
     }
 
     void Update()

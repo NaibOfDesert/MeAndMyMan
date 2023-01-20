@@ -5,11 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 public abstract class Object    
 {
-    // virtual int id { get; set; }
+    protected int Value; // to add in Initiate
+
     protected ObjectType objectType;
     public ObjectType ObjectType { get { return objectType;  } }
 
-    protected int areaSize { get; }
+    protected int areaSize;
     public int AreaSize { get { return areaSize; } }
 
     protected int areaActiveCount; 

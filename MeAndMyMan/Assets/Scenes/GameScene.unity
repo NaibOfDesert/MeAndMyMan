@@ -3851,6 +3851,7 @@ MonoBehaviour:
   rockPrefab: {fileID: 1933867477689757244, guid: ef6666ca8403e114b842d52cabce4c57, type: 3}
   redMaterial: {fileID: 2100000, guid: 50a3e26739ee22f4282de5bb73b79a88, type: 2}
   greenMaterial: {fileID: 2100000, guid: 517ef4dacac203c40931f86eecaa2ea6, type: 2}
+  blueMaterial: {fileID: 2100000, guid: 9686f9f8fa636fe418a7b61dc3c77905, type: 2}
   greyMaterial: {fileID: 2100000, guid: b6a20eea4ac501242b191017b807fc5d, type: 2}
   yellowMaterial: {fileID: 2100000, guid: 8d26c1e420b497a4fb15b73fde03d824, type: 2}
   tilesList: []
