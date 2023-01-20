@@ -13,15 +13,13 @@ public class Infrastructure : MonoBehaviour
     public int InfrastructureSize { get { return infrastructureSize; } }
 
     InfrastructureArea infrastructureArea;
+    public InfrastructureArea InfrastructureArea { get { return infrastructureArea; } }
 
     Object infrastructureObject;
     public Object InfrastructureObject { get { return infrastructureObject; } }
 
     MeshRenderer meshRenderer;
-    // public MeshRenderer MeshRenderer { get { return meshRenderer; } } //--
-
     Material infrastructureMaterial;
-    // public Material InfrastructureMaterial { get { return infrastructureMaterial; } } //--
 
     List<Tile> boardList;
     public List<Tile> BoardList { get { return boardList; } set { boardList = value;} }
@@ -29,7 +27,7 @@ public class Infrastructure : MonoBehaviour
     List<Tile> boardAreaList;
     public List<Tile> BoardAreaList { get { return boardAreaList; } set { boardAreaList = value; } }
 
-    [SerializeField] TextMeshPro textCount;
+    // [SerializeField] TextMeshPro textCount;
 
     GameController gameController;
     BoardController boardController; 
@@ -42,29 +40,25 @@ public class Infrastructure : MonoBehaviour
         boardController = gameController.BoardController; 
         mouseController = gameController.MouseController;
         infrastructureController = gameController.InfrastructureController;
-
+        infrastructureArea = GetComponentInChildren<InfrastructureArea>(); 
         meshRenderer = GetComponentInChildren<MeshRenderer>();
         infrastructureMaterial = meshRenderer.material;
-        infrastructureArea = FindObjectOfType<InfrastructureArea>(); //-- ???????
-        textCount = GetComponentInChildren<TextMeshPro>();
 
         boardList = new List<Tile>();
         boardAreaList = new List<Tile>();
 
 
-        // infrastructureObject = new House(); // implement depends of type of new Infrastructure
 
     }
 
     void Start()
     {
+        infrastructureArea.SetTextRotation();
 
     }
 
     void Update()
     {
-        SetTextRotation();
-
         if (!isPlaced)
         {
             Vector3 worldPosition = mouseController.WorldPosition;
@@ -79,15 +73,13 @@ public class Infrastructure : MonoBehaviour
 
                 if (boardList.Any(n => n.IsUsedByInfrastructure == true)) /// implemented as square objects  // set material method
                 {
-                    meshRenderer.material = infrastructureController.GreyMaterial;
+                    SetMaterial(infrastructureController.GreyMaterial);
                 }
                 else
                 {
-                    meshRenderer.material = infrastructureMaterial; // to rebuild, object should be a bit grey
-
-
+                    SetMaterial(infrastructureMaterial);
                 }
-                SetAreaValue();
+                infrastructureArea.SetAreaValue(boardAreaList);
             }
         }
     }
@@ -101,35 +93,25 @@ public class Infrastructure : MonoBehaviour
 
     }
 
+    public void SetInfrastructure()
+    {
+        IsPlaced = true;
+        SetMaterial(infrastructureMaterial);
+        InfrastructureArea.TextAreaValueAble();
+    }
+
     void SetAreaCount()
     {
         infrastructureObject.AreaActiveCount = boardAreaList.Count();
     }
 
-    public void SetTextRotation() // move to plane
-    { 
-        // to improve
-    }
-
-    void SetMaterial() // move to plane
+    void SetMaterial(Material material)
     {
+        meshRenderer.material = material;
 
     }
 
 
-    public void SetDefaultMaterial() // move to plane
-    {
-        meshRenderer.material = infrastructureMaterial;
-    }
 
-    public void SetAreaValue() // move to plane
-    {
-        boardAreaList.RemoveAll(n => n.IsUsedByInfrastructureArea == true);
-        textCount.text =  $"{boardAreaList.Count() }";
-    }
 
-    public void TextAreaValueAble() // move to plane
-    {
-        textCount.enabled = !textCount.enabled;
-    }
 }

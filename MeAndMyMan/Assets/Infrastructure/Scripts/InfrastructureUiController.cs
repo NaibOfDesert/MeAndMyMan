@@ -4,15 +4,29 @@ using UnityEngine;
 
 public class InfrastructureUiController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    Infrastructure infrastructure;
+
+    GameController gameController;
+    GameUiMenuController gameUiMenuController;
+
+    void Awake()
+    {
+        infrastructure = GetComponent<Infrastructure>();
+        gameController = FindObjectOfType<GameController>();
+        gameUiMenuController = gameController.GameUiMenuController;
+    }
+
+    void Update()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnMouseDown()
     {
-        
+        if (infrastructure.IsPlaced)
+        {
+            gameUiMenuController.MenuBuildStateAble();
+        }
+
     }
 }

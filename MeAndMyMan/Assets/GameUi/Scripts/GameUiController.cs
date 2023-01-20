@@ -60,8 +60,6 @@ public class GameUiController : MonoBehaviour
 
             }
 
-            // mainCamera.transform.rotation = Quaternion.Euler(cameraRotationSpeed, transform.rotation.y, transform.rotation.z);
-            // mainCamera.transform.eulerAngles = 
         }
 
         if (Input.GetKey(KeyCode.DownArrow)) //++ add mouse scroll wheel
@@ -91,25 +89,7 @@ public class GameUiController : MonoBehaviour
 
     }
 
-    public void BuildHouse()
-    {
-        if (!gameController.BuildState)
-        {
-            // move to GameInfrastructure
-            infrastructureController.CreateInfrastructure(ObjectType.House);
-
-        }
-    }
-
-    public void BuildFarm()
-    {
-        if (!gameController.BuildState)
-        {
-            // move to GameInfrastructure
-            infrastructureController.CreateInfrastructure(ObjectType.Farm);
-
-        }
-    }
+  
 
 
 

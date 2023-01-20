@@ -11,13 +11,15 @@ public class InfrastructureController : MonoBehaviour
     int houseSize = 1;
     int houseAreaSize = 0;
     List<Infrastructure> houseList;
-    
+    public List<Infrastructure> HouseList { get { return houseList; } }
+
+
     [SerializeField] GameObject farmPrefab;
     public GameObject FarmPrefab { get { return farmPrefab; } }
     int farmSize = 2;
     int farmAreaSize = 1;
     List<Infrastructure> farmList;
-
+    public List<Infrastructure> FarmList { get { return farmList; } }
 
 
     [Header("Infrastructure")]
@@ -85,7 +87,7 @@ public class InfrastructureController : MonoBehaviour
         GameObject newInfrastructureObject = Instantiate(prefabObject, mouseController.WorldPosition, Quaternion.identity); // is newInfrastructure needed?? use infrastructureRotation ???
         newInfrastructure = newInfrastructureObject.GetComponent<Infrastructure>();
         newInfrastructure.InitiateInfrastructure(infrastructureObject, infrastructureSize, infrastructureRotationsList[infrastructureRotation]);
-        gameController.BuildState = true;
+        gameController.BuildStateAble();
         boardController.StartBuildState();
 
         return newInfrastructure; 
@@ -99,9 +101,7 @@ public class InfrastructureController : MonoBehaviour
             boardController.BoardAreaSetAsUsedByInfrastructure(newInfrastructure.BoardList, newInfrastructure);
             boardController.BoardAreaSetAsUsedByInfrastructureArea(newInfrastructure.BoardAreaList, newInfrastructure); 
             boardController.EndBuildState(); 
-            newInfrastructure.IsPlaced = true;
-            newInfrastructure.SetDefaultMaterial();
-            newInfrastructure.TextAreaValueAble(); 
+            newInfrastructure.SetInfrastructure();
             newInfrastructure = null;
             AddNewInfrastructureToList();
 
@@ -136,7 +136,7 @@ public class InfrastructureController : MonoBehaviour
         boardController.AbleBoardPlane();
         Destroy(newInfrastructure.gameObject);
         newInfrastructure = null;
-        gameController.BuildState = false;
+        gameController.BuildStateAble();
     }
 
     public void DestroyInfrastructure()

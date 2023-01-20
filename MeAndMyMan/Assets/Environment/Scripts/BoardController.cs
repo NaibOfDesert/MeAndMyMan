@@ -198,11 +198,11 @@ public class BoardController : MonoBehaviour
             {
                 if (tile.IsUsedByInfrastructureArea)
                 {
-                    tile.GetComponentInChildren<TilePlane>().TileMesh.material = blueMaterial;
+                    tile.TilePlane.TileMesh.material = blueMaterial; // get tile form fields for all position!!!
                 }
                 else
                 {
-                    tile.GetComponentInChildren<TilePlane>().TileMesh.material = greenMaterial;
+                    tile.TilePlane.TileMesh.material = greenMaterial;
                 }
             }
         }
@@ -216,16 +216,16 @@ public class BoardController : MonoBehaviour
             {
                 if (tile.IsUsedByInfrastructureArea)
                 {
-                    tile.GetComponentInChildren<TilePlane>().TileMesh.material = blueMaterial;
+                    tile.TilePlane.TileMesh.material = blueMaterial;
                 }
                 else
                 {
-                    tile.GetComponentInChildren<TilePlane>().TileMesh.material = redMaterial;
+                    tile.TilePlane.TileMesh.material = redMaterial;
                 }
             }
             else 
             {
-                tile.GetComponentInChildren<TilePlane>().TileMesh.material = greyMaterial;
+                tile.TilePlane.TileMesh.material = greyMaterial;
             }
         }
     }
@@ -234,11 +234,11 @@ public class BoardController : MonoBehaviour
     {
         if (!tile.IsUsedByInfrastructure)
         {
-            tile.GetComponentInChildren<TilePlane>().TileMesh.material = redMaterial;
+            tile.TilePlane.TileMesh.material = redMaterial;
         }
         else
         {
-            tile.GetComponentInChildren<TilePlane>().TileMesh.material = greyMaterial;
+            tile.TilePlane.TileMesh.material = greyMaterial;
         }
     }
 

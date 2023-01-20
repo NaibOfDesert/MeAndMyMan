@@ -9,6 +9,9 @@ public class Tile : MonoBehaviour
     Field field;
     public Field Field { get { return field; } }
 
+    TilePlane tilePlane; 
+    public TilePlane TilePlane { get { return tilePlane; } set { tilePlane = value; } }
+
     [SerializeField] bool isUsedByInfrastructure; // to rename isUsedByInfrastructure
     public bool IsUsedByInfrastructure { get { return isUsedByInfrastructure; } set { isUsedByInfrastructure = value; } }
 
@@ -27,9 +30,13 @@ public class Tile : MonoBehaviour
     void Awake()
     {
         field = new Field(fieldType);
+        tilePlane = GetComponentInChildren<TilePlane>();
+
         usedByInfrastructure = null;
         isUsedByInfrastructure = false;
         isUsedByInfrastructureArea = false; 
+
+       
     }
 
     void Update()

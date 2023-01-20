@@ -4,14 +4,44 @@ using UnityEngine;
 
 public class GameUiMenuController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] GameObject menuBuildObject;
+
+    GameController gameController;
+    MouseController mouseController;
+    InfrastructureController infrastructureController;
+
+    void Awake()
+    {
+        gameController = FindObjectOfType<GameController>();
+        mouseController = gameController.MouseController;
+        infrastructureController = gameController.InfrastructureController;
+
+    }
+
+    void Update()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    public void BuildHouse()
+    {
+        if (!gameController.BuildState)
+        {
+            infrastructureController.CreateInfrastructure(ObjectType.House);
+
+        }
+    }
+
+    public void BuildFarm()
+    {
+        if (!gameController.BuildState)
+        {
+            infrastructureController.CreateInfrastructure(ObjectType.Farm);
+
+        }
+    }
+
+    public void MenuBuildStateAble()
     {
         
     }
