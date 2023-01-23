@@ -59,6 +59,7 @@ public class InfrastructureController : MonoBehaviour
     public void CreateInfrastructure(ObjectType objectType)
     {
         Object infrastructureObject;
+        gameController.BuildStateAble();
 
 
         switch (objectType)
@@ -87,7 +88,6 @@ public class InfrastructureController : MonoBehaviour
         GameObject newInfrastructureObject = Instantiate(prefabObject, mouseController.WorldPosition, Quaternion.identity); // is newInfrastructure needed?? use infrastructureRotation ???
         newInfrastructure = newInfrastructureObject.GetComponent<Infrastructure>();
         newInfrastructure.InitiateInfrastructure(infrastructureObject, infrastructureSize, infrastructureRotationsList[infrastructureRotation]);
-        gameController.BuildStateAble();
         boardController.StartBuildState();
 
         return newInfrastructure; 
@@ -98,14 +98,18 @@ public class InfrastructureController : MonoBehaviour
         if (!newInfrastructure.BoardList.Any(n => n.IsUsedByInfrastructure == true) && newInfrastructure.BoardList.Count() == Mathf.Pow(newInfrastructure.InfrastructureSize, 2)) /// implemented as square objects
         {
 
+            List<Tile> newInfrastructureBoardList = newInfrastructure.BoardList;
+            List<Tile> newInfrastructureBoardAreaList = newInfrastructure.BoardAreaList;
+
+            gameController.BuildStateAble();
             boardController.BoardAreaSetAsUsedByInfrastructure(newInfrastructure.BoardList, newInfrastructure);
             boardController.BoardAreaSetAsUsedByInfrastructureArea(newInfrastructure.BoardAreaList, newInfrastructure); 
             boardController.EndBuildState(); 
-            newInfrastructure.SetInfrastructure();
+            newInfrastructure.SetInfrastructure(newInfrastructureBoardList, newInfrastructureBoardAreaList);
             newInfrastructure = null;
             AddNewInfrastructureToList();
 
-            gameController.BuildState = false;
+            // gameController.BuildState = false;
         }
     }
 
@@ -130,17 +134,47 @@ public class InfrastructureController : MonoBehaviour
         }
     }
 
-    public void DestroyNewInfrastructure()
+    void RemoveInfrastructureFromList(Infrastructure infrastructure)
     {
-        boardController.BoardAreaClear(newInfrastructure.BoardAreaList);
-        boardController.AbleBoardPlane();
-        Destroy(newInfrastructure.gameObject);
-        newInfrastructure = null;
-        gameController.BuildStateAble();
+        if (infrastructure != null)
+        {
+            switch (infrastructure.InfrastructureObject.ObjectType)
+            {
+                case ObjectType.House:
+                    houseList.Remove(infrastructure);
+                    break;
+
+                case ObjectType.Farm:
+                    farmList.Remove(infrastructure);
+                    break;
+
+                default:
+                    Debug.Log("AddNewInfrastructureToList error");
+                    break;
+            }
+        }
     }
 
-    public void DestroyInfrastructure()
+    public void DestroyNewInfrastructure()
     {
+
+        gameController.BuildStateAble();
+        boardController.QuitBuildState();
+        newInfrastructure.DestroyInfrastructure(); 
+        //  Destroy(newInfrastructure.gameObject);
+        newInfrastructure = null;
+    }
+
+    public void UpgradeInfrastructure()
+    {
+
+    }
+
+
+    public void DestroyInfrastructure(Infrastructure infrastructure)
+    {
+        RemoveInfrastructureFromList(infrastructure);
+        infrastructure.DestroyInfrastructure();
 
     }
 

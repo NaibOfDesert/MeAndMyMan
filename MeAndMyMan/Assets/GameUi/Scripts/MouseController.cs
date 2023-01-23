@@ -28,10 +28,10 @@ public class MouseController : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                // which building? 
+
                 infrastructureController.BuildInfrastructure(worldPosition);
 
-                
+
 
             }
         }

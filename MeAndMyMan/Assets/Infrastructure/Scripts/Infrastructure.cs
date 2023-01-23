@@ -22,10 +22,13 @@ public class Infrastructure : MonoBehaviour
     Material infrastructureMaterial;
 
     List<Tile> boardList;
-    public List<Tile> BoardList { get { return boardList; } set { boardList = value;} }
+    [SerializeField] public List<Tile> BoardList { get { return boardList; } set { boardList = value;} }
 
-    List<Tile> boardAreaList;
+    [SerializeField] List<Tile> boardAreaList;
     public List<Tile> BoardAreaList { get { return boardAreaList; } set { boardAreaList = value; } }
+
+    [SerializeField] List<Tile> boardAreaBlockedList; //++to implement
+    public List<Tile> BoardAreaBlockedList { get { return boardAreaBlockedList; } set { boardAreaBlockedList = value; } }
 
     // [SerializeField] TextMeshPro textCount;
 
@@ -59,7 +62,7 @@ public class Infrastructure : MonoBehaviour
 
     void Update()
     {
-        if (!isPlaced)
+        if (!isPlaced) // to fix, area position should set objectposition, not world posiiton
         {
             Vector3 worldPosition = mouseController.WorldPosition;
             boardList = boardController.BoardCheck(worldPosition, infrastructureSize);
@@ -69,7 +72,7 @@ public class Infrastructure : MonoBehaviour
                 boardAreaList = boardController.BoardAreaCheck(worldPosition, infrastructureSize, infrastructureObject.AreaSize);
                 boardController.BoardClear(boardList);
                 boardController.BoardAreaClear(boardAreaList);
-                transform.position = mouseController.WorldPositionConvert(infrastructureSize, worldPosition);
+                transform.position = mouseController.WorldPositionConvert(infrastructureSize, worldPosition);   
 
                 if (boardList.Any(n => n.IsUsedByInfrastructure == true)) /// implemented as square objects  // set material method
                 {
@@ -92,10 +95,13 @@ public class Infrastructure : MonoBehaviour
         SetAreaCount();
 
     }
+    // public void SetInfrastructure(List<Tile> boardList, List<Tile> boardAreaList)
 
-    public void SetInfrastructure()
+    public void SetInfrastructure(List<Tile> boardList, List<Tile> boardAreaList)
     {
-        IsPlaced = true;
+        isPlaced = true;
+        this.boardList = boardList;
+        this.boardAreaList = boardAreaList;
         SetMaterial(infrastructureMaterial);
         InfrastructureArea.TextAreaValueAble();
     }
@@ -111,7 +117,13 @@ public class Infrastructure : MonoBehaviour
 
     }
 
+    public void DestroyInfrastructure()
+    {
+        boardController.SetDefaultInfrastructure(boardList); //??
+        boardController.SetDefaultInfrastructureArea(boardAreaList); //??
 
+        Destroy(gameObject);
+    }
 
 
 }

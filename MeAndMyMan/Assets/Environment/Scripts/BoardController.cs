@@ -67,7 +67,7 @@ public class BoardController : MonoBehaviour
         
     }
 
-    public void BoardInitialization()
+    public void BoardInitialization() //++ random location of environment elements
     {
         foreach (var tile in tilesList)
         {
@@ -162,22 +162,21 @@ public class BoardController : MonoBehaviour
 
     public void BoardClear(List<Tile> boardList)
     {
-        SetMaterialToLastList(lastBoardList);
-        SetMaterialToNewList(boardList);
+        SetMaterialForLastList(lastBoardList);
+        SetMaterialForNewList(boardList);
         lastBoardList = boardList;
     }
 
     public void BoardAreaClear(List<Tile> boardAreaList)
     {
-        SetMaterialToLastList(lastBoardAreaList);
-        SetMaterialToNewList(boardAreaList);
+        SetMaterialForLastList(lastBoardAreaList);
+        SetMaterialForNewList(boardAreaList);
         lastBoardAreaList = boardAreaList;
     }
 
     public void StartBuildState()
     {
         AbleBoardPlane();
-
 
     }
     public void EndBuildState()
@@ -190,7 +189,38 @@ public class BoardController : MonoBehaviour
 
     }
 
-    public void SetMaterialToNewList(List<Tile> boardArea)
+    public void QuitBuildState()
+    {
+        AbleBoardPlane();
+        SetMaterialForLastList(lastBoardList);
+        SetMaterialForLastList(lastBoardAreaList);
+        lastBoardList.Clear();
+        lastBoardAreaList.Clear();
+    }
+
+    void SetMaterialForLastList(List<Tile> boardArea) //rename
+    {
+        foreach (var tile in boardArea)
+        {
+            if (!tile.IsUsedByInfrastructure)
+            {
+                if (tile.IsUsedByInfrastructureArea)
+                {
+                    tile.TilePlane.TileMesh.material = blueMaterial;
+                }
+                else
+                {
+                    tile.TilePlane.TileMesh.material = redMaterial;
+                }
+            }
+            else
+            {
+                tile.TilePlane.TileMesh.material = greyMaterial;
+            }
+        }
+    }
+
+    public void SetMaterialForNewList(List<Tile> boardArea) //rename
     {
         foreach (var tile in boardArea)
         {
@@ -208,27 +238,6 @@ public class BoardController : MonoBehaviour
         }
     }
 
-    void SetMaterialToLastList(List<Tile> boardArea)
-    {
-        foreach (var tile in boardArea)
-        {
-            if (!tile.IsUsedByInfrastructure)
-            {
-                if (tile.IsUsedByInfrastructureArea)
-                {
-                    tile.TilePlane.TileMesh.material = blueMaterial;
-                }
-                else
-                {
-                    tile.TilePlane.TileMesh.material = redMaterial;
-                }
-            }
-            else 
-            {
-                tile.TilePlane.TileMesh.material = greyMaterial;
-            }
-        }
-    }
 
     void SetMaterial(Tile tile)
     {
@@ -241,6 +250,30 @@ public class BoardController : MonoBehaviour
             tile.TilePlane.TileMesh.material = greyMaterial;
         }
     }
+
+    public void SetDefaultInfrastructure(List<Tile> areaList)
+    {
+        foreach (var tile in areaList)
+        {
+            tile.SetUsedByDefault();
+            Debug.Log("DestroyInfrastructure");
+
+        }
+        SetMaterialForLastList(areaList);
+    }
+
+    public void SetDefaultInfrastructureArea(List<Tile> areaList)
+    {
+        foreach(var tile in areaList)
+        {
+            tile.SetUsedByDefault();
+            Debug.Log("DestroyInfrastructureArea");
+
+        }
+        SetMaterialForLastList(areaList);
+
+    }
+
 
     public void BoardAreaSetAsUsedByInfrastructure(List<Tile> boardAreaUsedByInfrastructure, Infrastructure infrastructure)
     {

@@ -10,7 +10,7 @@ public class Tile : MonoBehaviour
     public Field Field { get { return field; } }
 
     TilePlane tilePlane; 
-    public TilePlane TilePlane { get { return tilePlane; } set { tilePlane = value; } }
+    public TilePlane TilePlane { get { return tilePlane; } }
 
     [SerializeField] bool isUsedByInfrastructure; // to rename isUsedByInfrastructure
     public bool IsUsedByInfrastructure { get { return isUsedByInfrastructure; } set { isUsedByInfrastructure = value; } }
@@ -48,6 +48,23 @@ public class Tile : MonoBehaviour
     {
         GetComponentInChildren<MeshRenderer>().enabled = !GetComponentInChildren<MeshRenderer>().enabled;
     }
+
+    public void SetUsedByDefault()
+    {
+
+        usedByInfrastructure = null;
+        isUsedByInfrastructure = false;
+        isUsedByInfrastructureArea = false;
+
+    }
+
+/*    public void SetUsedAreaDefault()
+    {
+
+        usedByInfrastructure = null;
+        isUsedByInfrastructure = false;
+        isUsedByInfrastructureArea = false;
+    }*/
 
 }
 

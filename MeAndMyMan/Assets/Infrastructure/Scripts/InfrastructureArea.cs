@@ -28,6 +28,7 @@ public class InfrastructureArea : MonoBehaviour
     public void SetAreaValue(List <Tile> boardAreaList) 
     {
         boardAreaList.RemoveAll(n => n.IsUsedByInfrastructureArea == true);
+        infrastructure.InfrastructureObject.AreaActiveCount = boardAreaList.Count();
         textCount.text = $"{boardAreaList.Count() }";
     }
 

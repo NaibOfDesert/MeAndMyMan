@@ -8,7 +8,10 @@ public class GameController : MonoBehaviour
     public int GameSize { get { return gameSize; } }
 
     [SerializeField] bool buildState;
-    public bool BuildState { get { return buildState; } set { buildState = value; } }
+    public bool BuildState { get { return buildState; } set { buildState = value; } } //-- ??
+
+    [SerializeField] bool infrastructureState;
+    public bool InfrastructureState { get { return infrastructureState; } set { infrastructureState = value; } }
 
     GameManager gameManager;
     public GameManager GameManager { get { return gameManager; } }
@@ -48,13 +51,24 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
-
+        buildState = false;
+        infrastructureState = false;
     }
 
     public void BuildStateAble()
     {
         buildState = !buildState;
-        gameUiMenuController.MenuBuildStateAble();
+        if (InfrastructureState)
+        {
+            InfrastructureStateAble();
+            gameUiMenuController.MenuInfrastructureAble(null); // set all other states false?
+        }
+
+    }
+
+    public void InfrastructureStateAble()
+    {
+        infrastructureState = !infrastructureState;
     }
 
 }
