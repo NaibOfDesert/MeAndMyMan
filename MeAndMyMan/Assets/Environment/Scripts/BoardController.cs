@@ -162,15 +162,15 @@ public class BoardController : MonoBehaviour
 
     public void BoardClear(List<Tile> boardList)
     {
-        SetMaterialForLastList(lastBoardList);
-        SetMaterialForNewList(boardList);
+        SetMaterialForList(lastBoardList);
+        SetMaterialForListUpdate(boardList);
         lastBoardList = boardList;
     }
 
     public void BoardAreaClear(List<Tile> boardAreaList)
     {
-        SetMaterialForLastList(lastBoardAreaList);
-        SetMaterialForNewList(boardAreaList);
+        SetMaterialForList(lastBoardAreaList);
+        SetMaterialForListUpdate(boardAreaList);
         lastBoardAreaList = boardAreaList;
     }
 
@@ -184,21 +184,21 @@ public class BoardController : MonoBehaviour
         AbleBoardPlane();
         BoardClear(lastBoardList);
         BoardAreaClear(lastBoardAreaList);
-        lastBoardList.Clear();
-        lastBoardAreaList.Clear();
+        // lastBoardList.Clear(); /// why this Clear Infrastrcutre List
+        // lastBoardAreaList.Clear(); /// why this Clear Infrastrcutre List
 
     }
 
     public void QuitBuildState()
     {
         AbleBoardPlane();
-        SetMaterialForLastList(lastBoardList);
-        SetMaterialForLastList(lastBoardAreaList);
-        lastBoardList.Clear();
-        lastBoardAreaList.Clear();
+        SetMaterialForList(lastBoardList);
+        SetMaterialForList(lastBoardAreaList);
+        // lastBoardList.Clear(); //-- no needed?
+        // lastBoardAreaList.Clear(); //-- no needed?
     }
 
-    void SetMaterialForLastList(List<Tile> boardArea) //rename
+    void SetMaterialForList(List<Tile> boardArea) //rename
     {
         foreach (var tile in boardArea)
         {
@@ -220,7 +220,7 @@ public class BoardController : MonoBehaviour
         }
     }
 
-    public void SetMaterialForNewList(List<Tile> boardArea) //rename
+    public void SetMaterialForListUpdate(List<Tile> boardArea) //rename
     {
         foreach (var tile in boardArea)
         {
@@ -251,26 +251,25 @@ public class BoardController : MonoBehaviour
         }
     }
 
-    public void SetDefaultInfrastructure(List<Tile> areaList)
+    public void SetDefaultInfrastructure(List<Tile> infrastructureList)
     {
-        foreach (var tile in areaList)
+        Debug.Log("count " + infrastructureList.Count());
+        foreach (var tile in infrastructureList)
         {
             tile.SetUsedByDefault();
-            Debug.Log("DestroyInfrastructure");
 
         }
-        SetMaterialForLastList(areaList);
+        SetMaterialForList(infrastructureList);
     }
 
-    public void SetDefaultInfrastructureArea(List<Tile> areaList)
+    public void SetDefaultInfrastructureArea(List<Tile> infrastructureAreaList)
     {
-        foreach(var tile in areaList)
+        foreach(var tile in infrastructureAreaList)
         {
             tile.SetUsedByDefault();
-            Debug.Log("DestroyInfrastructureArea");
 
         }
-        SetMaterialForLastList(areaList);
+        SetMaterialForList(infrastructureAreaList);
 
     }
 

@@ -22,10 +22,10 @@ public class Infrastructure : MonoBehaviour
     Material infrastructureMaterial;
 
     List<Tile> boardList;
-    [SerializeField] public List<Tile> BoardList { get { return boardList; } set { boardList = value;} }
+    [SerializeField] public List<Tile> BoardList { get { return boardList; } }
 
     [SerializeField] List<Tile> boardAreaList;
-    public List<Tile> BoardAreaList { get { return boardAreaList; } set { boardAreaList = value; } }
+    public List<Tile> BoardAreaList { get { return boardAreaList; } }
 
     [SerializeField] List<Tile> boardAreaBlockedList; //++to implement
     public List<Tile> BoardAreaBlockedList { get { return boardAreaBlockedList; } set { boardAreaBlockedList = value; } }
@@ -62,6 +62,9 @@ public class Infrastructure : MonoBehaviour
 
     void Update()
     {
+        Debug.Log("update board area list" + this.boardAreaList.Count());
+        Debug.Log("update board list" + this.boardList.Count());
+
         if (!isPlaced) // to fix, area position should set objectposition, not world posiiton
         {
             Vector3 worldPosition = mouseController.WorldPosition;
@@ -83,6 +86,9 @@ public class Infrastructure : MonoBehaviour
                     SetMaterial(infrastructureMaterial);
                 }
                 infrastructureArea.SetAreaValue(boardAreaList);
+
+
+
             }
         }
     }
@@ -97,18 +103,20 @@ public class Infrastructure : MonoBehaviour
     }
     // public void SetInfrastructure(List<Tile> boardList, List<Tile> boardAreaList)
 
-    public void SetInfrastructure(List<Tile> boardList, List<Tile> boardAreaList)
+    public void SetInfrastructure()
     {
         isPlaced = true;
-        this.boardList = boardList;
-        this.boardAreaList = boardAreaList;
         SetMaterial(infrastructureMaterial);
         InfrastructureArea.TextAreaValueAble();
+        Debug.Log("set board area list" + this.boardAreaList.Count());
+        Debug.Log("set board list" + this.boardList.Count());
     }
 
     void SetAreaCount()
     {
         infrastructureObject.AreaActiveCount = boardAreaList.Count();
+
+        // add area not ablle to use list
     }
 
     void SetMaterial(Material material)

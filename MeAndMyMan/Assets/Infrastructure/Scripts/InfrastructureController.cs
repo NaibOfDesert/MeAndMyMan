@@ -98,15 +98,20 @@ public class InfrastructureController : MonoBehaviour
         if (!newInfrastructure.BoardList.Any(n => n.IsUsedByInfrastructure == true) && newInfrastructure.BoardList.Count() == Mathf.Pow(newInfrastructure.InfrastructureSize, 2)) /// implemented as square objects
         {
 
-            List<Tile> newInfrastructureBoardList = newInfrastructure.BoardList;
-            List<Tile> newInfrastructureBoardAreaList = newInfrastructure.BoardAreaList;
 
             gameController.BuildStateAble();
+
+            newInfrastructure.SetInfrastructure();
             boardController.BoardAreaSetAsUsedByInfrastructure(newInfrastructure.BoardList, newInfrastructure);
-            boardController.BoardAreaSetAsUsedByInfrastructureArea(newInfrastructure.BoardAreaList, newInfrastructure); 
-            boardController.EndBuildState(); 
-            newInfrastructure.SetInfrastructure(newInfrastructureBoardList, newInfrastructureBoardAreaList);
+            boardController.BoardAreaSetAsUsedByInfrastructureArea(newInfrastructure.BoardAreaList, newInfrastructure);
+
+            // Debug.Log("Build board area list" + newInfrastructure.BoardAreaList.Count());
+            // Debug.Log("Build board list" + newInfrastructure.BoardList.Count());
+            boardController.EndBuildState();
+
+
             newInfrastructure = null;
+
             AddNewInfrastructureToList();
 
             // gameController.BuildState = false;
@@ -173,7 +178,11 @@ public class InfrastructureController : MonoBehaviour
 
     public void DestroyInfrastructure(Infrastructure infrastructure)
     {
-        RemoveInfrastructureFromList(infrastructure);
+        // RemoveInfrastructureFromList(infrastructure);
+        Debug.Log("destroy board area list" + infrastructure.BoardAreaList.Count());
+        Debug.Log("destroy board list" + infrastructure.BoardList.Count());
+        boardController.SetDefaultInfrastructure(infrastructure.BoardList);
+        boardController.SetDefaultInfrastructureArea(infrastructure.BoardAreaList);
         infrastructure.DestroyInfrastructure();
 
     }

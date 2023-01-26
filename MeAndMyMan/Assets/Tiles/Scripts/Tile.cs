@@ -32,8 +32,9 @@ public class Tile : MonoBehaviour
         field = new Field(fieldType);
         tilePlane = GetComponentInChildren<TilePlane>();
 
-        usedByInfrastructure = null;
         isUsedByInfrastructure = false;
+        usedByInfrastructure = null;
+
         isUsedByInfrastructureArea = false; 
 
        
@@ -51,20 +52,13 @@ public class Tile : MonoBehaviour
 
     public void SetUsedByDefault()
     {
-
-        usedByInfrastructure = null;
+        Debug.Log("SetUsedByDefault");
         isUsedByInfrastructure = false;
+        usedByInfrastructure = null;
+
         isUsedByInfrastructureArea = false;
 
     }
-
-/*    public void SetUsedAreaDefault()
-    {
-
-        usedByInfrastructure = null;
-        isUsedByInfrastructure = false;
-        isUsedByInfrastructureArea = false;
-    }*/
 
 }
 

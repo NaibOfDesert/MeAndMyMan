@@ -61,12 +61,14 @@ public class GameUiMenuController : MonoBehaviour
         {
             infrastructureController.CreateInfrastructure(ObjectType.Farm);
 
+
         }
     }
 
     public void DeteleInfrastructure()
     {
-        infrastructureController.DestroyInfrastructure(infrastructureMenuState); 
+        infrastructureController.DestroyInfrastructure(infrastructureMenuState);
+        menuInfrastructureObject.SetActive(false);
 
 
     }
