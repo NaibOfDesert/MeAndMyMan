@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 public abstract class Object    
 {
-    protected int Value; // to add in Initiate
+    protected int Value;
 
     protected ObjectType objectType;
     public ObjectType ObjectType { get { return objectType;  } }
@@ -26,5 +26,22 @@ public abstract class Object
         this.objectLevel = objectLevel;
     }
  
+    public void UpgradeObject()
+    {
+        if (objectLevel == ObjectLevel.Level4) return;
+        else if (objectLevel == ObjectLevel.Level1){
+            objectLevel = ObjectLevel.Level2;
+            return; 
+        } 
+        else if (objectLevel == ObjectLevel.Level2){
+            objectLevel = ObjectLevel.Level3;
+            return;
+        }
+        else if (objectLevel == ObjectLevel.Level3)
+        {
+            objectLevel = ObjectLevel.Level4;
+            return;
+        }
+    }
 }
 

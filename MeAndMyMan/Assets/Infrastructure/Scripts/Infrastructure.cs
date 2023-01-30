@@ -21,16 +21,14 @@ public class Infrastructure : MonoBehaviour
     MeshRenderer meshRenderer;
     Material infrastructureMaterial;
 
-    List<Tile> boardList;
-    [SerializeField] public List<Tile> BoardList { get { return boardList; } }
+    List<Tile> boardList; // move to InfrastrcutreArea
+    public List<Tile> BoardList { get { return boardList; } } // move to InfrastrcutreArea
 
-    [SerializeField] List<Tile> boardAreaList;
-    public List<Tile> BoardAreaList { get { return boardAreaList; } }
+    List<Tile> boardAreaList; // move to InfrastrcutreArea
+    public List<Tile> BoardAreaList { get { return boardAreaList; } } // move to InfrastrcutreArea
 
-    [SerializeField] List<Tile> boardAreaBlockedList; //++to implement
-    public List<Tile> BoardAreaBlockedList { get { return boardAreaBlockedList; } set { boardAreaBlockedList = value; } }
-
-    // [SerializeField] TextMeshPro textCount;
+    [SerializeField] List<Tile> boardAreaBlockedList; //++to implement // move to InfrastrcutreArea
+    public List<Tile> BoardAreaBlockedList { get { return boardAreaBlockedList; } set { boardAreaBlockedList = value; } } // move to InfrastrcutreArea
 
     GameController gameController;
     BoardController boardController; 
@@ -77,7 +75,7 @@ public class Infrastructure : MonoBehaviour
                 boardController.BoardAreaClear(boardAreaList);
                 transform.position = mouseController.WorldPositionConvert(infrastructureSize, worldPosition);   
 
-                if (boardList.Any(n => n.IsUsedByInfrastructure == true)) /// implemented as square objects  // set material method
+                if (boardList.Any(n => n.IsUsedByInfrastructure == true)) /// implemented as square objects
                 {
                     SetMaterial(infrastructureController.GreyMaterial);
                 }
@@ -85,6 +83,7 @@ public class Infrastructure : MonoBehaviour
                 {
                     SetMaterial(infrastructureMaterial);
                 }
+
                 infrastructureArea.SetAreaValue(boardAreaList);
 
 
@@ -108,8 +107,6 @@ public class Infrastructure : MonoBehaviour
         isPlaced = true;
         SetMaterial(infrastructureMaterial);
         InfrastructureArea.TextAreaValueAble();
-        Debug.Log("set board area list" + this.boardAreaList.Count());
-        Debug.Log("set board list" + this.boardList.Count());
     }
 
     void SetAreaCount()
@@ -125,10 +122,12 @@ public class Infrastructure : MonoBehaviour
 
     }
 
+
+
     public void DestroyInfrastructure()
     {
-        boardController.SetDefaultInfrastructure(boardList); //??
-        boardController.SetDefaultInfrastructureArea(boardAreaList); //??
+        boardController.SetDefaultInfrastructure(boardList);
+        boardController.SetDefaultInfrastructureArea(boardAreaList); 
 
         Destroy(gameObject);
     }

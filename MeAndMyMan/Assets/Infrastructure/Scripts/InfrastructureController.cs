@@ -166,21 +166,18 @@ public class InfrastructureController : MonoBehaviour
         gameController.BuildStateAble();
         boardController.QuitBuildState();
         newInfrastructure.DestroyInfrastructure(); 
-        //  Destroy(newInfrastructure.gameObject);
         newInfrastructure = null;
     }
 
-    public void UpgradeInfrastructure()
+    public void UpgradeInfrastructure(Infrastructure infrastructure)
     {
-
+        infrastructure.InfrastructureObject.UpgradeObject();
     }
 
 
     public void DestroyInfrastructure(Infrastructure infrastructure)
     {
-        // RemoveInfrastructureFromList(infrastructure);
-        Debug.Log("destroy board area list" + infrastructure.BoardAreaList.Count());
-        Debug.Log("destroy board list" + infrastructure.BoardList.Count());
+        RemoveInfrastructureFromList(infrastructure);
         boardController.SetDefaultInfrastructure(infrastructure.BoardList);
         boardController.SetDefaultInfrastructureArea(infrastructure.BoardAreaList);
         infrastructure.DestroyInfrastructure();

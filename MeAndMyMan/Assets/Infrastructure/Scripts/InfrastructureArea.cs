@@ -37,5 +37,7 @@ public class InfrastructureArea : MonoBehaviour
         textCount.enabled = !textCount.enabled;
     }
 
+
+
 }
 

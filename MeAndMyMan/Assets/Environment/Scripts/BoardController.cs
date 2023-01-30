@@ -119,6 +119,19 @@ public class BoardController : MonoBehaviour
         }
     }
 
+    public void AbleInfrastructurePlane(Infrastructure infrastructure)
+    {
+        foreach (var tile in infrastructure.BoardList)
+        {
+            tile.AbleMeshRenderer();
+        }
+
+        foreach (var tile in infrastructure.BoardAreaList)
+        {
+            tile.AbleMeshRenderer();
+        }
+    }
+
     public List<Tile> BoardCheck(Vector3 worldPosition, int infrastructureSize)
     {
         List<Tile> boardCheckList = new List<Tile>();
