@@ -10,6 +10,8 @@ public class Farm : Object
     public Farm(ObjectType objectType, int areaSize, ObjectLevel objectLevel) : base(objectType, areaSize, objectLevel)
     {
 
+
+
     }
 
 }

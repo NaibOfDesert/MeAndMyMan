@@ -15,7 +15,7 @@ public class GameUiController : MonoBehaviour
     Camera mainCamera;
     GameObject gameCamera;
     GameCameraController gameCameraController;
-
+    GameUiMenuController gameUiMenuController; 
 
 
     void Awake()
@@ -26,6 +26,7 @@ public class GameUiController : MonoBehaviour
         gameCamera = gameCameraController.gameObject;
         mainCamera = gameCameraController.gameObject.GetComponentInChildren<Camera>();
         infrastructureController = gameController.InfrastructureController;
+        gameUiMenuController = gameController.GameUiMenuController;
         boardController = gameController.BoardController;
 
 
@@ -36,14 +37,20 @@ public class GameUiController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            Debug.Log(gameController.InfrastructureState);
+
+
             if (gameController.BuildState)
             {
                 infrastructureController.DestroyNewInfrastructure();
-                gameController.BuildState = false;
+                //gameController.BuildStateAble(); // ????????????
             }
-            else
+            else if(gameController.InfrastructureState)
             {
-                
+                Debug.Log("exc infrstructure state");
+                gameUiMenuController.MenuInfrastructureAble(null);
+                gameController.InfrastructureStateAble();
+                // switch off infrastructure menu
             }
         }
 
@@ -60,8 +67,6 @@ public class GameUiController : MonoBehaviour
 
             }
 
-            // mainCamera.transform.rotation = Quaternion.Euler(cameraRotationSpeed, transform.rotation.y, transform.rotation.z);
-            // mainCamera.transform.eulerAngles = 
         }
 
         if (Input.GetKey(KeyCode.DownArrow)) //++ add mouse scroll wheel
@@ -91,25 +96,7 @@ public class GameUiController : MonoBehaviour
 
     }
 
-    public void BuildHouse()
-    {
-        if (!gameController.BuildState)
-        {
-            // move to GameInfrastructure
-            infrastructureController.CreateInfrastructure(ObjectType.House);
-
-        }
-    }
-
-    public void BuildFarm()
-    {
-        if (!gameController.BuildState)
-        {
-            // move to GameInfrastructure
-            infrastructureController.CreateInfrastructure(ObjectType.Farm);
-
-        }
-    }
+  
 
 
 

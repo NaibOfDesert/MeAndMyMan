@@ -1,34 +1,41 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
+using System.Linq;
 
 public class InfrastructureArea : MonoBehaviour
 {
+    [SerializeField] TextMeshPro textCount;
+
+    Infrastructure infrastructure; 
+
+    GameController gameController; // shoud be taken from Infrastructure or GetFind in here??
+
     void Awake()
     {
+        gameController = FindObjectOfType<GameController>();
+        infrastructure = GetComponentInParent<Infrastructure>();
+        textCount = GetComponentInChildren<TextMeshPro>();
 
     }
-    public void EnableArea()
+
+    public void SetTextRotation()
     {
-        gameObject.SetActive(true); 
-
+        textCount.transform.LookAt(gameController.GameCamera.transform); // to fix
     }
 
-    public void DisableArea()
+    public void SetAreaValue(List <Tile> boardAreaList) 
     {
-        gameObject.SetActive(false);
-
+        boardAreaList.RemoveAll(n => n.IsUsedByInfrastructureArea == true);
+        infrastructure.InfrastructureObject.AreaActiveCount = boardAreaList.Count();
+        textCount.text = $"{boardAreaList.Count() }";
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void TextAreaValueAble() 
     {
-        // change color of tiles aftes collision
-
-        if (other.gameObject.GetComponentInParent<GameController>())
-        {
-
-        }
+        textCount.enabled = !textCount.enabled;
     }
+
 }
 

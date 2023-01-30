@@ -8,7 +8,10 @@ public class GameController : MonoBehaviour
     public int GameSize { get { return gameSize; } }
 
     [SerializeField] bool buildState;
-    public bool BuildState { get { return buildState; } set { buildState = value; } }
+    public bool BuildState { get { return buildState; } set { buildState = value; } } //-- ??
+
+    [SerializeField] bool infrastructureState;
+    public bool InfrastructureState { get { return infrastructureState; } set { infrastructureState = value; } }
 
     GameManager gameManager;
     public GameManager GameManager { get { return gameManager; } }
@@ -20,28 +23,52 @@ public class GameController : MonoBehaviour
     public BoardController BoardController { get { return boardController; } }
 
     GameCameraController gameCameraController;
+
     public GameCameraController GameCameraController { get { return gameCameraController; } }
+
+    GameObject gameCamera;
+    public GameObject GameCamera { get { return gameCamera; } }
 
     MouseController mouseController;
     public MouseController MouseController { get { return mouseController; } }
 
+    GameUiMenuController gameUiMenuController;
+    public GameUiMenuController GameUiMenuController { get { return gameUiMenuController; } }
+
+
+
     void Awake()
     {
-        gameManager = new GameManager();
+        gameManager = new GameManager(this);
         infrastructureController = FindObjectOfType<InfrastructureController>();
         boardController = FindObjectOfType<BoardController>();
         mouseController = FindObjectOfType<MouseController>();
         gameCameraController = FindObjectOfType<GameCameraController>();
+        gameUiMenuController = FindObjectOfType<GameUiMenuController>();
 
-
-
+        gameCamera = gameCameraController.gameObject; 
     }
 
     void Start()
     {
+        buildState = false;
+        infrastructureState = false;
+    }
+
+    public void BuildStateAble()
+    {
+        buildState = !buildState;
+        if (InfrastructureState)
+        {
+            InfrastructureStateAble();
+            gameUiMenuController.MenuInfrastructureAble(null); // set all other states false?
+        }
 
     }
 
-
+    public void InfrastructureStateAble()
+    {
+        infrastructureState = !infrastructureState;
+    }
 
 }

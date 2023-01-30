@@ -13,23 +13,24 @@ public class Infrastructure : MonoBehaviour
     public int InfrastructureSize { get { return infrastructureSize; } }
 
     InfrastructureArea infrastructureArea;
+    public InfrastructureArea InfrastructureArea { get { return infrastructureArea; } }
 
     Object infrastructureObject;
     public Object InfrastructureObject { get { return infrastructureObject; } }
 
     MeshRenderer meshRenderer;
-    // public MeshRenderer MeshRenderer { get { return meshRenderer; } } //--
-
     Material infrastructureMaterial;
-    // public Material InfrastructureMaterial { get { return infrastructureMaterial; } } //--
 
     List<Tile> boardList;
-    public List<Tile> BoardList { get { return boardList; } set { boardList = value;} }
+    [SerializeField] public List<Tile> BoardList { get { return boardList; } }
 
-    List<Tile> boardAreaList;
-    public List<Tile> BoardAreaList { get { return boardAreaList; } set { boardAreaList = value; } }
+    [SerializeField] List<Tile> boardAreaList;
+    public List<Tile> BoardAreaList { get { return boardAreaList; } }
 
-    [SerializeField] TextMeshProUGUI textCount;
+    [SerializeField] List<Tile> boardAreaBlockedList; //++to implement
+    public List<Tile> BoardAreaBlockedList { get { return boardAreaBlockedList; } set { boardAreaBlockedList = value; } }
+
+    // [SerializeField] TextMeshPro textCount;
 
     GameController gameController;
     BoardController boardController; 
@@ -42,78 +43,95 @@ public class Infrastructure : MonoBehaviour
         boardController = gameController.BoardController; 
         mouseController = gameController.MouseController;
         infrastructureController = gameController.InfrastructureController;
-
+        infrastructureArea = GetComponentInChildren<InfrastructureArea>(); 
         meshRenderer = GetComponentInChildren<MeshRenderer>();
         infrastructureMaterial = meshRenderer.material;
-        infrastructureArea = FindObjectOfType<InfrastructureArea>(); //-- ???????
-        textCount = GetComponentInChildren<TextMeshProUGUI>();
 
         boardList = new List<Tile>();
         boardAreaList = new List<Tile>();
 
 
-        // infrastructureObject = new House(); // implement depends of type of new Infrastructure
 
     }
 
     void Start()
     {
+        infrastructureArea.SetTextRotation();
 
     }
 
     void Update()
     {
-        if (!isPlaced)
-        {
-            boardList = boardController.BoardCheck(mouseController.WorldPosition, infrastructureSize);
+        Debug.Log("update board area list" + this.boardAreaList.Count());
+        Debug.Log("update board list" + this.boardList.Count());
 
-            if(!(boardList.Count() < Mathf.Pow(infrastructureSize, 2) - 1))
+        if (!isPlaced) // to fix, area position should set objectposition, not world posiiton
+        {
+            Vector3 worldPosition = mouseController.WorldPosition;
+            boardList = boardController.BoardCheck(worldPosition, infrastructureSize);
+
+            if (boardList.Count() == Mathf.Pow(infrastructureSize, 2))
             {
-                transform.position = mouseController.WorldPositionConvert(infrastructureSize);
-                if (boardList.Any(n => n.IsPlaceable == false)) /// implemented as square objects
+                boardAreaList = boardController.BoardAreaCheck(worldPosition, infrastructureSize, infrastructureObject.AreaSize);
+                boardController.BoardClear(boardList);
+                boardController.BoardAreaClear(boardAreaList);
+                transform.position = mouseController.WorldPositionConvert(infrastructureSize, worldPosition);   
+
+                if (boardList.Any(n => n.IsUsedByInfrastructure == true)) /// implemented as square objects  // set material method
                 {
-                    meshRenderer.material = infrastructureController.GreyMaterial;
+                    SetMaterial(infrastructureController.GreyMaterial);
                 }
                 else
                 {
-                    meshRenderer.material = infrastructureMaterial; // to rebuild, object should be a bit grey
-
+                    SetMaterial(infrastructureMaterial);
                 }
+                infrastructureArea.SetAreaValue(boardAreaList);
 
-                boardAreaList = boardController.BoardAreaCheck(mouseController.WorldPosition, infrastructureSize, infrastructureObject.AreaSize);
-                SetAreaValue();
+
 
             }
-
-
-
-
-
         }
     }
 
     public void InitiateInfrastructure(Object infrastructureObject, int infrastructureSize, float rotationAxisY)
     {
-
         this.infrastructureObject = infrastructureObject;
         this.infrastructureSize = infrastructureSize;
-        transform.rotation = Quaternion.Euler(transform.rotation.x, rotationAxisY, transform.rotation.z); 
+        transform.rotation = Quaternion.Euler(transform.rotation.x, rotationAxisY, transform.rotation.z);
+        SetAreaCount();
 
     }
+    // public void SetInfrastructure(List<Tile> boardList, List<Tile> boardAreaList)
 
-
-    public void SetDefaultMaterial()
+    public void SetInfrastructure()
     {
-        meshRenderer.material = infrastructureMaterial;
+        isPlaced = true;
+        SetMaterial(infrastructureMaterial);
+        InfrastructureArea.TextAreaValueAble();
+        Debug.Log("set board area list" + this.boardAreaList.Count());
+        Debug.Log("set board list" + this.boardList.Count());
     }
 
-    public void SetAreaValue()
+    void SetAreaCount()
     {
-        textCount.text =  $"{boardAreaList.Count() }";
+        infrastructureObject.AreaActiveCount = boardAreaList.Count();
+
+        // add area not ablle to use list
     }
 
-    public void TextAreaValueAble() // not working
+    void SetMaterial(Material material)
     {
-        textCount.enabled = !textCount.enabled;
+        meshRenderer.material = material;
+
     }
+
+    public void DestroyInfrastructure()
+    {
+        boardController.SetDefaultInfrastructure(boardList); //??
+        boardController.SetDefaultInfrastructureArea(boardAreaList); //??
+
+        Destroy(gameObject);
+    }
+
+
 }

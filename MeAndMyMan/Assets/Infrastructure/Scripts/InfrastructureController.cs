@@ -11,13 +11,15 @@ public class InfrastructureController : MonoBehaviour
     int houseSize = 1;
     int houseAreaSize = 0;
     List<Infrastructure> houseList;
-    
+    public List<Infrastructure> HouseList { get { return houseList; } }
+
+
     [SerializeField] GameObject farmPrefab;
     public GameObject FarmPrefab { get { return farmPrefab; } }
     int farmSize = 2;
     int farmAreaSize = 1;
     List<Infrastructure> farmList;
-
+    public List<Infrastructure> FarmList { get { return farmList; } }
 
 
     [Header("Infrastructure")]
@@ -35,10 +37,6 @@ public class InfrastructureController : MonoBehaviour
     public Material GreyMaterial { get { return greyMaterial; } }
 
     List<float> infrastructureRotationsList;
-
-
-
-    // GameObject newInfrastructureObject; 
     
     Infrastructure newInfrastructure;
     public Infrastructure NewInfrastructure { get { return newInfrastructure; } set { newInfrastructure = value; } }
@@ -61,6 +59,7 @@ public class InfrastructureController : MonoBehaviour
     public void CreateInfrastructure(ObjectType objectType)
     {
         Object infrastructureObject;
+        gameController.BuildStateAble();
 
 
         switch (objectType)
@@ -77,52 +76,45 @@ public class InfrastructureController : MonoBehaviour
 
                 break;
             default:
-                Debug.Log("InitiateInfrastructure error");
+                Debug.Log("CreateInfrastructure error");
                 break;
         }
-
-
-
 
     }
 
     Infrastructure InstantiateInfrastructure(GameObject prefabObject, Object infrastructureObject, int infrastructureSize)
     {
         int infrastructureRotation = Random.Range(0, infrastructureRotationsList.Count() - 1);
-
         GameObject newInfrastructureObject = Instantiate(prefabObject, mouseController.WorldPosition, Quaternion.identity); // is newInfrastructure needed?? use infrastructureRotation ???
         newInfrastructure = newInfrastructureObject.GetComponent<Infrastructure>();
         newInfrastructure.InitiateInfrastructure(infrastructureObject, infrastructureSize, infrastructureRotationsList[infrastructureRotation]);
-        // newInfrastructure.TextAreaValueAble(); 
-
-        gameController.BuildState = true;
-        boardController.AbleBoardPlane(); 
+        boardController.StartBuildState();
 
         return newInfrastructure; 
     }
 
     public void BuildInfrastructure(Vector3 worldPosition)
     {
-        // newInfrastructure.BoardList = boardController.BoardCheck(worldPosition, newInfrastructure.InfrastructureSize);
-        // newInfrastructure.BoardAreaList = boardController.BoardAreaCheck(mouseController.WorldPosition, newInfrastructure.InfrastructureSize, newInfrastructure.InfrastructureObject.AreaSize);
-
-        if (!newInfrastructure.BoardList.Any(n => n.IsPlaceable == false) && newInfrastructure.BoardList.Count() == Mathf.Pow(newInfrastructure.InfrastructureSize, 2)) /// implemented as square objects
+        if (!newInfrastructure.BoardList.Any(n => n.IsUsedByInfrastructure == true) && newInfrastructure.BoardList.Count() == Mathf.Pow(newInfrastructure.InfrastructureSize, 2)) /// implemented as square objects
         {
 
+
+            gameController.BuildStateAble();
+
+            newInfrastructure.SetInfrastructure();
             boardController.BoardAreaSetAsUsedByInfrastructure(newInfrastructure.BoardList, newInfrastructure);
-            boardController.BoardAreaSetAsUsedByInfrastructureArea(newInfrastructure.BoardAreaList, newInfrastructure); 
+            boardController.BoardAreaSetAsUsedByInfrastructureArea(newInfrastructure.BoardAreaList, newInfrastructure);
 
-            boardController.AbleBoardPlane();
-            boardController.BoardAreaClear(newInfrastructure.BoardAreaList);
+            // Debug.Log("Build board area list" + newInfrastructure.BoardAreaList.Count());
+            // Debug.Log("Build board list" + newInfrastructure.BoardList.Count());
+            boardController.EndBuildState();
 
-            newInfrastructure.IsPlaced = true;
-            newInfrastructure.SetDefaultMaterial();
-            // newInfrastructure.TextAreaValueAble(); 
+
             newInfrastructure = null;
+
             AddNewInfrastructureToList();
 
-            gameController.BuildState = false;
-
+            // gameController.BuildState = false;
         }
     }
 
@@ -147,19 +139,51 @@ public class InfrastructureController : MonoBehaviour
         }
     }
 
-    public void DestroyNewInfrastructure()
+    void RemoveInfrastructureFromList(Infrastructure infrastructure)
     {
-        List<Tile> boardAreaCheckList = boardController.BoardAreaCheck(mouseController.WorldPosition, newInfrastructure.InfrastructureSize, newInfrastructure.InfrastructureObject.AreaSize);
+        if (infrastructure != null)
+        {
+            switch (infrastructure.InfrastructureObject.ObjectType)
+            {
+                case ObjectType.House:
+                    houseList.Remove(infrastructure);
+                    break;
 
-        boardController.BoardAreaClear(boardAreaCheckList);
+                case ObjectType.Farm:
+                    farmList.Remove(infrastructure);
+                    break;
 
-        Destroy(newInfrastructure.gameObject);
-        newInfrastructure = null;
-        gameController.BuildState = false;
+                default:
+                    Debug.Log("AddNewInfrastructureToList error");
+                    break;
+            }
+        }
     }
 
-    public void DestroyInfrastructure()
+    public void DestroyNewInfrastructure()
     {
+
+        gameController.BuildStateAble();
+        boardController.QuitBuildState();
+        newInfrastructure.DestroyInfrastructure(); 
+        //  Destroy(newInfrastructure.gameObject);
+        newInfrastructure = null;
+    }
+
+    public void UpgradeInfrastructure()
+    {
+
+    }
+
+
+    public void DestroyInfrastructure(Infrastructure infrastructure)
+    {
+        // RemoveInfrastructureFromList(infrastructure);
+        Debug.Log("destroy board area list" + infrastructure.BoardAreaList.Count());
+        Debug.Log("destroy board list" + infrastructure.BoardList.Count());
+        boardController.SetDefaultInfrastructure(infrastructure.BoardList);
+        boardController.SetDefaultInfrastructureArea(infrastructure.BoardAreaList);
+        infrastructure.DestroyInfrastructure();
 
     }
 
