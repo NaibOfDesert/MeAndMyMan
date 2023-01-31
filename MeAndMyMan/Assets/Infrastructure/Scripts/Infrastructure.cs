@@ -12,23 +12,14 @@ public class Infrastructure : MonoBehaviour
     int infrastructureSize = 0;
     public int InfrastructureSize { get { return infrastructureSize; } }
 
-    InfrastructureArea infrastructureArea;
-    public InfrastructureArea InfrastructureArea { get { return infrastructureArea; } }
-
     Object infrastructureObject;
     public Object InfrastructureObject { get { return infrastructureObject; } }
 
+    InfrastructureArea infrastructureArea;
+    public InfrastructureArea InfrastructureArea { get { return infrastructureArea; } }
+
     MeshRenderer meshRenderer;
     Material infrastructureMaterial;
-
-    List<Tile> boardList; // move to InfrastrcutreArea
-    public List<Tile> BoardList { get { return boardList; } } // move to InfrastrcutreArea
-
-    List<Tile> boardAreaList; // move to InfrastrcutreArea
-    public List<Tile> BoardAreaList { get { return boardAreaList; } } // move to InfrastrcutreArea
-
-    [SerializeField] List<Tile> boardAreaBlockedList; //++to implement // move to InfrastrcutreArea
-    public List<Tile> BoardAreaBlockedList { get { return boardAreaBlockedList; } set { boardAreaBlockedList = value; } } // move to InfrastrcutreArea
 
     GameController gameController;
     BoardController boardController; 
@@ -45,37 +36,33 @@ public class Infrastructure : MonoBehaviour
         meshRenderer = GetComponentInChildren<MeshRenderer>();
         infrastructureMaterial = meshRenderer.material;
 
-        boardList = new List<Tile>();
-        boardAreaList = new List<Tile>();
 
 
 
     }
 
-    void Start()
+    void Start() /// to rebuild - move arealists methods & elements to Infrastructure Area
     {
         infrastructureArea.SetTextRotation();
 
     }
 
-    void Update()
+    void Update() 
     {
-        Debug.Log("update board area list" + this.boardAreaList.Count());
-        Debug.Log("update board list" + this.boardList.Count());
-
-        if (!isPlaced) // to fix, area position should set objectposition, not world posiiton
+        if (!isPlaced) /// to fix, area position should set objectposition, not world posiiton
         {
             Vector3 worldPosition = mouseController.WorldPosition;
-            boardList = boardController.BoardCheck(worldPosition, infrastructureSize);
+            infrastructureArea.BoardList = boardController.BoardCheck(worldPosition, infrastructureSize);
 
-            if (boardList.Count() == Mathf.Pow(infrastructureSize, 2))
+            if (infrastructureArea.BoardList.Count() == Mathf.Pow(infrastructureSize, 2))
             {
-                boardAreaList = boardController.BoardAreaCheck(worldPosition, infrastructureSize, infrastructureObject.AreaSize);
-                boardController.BoardClear(boardList);
-                boardController.BoardAreaClear(boardAreaList);
+                infrastructureArea.BoardAreaList = boardController.BoardAreaCheck(worldPosition, infrastructureSize, infrastructureObject.AreaSize);
+                infrastructureArea.SetAreaValue();
+                boardController.BoardClear(infrastructureArea.BoardList);
+                boardController.BoardAreaClear(infrastructureArea.BoardAreaList);
                 transform.position = mouseController.WorldPositionConvert(infrastructureSize, worldPosition);   
 
-                if (boardList.Any(n => n.IsUsedByInfrastructure == true)) /// implemented as square objects
+                if (infrastructureArea.BoardList.Any(n => n.IsUsedByInfrastructure == true)) /// implemented as square objects
                 {
                     SetMaterial(infrastructureController.GreyMaterial);
                 }
@@ -83,11 +70,6 @@ public class Infrastructure : MonoBehaviour
                 {
                     SetMaterial(infrastructureMaterial);
                 }
-
-                infrastructureArea.SetAreaValue(boardAreaList);
-
-
-
             }
         }
     }
@@ -97,40 +79,37 @@ public class Infrastructure : MonoBehaviour
         this.infrastructureObject = infrastructureObject;
         this.infrastructureSize = infrastructureSize;
         transform.rotation = Quaternion.Euler(transform.rotation.x, rotationAxisY, transform.rotation.z);
-        SetAreaCount();
-
     }
-    // public void SetInfrastructure(List<Tile> boardList, List<Tile> boardAreaList)
 
     public void SetInfrastructure()
     {
         isPlaced = true;
         SetMaterial(infrastructureMaterial);
         InfrastructureArea.TextAreaValueAble();
-    }
-
-    void SetAreaCount()
-    {
-        infrastructureObject.AreaActiveCount = boardAreaList.Count();
-
-        // add area not ablle to use list
+        StartCoroutine(ImproveInfrastructure()); 
     }
 
     void SetMaterial(Material material)
     {
         meshRenderer.material = material;
-
     }
-
-
 
     public void DestroyInfrastructure()
     {
-        boardController.SetDefaultInfrastructure(boardList);
-        boardController.SetDefaultInfrastructureArea(boardAreaList); 
-
+        boardController.SetDefaultInfrastructure(infrastructureArea.BoardList);
+        boardController.SetDefaultInfrastructureArea(infrastructureArea.BoardAreaList); 
         Destroy(gameObject);
     }
 
+    IEnumerator ImproveInfrastructure()
+    {
+        // if
+        // to develope - addinig workers on citizens
+        yield return new WaitForSecondsRealtime(infrastructureObject.ImprovementTime);
+        // StartCoroutine(ImproveInfrastructure());
+    }
 
+    // start working
+
+    // pause
 }

@@ -18,7 +18,6 @@ public class BoardController : MonoBehaviour
     [SerializeField] Material blueMaterial;
     public Material BlueMaterial { get { return blueMaterial; } } //--
 
-
     [SerializeField] Material greyMaterial;
     public Material GreyMaterial { get { return greyMaterial; } } //--
 
@@ -87,7 +86,7 @@ public class BoardController : MonoBehaviour
         }
     }
 
-    void GenerateEnvironmentObject(Vector3 position, GameObject environmentPrefab)
+    void GenerateEnvironmentObject(Vector3 position, GameObject environmentPrefab) //++ random location of environment elements
     {
         int environmentRotation = Random.Range(0, environmentRotationsList.Count() - 1);
 
@@ -121,15 +120,22 @@ public class BoardController : MonoBehaviour
 
     public void AbleInfrastructurePlane(Infrastructure infrastructure)
     {
-        foreach (var tile in infrastructure.BoardList)
+        foreach (var tile in infrastructure.InfrastructureArea.BoardList)
         {
             tile.AbleMeshRenderer();
         }
 
-        foreach (var tile in infrastructure.BoardAreaList)
+        foreach (var tile in infrastructure.InfrastructureArea.BoardAreaList)
         {
             tile.AbleMeshRenderer();
         }
+
+        foreach (var tile in infrastructure.InfrastructureArea.BoardAreaBlockedList)
+        {
+            tile.AbleMeshRenderer();
+            //++ to add dependence of property
+        }
+
     }
 
     public List<Tile> BoardCheck(Vector3 worldPosition, int infrastructureSize)
@@ -163,8 +169,10 @@ public class BoardController : MonoBehaviour
                 Vector3 tilePositon = worldPosition;
                 tilePositon += new Vector3(i, 0, j);
                 Tile tileToCheck = GetBoardTile(tilePositon);
-                
-                if (tileToCheck != null && !tileToCheck.IsUsedByInfrastructure && !lastBoardList.Contains(tileToCheck))
+
+                // if (tileToCheck != null && !tileToCheck.IsUsedByInfrastructure && !lastBoardList.Contains(tileToCheck)) // to deleta isUsedByInfrastructure
+
+                if (tileToCheck != null && !lastBoardList.Contains(tileToCheck)) // to deleta isUsedByInfrastructure
                 {
                     boardAreaCheckList.Add(tileToCheck);
                 }
@@ -199,7 +207,6 @@ public class BoardController : MonoBehaviour
         BoardAreaClear(lastBoardAreaList);
         // lastBoardList.Clear(); /// why this Clear Infrastrcutre List
         // lastBoardAreaList.Clear(); /// why this Clear Infrastrcutre List
-
     }
 
     public void QuitBuildState()
@@ -270,7 +277,6 @@ public class BoardController : MonoBehaviour
         foreach (var tile in infrastructureList)
         {
             tile.SetUsedByDefault();
-
         }
         SetMaterialForList(infrastructureList);
     }
@@ -280,10 +286,8 @@ public class BoardController : MonoBehaviour
         foreach(var tile in infrastructureAreaList)
         {
             tile.SetUsedByDefault();
-
         }
         SetMaterialForList(infrastructureAreaList);
-
     }
 
 

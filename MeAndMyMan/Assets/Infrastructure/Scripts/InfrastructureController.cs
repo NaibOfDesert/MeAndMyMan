@@ -10,14 +10,17 @@ public class InfrastructureController : MonoBehaviour
     public GameObject HousePrefab { get { return housePrefab; } }
     int houseSize = 1;
     int houseAreaSize = 0;
+    int houseImprovementTime = 10; //++ to add in implementation
+
     List<Infrastructure> houseList;
     public List<Infrastructure> HouseList { get { return houseList; } }
-
 
     [SerializeField] GameObject farmPrefab;
     public GameObject FarmPrefab { get { return farmPrefab; } }
     int farmSize = 2;
     int farmAreaSize = 1;
+    int farmImprovementTime = 8; //++ to add in implementation
+
     List<Infrastructure> farmList;
     public List<Infrastructure> FarmList { get { return farmList; } }
 
@@ -95,26 +98,17 @@ public class InfrastructureController : MonoBehaviour
 
     public void BuildInfrastructure(Vector3 worldPosition)
     {
-        if (!newInfrastructure.BoardList.Any(n => n.IsUsedByInfrastructure == true) && newInfrastructure.BoardList.Count() == Mathf.Pow(newInfrastructure.InfrastructureSize, 2)) /// implemented as square objects
+        if (!newInfrastructure.InfrastructureArea.BoardList.Any(n => n.IsUsedByInfrastructure == true) && newInfrastructure.InfrastructureArea.BoardList.Count() == Mathf.Pow(newInfrastructure.InfrastructureSize, 2)) /// implemented as square objects
         {
-
-
             gameController.BuildStateAble();
-
             newInfrastructure.SetInfrastructure();
-            boardController.BoardAreaSetAsUsedByInfrastructure(newInfrastructure.BoardList, newInfrastructure);
-            boardController.BoardAreaSetAsUsedByInfrastructureArea(newInfrastructure.BoardAreaList, newInfrastructure);
-
-            // Debug.Log("Build board area list" + newInfrastructure.BoardAreaList.Count());
-            // Debug.Log("Build board list" + newInfrastructure.BoardList.Count());
+            boardController.BoardAreaSetAsUsedByInfrastructure(newInfrastructure.InfrastructureArea.BoardList, newInfrastructure);
+            boardController.BoardAreaSetAsUsedByInfrastructureArea(newInfrastructure.InfrastructureArea.BoardAreaList, newInfrastructure);
             boardController.EndBuildState();
-
 
             newInfrastructure = null;
 
             AddNewInfrastructureToList();
-
-            // gameController.BuildState = false;
         }
     }
 
@@ -178,8 +172,8 @@ public class InfrastructureController : MonoBehaviour
     public void DestroyInfrastructure(Infrastructure infrastructure)
     {
         RemoveInfrastructureFromList(infrastructure);
-        boardController.SetDefaultInfrastructure(infrastructure.BoardList);
-        boardController.SetDefaultInfrastructureArea(infrastructure.BoardAreaList);
+        boardController.SetDefaultInfrastructure(infrastructure.InfrastructureArea.BoardList);
+        boardController.SetDefaultInfrastructureArea(infrastructure.InfrastructureArea.BoardAreaList);
         infrastructure.DestroyInfrastructure();
 
     }

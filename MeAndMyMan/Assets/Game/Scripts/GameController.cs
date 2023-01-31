@@ -16,14 +16,16 @@ public class GameController : MonoBehaviour
     GameManager gameManager;
     public GameManager GameManager { get { return gameManager; } }
 
+    GameTimeController gameTimeController;
+    public GameTimeController GameTimeController { get { return gameTimeController; } }
+
     InfrastructureController infrastructureController;
     public InfrastructureController InfrastructureController { get { return infrastructureController; } }
 
-    [SerializeField] BoardController boardController;
+    BoardController boardController;
     public BoardController BoardController { get { return boardController; } }
 
     GameCameraController gameCameraController;
-
     public GameCameraController GameCameraController { get { return gameCameraController; } }
 
     GameObject gameCamera;
@@ -40,6 +42,7 @@ public class GameController : MonoBehaviour
     void Awake()
     {
         gameManager = new GameManager(this);
+        gameTimeController = FindObjectOfType<GameTimeController>();
         infrastructureController = FindObjectOfType<InfrastructureController>();
         boardController = FindObjectOfType<BoardController>();
         mouseController = FindObjectOfType<MouseController>();

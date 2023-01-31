@@ -4,10 +4,17 @@ using UnityEngine;
 
 public class GameTimeController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] float gameLoopsCount = 0; 
+
+    GameController gameController;
+    GameManager gameManager;
+    void Awake()
     {
-        
+        gameController = FindObjectOfType<GameController>();
+        gameManager = gameController.GameManager;
+
+        StopAllCoroutines();
+        StartCoroutine(GameClock());
     }
 
     // Update is called once per frame
@@ -15,5 +22,17 @@ public class GameTimeController : MonoBehaviour
     {
         
     }
+
+    IEnumerator GameClock()
+    {
+        gameLoopsCount++;
+        gameManager.CountExpValue(); 
+
+        yield return new WaitForSecondsRealtime(5);
+        StartCoroutine(GameClock());
+    }
+
+
+
 }
     

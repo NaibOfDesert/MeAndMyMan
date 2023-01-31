@@ -74,7 +74,7 @@ public class GameUiMenuController : MonoBehaviour
     public void DeteleInfrastructure()
     {
         infrastructureController.DestroyInfrastructure(infrastructureMenuState);
-        menuInfrastructureObject.SetActive(false);
+        MenuInfrastructureAble(null);
 
 
     }
@@ -120,11 +120,11 @@ public class GameUiMenuController : MonoBehaviour
         {
             int infrastrctureLevel = 0;
 
-            boardController.AbleInfrastructurePlane(infrastructure); // ??
-            boardController.AbleInfrastructurePlane(infrastructureMenuState); // ??
+            boardController.AbleInfrastructurePlane(infrastructure); 
+            if (infrastructureMenuState != null) boardController.AbleInfrastructurePlane(infrastructureMenuState);
 
             infrastructureMenuState = infrastructure;
-            textInfrastructureNameTMPro.text = infrastructure.InfrastructureObject.ObjectType.ToString(); // ??
+            textInfrastructureNameTMPro.text = infrastructure.InfrastructureObject.ObjectType.ToString();
             textInfrastructureAreaTMPro.text = infrastructure.InfrastructureObject.AreaActiveCount.ToString();
             infrastrctureLevel = (int)infrastructure.InfrastructureObject.ObjectLevel; 
             textInfrastructureLevelTMPro.text = infrastrctureLevel.ToString();

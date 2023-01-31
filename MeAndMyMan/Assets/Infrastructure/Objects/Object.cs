@@ -16,14 +16,22 @@ public abstract class Object
     protected int areaActiveCount; 
     public int AreaActiveCount { get { return areaActiveCount; } set { areaActiveCount = value; } }
 
+    protected int areaDisactiveCount;
+    public int AreaDisactiveCount { get { return areaDisactiveCount; } set { areaDisactiveCount = value; } }
+
     protected ObjectLevel objectLevel;
     public ObjectLevel ObjectLevel { get { return objectLevel; } set { objectLevel = value; } }
+
+    protected int improvementTime;
+    public int ImprovementTime { get { return improvementTime; } }
 
     public Object(ObjectType objectType, int areaSize, ObjectLevel objectLevel)
     {
         this.objectType = objectType;
         this.areaSize = areaSize;
         this.objectLevel = objectLevel;
+        areaActiveCount = 0;
+        areaDisactiveCount = 0; 
     }
  
     public void UpgradeObject()
