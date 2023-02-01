@@ -8,12 +8,15 @@ public class House: Object
 {
     int resident;
 
-    public House(ObjectType objectType, int areaSize, ObjectLevel objectLevel) : base(objectType, areaSize, objectLevel)
+    public House(ObjectType objectType, int areaSize, ObjectLevel objectLevel, int improvementTime) : base(objectType, areaSize, objectLevel, improvementTime)
     {
         resident = 1; 
     }
 
+    override public void DevelopeObject()
+    {
 
+    }
 
 }
 

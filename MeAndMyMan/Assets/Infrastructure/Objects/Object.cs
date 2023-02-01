@@ -25,11 +25,12 @@ public abstract class Object
     protected int improvementTime;
     public int ImprovementTime { get { return improvementTime; } }
 
-    public Object(ObjectType objectType, int areaSize, ObjectLevel objectLevel)
+    public Object(ObjectType objectType, int areaSize, ObjectLevel objectLevel, int improvementTime)
     {
         this.objectType = objectType;
         this.areaSize = areaSize;
         this.objectLevel = objectLevel;
+        this.improvementTime = improvementTime;
         areaActiveCount = 0;
         areaDisactiveCount = 0; 
     }
@@ -51,5 +52,7 @@ public abstract class Object
             return;
         }
     }
+
+    abstract public void DevelopeObject(); 
 }
 

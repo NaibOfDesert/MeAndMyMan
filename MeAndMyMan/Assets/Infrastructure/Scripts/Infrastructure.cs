@@ -106,7 +106,8 @@ public class Infrastructure : MonoBehaviour
         // if
         // to develope - addinig workers on citizens
         yield return new WaitForSecondsRealtime(infrastructureObject.ImprovementTime);
-        // StartCoroutine(ImproveInfrastructure());
+        infrastructureObject.DevelopeObject(); 
+        StartCoroutine(ImproveInfrastructure());
     }
 
     // start working
