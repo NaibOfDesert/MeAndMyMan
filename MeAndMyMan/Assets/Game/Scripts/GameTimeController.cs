@@ -26,7 +26,7 @@ public class GameTimeController : MonoBehaviour
     IEnumerator GameClock()
     {
         gameLoopsCount++;
-        gameManager.CountExpValue(); 
+        // gameManager.CountExpValue(); // to fix
 
         yield return new WaitForSecondsRealtime(5);
         StartCoroutine(GameClock());

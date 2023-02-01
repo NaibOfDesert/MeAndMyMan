@@ -35,7 +35,7 @@ public abstract class Object
         areaDisactiveCount = 0; 
     }
  
-    public void UpgradeObject()
+    public virtual void UpgradeObject()
     {
         if (objectLevel == ObjectLevel.Level4) return;
         else if (objectLevel == ObjectLevel.Level1){
@@ -52,7 +52,9 @@ public abstract class Object
             return;
         }
     }
-
-    abstract public void DevelopeObject(); 
+    public abstract int GetUsers();
+    public abstract int GetUsersMax();
+    public abstract void DevelopeObject();
+    public abstract bool DevelopeObjectIsAble();
 }
 

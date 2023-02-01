@@ -12,12 +12,15 @@ public class GameUiMenuController : MonoBehaviour
     [SerializeField] GameObject buttonInfrastructureDelete;
     [SerializeField] GameObject buttonInfrastructureRebuildArea;
     [SerializeField] GameObject buttonInfrastructureUpgrade;
-    [SerializeField] GameObject textInfrastructureName;
+    // [SerializeField] GameObject textInfrastructureName;
 
 
-    [SerializeField] TextMeshProUGUI textInfrastructureNameTMPro;
-    [SerializeField] TextMeshProUGUI textInfrastructureAreaTMPro;
-    [SerializeField] TextMeshProUGUI textInfrastructureLevelTMPro;
+    [SerializeField] TextMeshProUGUI textInfrastructureName;
+    [SerializeField] TextMeshProUGUI textInfrastructureArea;
+    [SerializeField] TextMeshProUGUI textInfrastructureLevel;
+    [SerializeField] TextMeshProUGUI textInfrastructureUsers;
+    [SerializeField] TextMeshProUGUI textInfrastructureUsersMax;
+
 
 
 
@@ -95,7 +98,7 @@ public class GameUiMenuController : MonoBehaviour
             infrastructureController.UpgradeInfrastructure(infrastructureMenuState);
 
             infrastrctureLevel = (int)infrastructureMenuState.InfrastructureObject.ObjectLevel;
-            textInfrastructureLevelTMPro.text = infrastrctureLevel.ToString();
+            textInfrastructureLevel.text = infrastrctureLevel.ToString();
         }
     }
 
@@ -109,10 +112,13 @@ public class GameUiMenuController : MonoBehaviour
             boardController.AbleInfrastructurePlane(infrastructureMenuState);
             menuInfrastructureObject.SetActive(false);
             
-            textInfrastructureNameTMPro.text = null;
-            textInfrastructureAreaTMPro.text = null;
-            textInfrastructureLevelTMPro.text = null;
+            textInfrastructureName.text = null;
+            textInfrastructureArea.text = null;
+            textInfrastructureLevel.text = null;
+            textInfrastructureUsers.text = null;
+            textInfrastructureUsersMax.text = null;
             infrastructureMenuState = null;
+
 
             return;
         }
@@ -124,10 +130,12 @@ public class GameUiMenuController : MonoBehaviour
             if (infrastructureMenuState != null) boardController.AbleInfrastructurePlane(infrastructureMenuState);
 
             infrastructureMenuState = infrastructure;
-            textInfrastructureNameTMPro.text = infrastructure.InfrastructureObject.ObjectType.ToString();
-            textInfrastructureAreaTMPro.text = infrastructure.InfrastructureObject.AreaActiveCount.ToString();
+            textInfrastructureName.text = infrastructure.InfrastructureObject.ObjectType.ToString();
+            textInfrastructureArea.text = infrastructure.InfrastructureObject.AreaActiveCount.ToString();
             infrastrctureLevel = (int)infrastructure.InfrastructureObject.ObjectLevel; 
-            textInfrastructureLevelTMPro.text = infrastrctureLevel.ToString();
+            textInfrastructureLevel.text = infrastrctureLevel.ToString();
+            textInfrastructureUsers.text = infrastructure.InfrastructureObject.GetUsers().ToString(); // to fix
+            textInfrastructureUsersMax.text = infrastructure.InfrastructureObject.GetUsersMax().ToString(); // to fix
 
             menuInfrastructureObject.SetActive(true);
             gameController.InfrastructureStateAble();

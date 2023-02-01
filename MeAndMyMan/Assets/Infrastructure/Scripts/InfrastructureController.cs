@@ -69,12 +69,12 @@ public class InfrastructureController : MonoBehaviour
         {
             
             case ObjectType.House:
-                infrastructureObject = new House(objectType, houseAreaSize, ObjectLevel.Level1);
+                infrastructureObject = new House(objectType, houseAreaSize, ObjectLevel.Level1, houseImprovementTime);
                 InstantiateInfrastructure(housePrefab, infrastructureObject, houseSize);
 
                 break;
             case ObjectType.Farm:
-                infrastructureObject = new Farm(objectType, farmAreaSize, ObjectLevel.Level1);
+                infrastructureObject = new Farm(objectType, farmAreaSize, ObjectLevel.Level1, farmImprovementTime);
                 InstantiateInfrastructure(farmPrefab, infrastructureObject, farmSize);
 
                 break;
@@ -178,7 +178,18 @@ public class InfrastructureController : MonoBehaviour
 
     }
 
-
-
+    public IEnumerator ImproveInfrastructure(Infrastructure infrastructure)
+    {
+        if (newInfrastructure != null)
+        {
+            if (!infrastructure.InfrastructureObject.DevelopeObjectIsAble()) yield return new WaitForSecondsRealtime(0);
+            else // is else needed ?
+            {
+                yield return new WaitForSecondsRealtime(infrastructure.InfrastructureObject.ImprovementTime);
+                infrastructure.InfrastructureObject.DevelopeObject();
+                StartCoroutine(ImproveInfrastructure(infrastructure));
+            }
+        }
+    }
 }
 

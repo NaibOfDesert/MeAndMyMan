@@ -86,7 +86,7 @@ public class Infrastructure : MonoBehaviour
         isPlaced = true;
         SetMaterial(infrastructureMaterial);
         InfrastructureArea.TextAreaValueAble();
-        StartCoroutine(ImproveInfrastructure()); 
+        StartCoroutine(infrastructureController.ImproveInfrastructure(this)); 
     }
 
     void SetMaterial(Material material)
@@ -101,14 +101,7 @@ public class Infrastructure : MonoBehaviour
         Destroy(gameObject);
     }
 
-    IEnumerator ImproveInfrastructure()
-    {
-        // if
-        // to develope - addinig workers on citizens
-        yield return new WaitForSecondsRealtime(infrastructureObject.ImprovementTime);
-        infrastructureObject.DevelopeObject(); 
-        StartCoroutine(ImproveInfrastructure());
-    }
+
 
     // start working
 
