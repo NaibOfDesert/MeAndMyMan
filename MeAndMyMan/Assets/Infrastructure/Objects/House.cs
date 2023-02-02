@@ -37,7 +37,7 @@ public class House: Object
     public override void UpgradeObject()
     {
         base.UpgradeObject();
-        maxResidents += maxResidents;
+        maxResidents += maxResidents * (int)objectLevel;
     }
 
 }

@@ -10,7 +10,7 @@ public class InfrastructureController : MonoBehaviour
     public GameObject HousePrefab { get { return housePrefab; } }
     int houseSize = 1;
     int houseAreaSize = 0;
-    int houseImprovementTime = 10; //++ to add in implementation
+    int houseImprovementTime = 1; //++ to add in implementation
 
     List<Infrastructure> houseList;
     public List<Infrastructure> HouseList { get { return houseList; } }
@@ -19,7 +19,7 @@ public class InfrastructureController : MonoBehaviour
     public GameObject FarmPrefab { get { return farmPrefab; } }
     int farmSize = 2;
     int farmAreaSize = 1;
-    int farmImprovementTime = 8; //++ to add in implementation
+    int farmImprovementTime = 2; //++ to add in implementation
 
     List<Infrastructure> farmList;
     public List<Infrastructure> FarmList { get { return farmList; } }
@@ -46,13 +46,15 @@ public class InfrastructureController : MonoBehaviour
 
     GameController gameController;
     BoardController boardController;
-    MouseController mouseController; 
+    MouseController mouseController;
+    GameUiMenuController gameUiMenuController;
 
     void Awake()
     {
         gameController = FindObjectOfType<GameController>();
         boardController = gameController.BoardController;
         mouseController = gameController.MouseController;
+        gameUiMenuController = gameController.GameUiMenuController;
 
         houseList = new List<Infrastructure>();
         farmList = new List<Infrastructure>();
@@ -179,14 +181,20 @@ public class InfrastructureController : MonoBehaviour
     }
 
     public IEnumerator ImproveInfrastructure(Infrastructure infrastructure)
-    {
-        if (newInfrastructure != null)
+    {   
+        if (infrastructure != null)
         {
-            if (!infrastructure.InfrastructureObject.DevelopeObjectIsAble()) yield return new WaitForSecondsRealtime(0);
+            if (!infrastructure.InfrastructureObject.DevelopeObjectIsAble()) 
+            {
+                StopCoroutine(ImproveInfrastructure(infrastructure)); 
+                // yield return new WaitForSecondsRealtime(0);
+            
+            }
             else // is else needed ?
             {
                 yield return new WaitForSecondsRealtime(infrastructure.InfrastructureObject.ImprovementTime);
                 infrastructure.InfrastructureObject.DevelopeObject();
+                gameUiMenuController.MenuInfrastructureUpdateUsers(infrastructure); // to check
                 StartCoroutine(ImproveInfrastructure(infrastructure));
             }
         }

@@ -11,7 +11,7 @@ public class Farm : Object
 
     public Farm(ObjectType objectType, int areaSize, ObjectLevel objectLevel, int improvementTime) : base(objectType, areaSize, objectLevel, improvementTime)
     {
-        workers = 0; 
+        workers = 1; 
 
     }
     public override int GetUsers()
@@ -37,7 +37,7 @@ public class Farm : Object
     public override void UpgradeObject()
     {
         base.UpgradeObject();
-        maxWorkers += maxWorkers; 
+        maxWorkers += maxWorkers * 2; 
 
     }
 

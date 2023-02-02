@@ -37,11 +37,16 @@ public class InfrastructureArea : MonoBehaviour
         textCount.transform.LookAt(gameController.GameCamera.transform); // to fix
     }
 
-    public void SetAreaValue() /// rebuild
+    public void SetAreaLists() /// rebuild
     {
         boardAreaBlockedList = boardAreaList.FindAll(n => n.IsUsedByInfrastructureArea == true);
         infrastructure.InfrastructureObject.AreaDisactiveCount = boardAreaBlockedList.Count();
         boardAreaList.RemoveAll(n => n.IsUsedByInfrastructureArea == true);
+        SetAreaValue(); 
+    }
+
+    public void SetAreaValue() /// rebuild
+    {
         infrastructure.InfrastructureObject.AreaActiveCount = boardAreaList.Count();
         textCount.text = $"{boardAreaList.Count() }";
     }
@@ -51,7 +56,17 @@ public class InfrastructureArea : MonoBehaviour
         textCount.enabled = !textCount.enabled;
     }
 
+    public void SetAreaAsBlocked(Tile tile)
+    {
+        boardAreaList.Remove(tile);
+        boardAreaBlockedList.Add(tile);
+        SetAreaValue();
+    }
 
+    public void SetAreaAsActive()
+    {
+
+    }
 
 }
 

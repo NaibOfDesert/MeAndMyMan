@@ -172,7 +172,7 @@ public class BoardController : MonoBehaviour
 
                 // if (tileToCheck != null && !tileToCheck.IsUsedByInfrastructure && !lastBoardList.Contains(tileToCheck)) // to deleta isUsedByInfrastructure
 
-                if (tileToCheck != null && !lastBoardList.Contains(tileToCheck)) // to deleta isUsedByInfrastructure
+                if (tileToCheck != null && !lastBoardList.Contains(tileToCheck))
                 {
                     boardAreaCheckList.Add(tileToCheck);
                 }
@@ -180,6 +180,20 @@ public class BoardController : MonoBehaviour
         }
         return boardAreaCheckList; 
     }
+
+
+    public void BoardAreaCheckUsedBy(List<Tile> boardList, Infrastructure infrastructure)
+
+    {
+        foreach (var tile in boardList)
+        {
+            if (tile.IsUsedByInfrastructureArea)
+            {
+                tile.UsedByInfrastructure.InfrastructureArea.SetAreaAsBlocked(tile); 
+            }
+        }
+    }
+
 
     public void BoardClear(List<Tile> boardList)
     {

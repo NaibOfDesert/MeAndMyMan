@@ -52,12 +52,12 @@ public class Infrastructure : MonoBehaviour
         if (!isPlaced) /// to fix, area position should set objectposition, not world posiiton
         {
             Vector3 worldPosition = mouseController.WorldPosition;
-            infrastructureArea.BoardList = boardController.BoardCheck(worldPosition, infrastructureSize);
+            infrastructureArea.BoardList = boardController.BoardCheck(worldPosition, infrastructureSize); // move saving value to infArea
 
             if (infrastructureArea.BoardList.Count() == Mathf.Pow(infrastructureSize, 2))
             {
-                infrastructureArea.BoardAreaList = boardController.BoardAreaCheck(worldPosition, infrastructureSize, infrastructureObject.AreaSize);
-                infrastructureArea.SetAreaValue();
+                infrastructureArea.BoardAreaList = boardController.BoardAreaCheck(worldPosition, infrastructureSize, infrastructureObject.AreaSize); // move saving value to infArea
+                infrastructureArea.SetAreaLists();
                 boardController.BoardClear(infrastructureArea.BoardList);
                 boardController.BoardAreaClear(infrastructureArea.BoardAreaList);
                 transform.position = mouseController.WorldPositionConvert(infrastructureSize, worldPosition);   
@@ -85,7 +85,8 @@ public class Infrastructure : MonoBehaviour
     {
         isPlaced = true;
         SetMaterial(infrastructureMaterial);
-        InfrastructureArea.TextAreaValueAble();
+        infrastructureArea.TextAreaValueAble();
+        boardController.BoardAreaCheckUsedBy(infrastructureArea.BoardList, this);
         StartCoroutine(infrastructureController.ImproveInfrastructure(this)); 
     }
 

@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour
     [SerializeField] bool buildState;
     public bool BuildState { get { return buildState; } set { buildState = value; } } //-- ??
 
-    [SerializeField] bool infrastructureState;
+    [SerializeField] bool infrastructureState; // to check
     public bool InfrastructureState { get { return infrastructureState; } set { infrastructureState = value; } }
 
     GameManager gameManager;
@@ -49,7 +49,10 @@ public class GameController : MonoBehaviour
         gameCameraController = FindObjectOfType<GameCameraController>();
         gameUiMenuController = FindObjectOfType<GameUiMenuController>();
 
-        gameCamera = gameCameraController.gameObject; 
+        gameCamera = gameCameraController.gameObject;
+
+        InfrastructureStateAble(); // to remove in final version
+        // gameUiMenuController.MenuInfrastructureAble(null); // to remove in final version
     }
 
     void Start()
@@ -63,7 +66,6 @@ public class GameController : MonoBehaviour
         buildState = !buildState;
         if (InfrastructureState)
         {
-            InfrastructureStateAble();
             gameUiMenuController.MenuInfrastructureAble(null); // set all other states false?
         }
 
@@ -71,6 +73,8 @@ public class GameController : MonoBehaviour
 
     public void InfrastructureStateAble()
     {
+        Debug.Log("infrastructure state change");
+
         infrastructureState = !infrastructureState;
     }
 

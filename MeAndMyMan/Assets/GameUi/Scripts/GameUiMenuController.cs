@@ -78,6 +78,7 @@ public class GameUiMenuController : MonoBehaviour
     {
         infrastructureController.DestroyInfrastructure(infrastructureMenuState);
         MenuInfrastructureAble(null);
+        // gameController.InfrastructureStateAble(); // do check
 
 
     }
@@ -93,12 +94,8 @@ public class GameUiMenuController : MonoBehaviour
     {
         if (infrastructureMenuState != null)
         {
-            int infrastrctureLevel = 0;
-
             infrastructureController.UpgradeInfrastructure(infrastructureMenuState);
-
-            infrastrctureLevel = (int)infrastructureMenuState.InfrastructureObject.ObjectLevel;
-            textInfrastructureLevel.text = infrastrctureLevel.ToString();
+            MenuInfrastructureUpdatelevel(infrastructureMenuState); 
         }
     }
 
@@ -109,8 +106,8 @@ public class GameUiMenuController : MonoBehaviour
 
         if (infrastructure == null)
         {
+            gameController.InfrastructureStateAble();
             boardController.AbleInfrastructurePlane(infrastructureMenuState);
-            menuInfrastructureObject.SetActive(false);
             
             textInfrastructureName.text = null;
             textInfrastructureArea.text = null;
@@ -119,28 +116,44 @@ public class GameUiMenuController : MonoBehaviour
             textInfrastructureUsersMax.text = null;
             infrastructureMenuState = null;
 
-
+            menuInfrastructureObject.SetActive(false);
             return;
         }
         else if (!gameController.BuildState)
         {
-            int infrastrctureLevel = 0;
-
-            boardController.AbleInfrastructurePlane(infrastructure); 
+            if (!gameController.InfrastructureState) gameController.InfrastructureStateAble();
             if (infrastructureMenuState != null) boardController.AbleInfrastructurePlane(infrastructureMenuState);
 
             infrastructureMenuState = infrastructure;
+
+            boardController.AbleInfrastructurePlane(infrastructure);  
+
             textInfrastructureName.text = infrastructure.InfrastructureObject.ObjectType.ToString();
             textInfrastructureArea.text = infrastructure.InfrastructureObject.AreaActiveCount.ToString();
-            infrastrctureLevel = (int)infrastructure.InfrastructureObject.ObjectLevel; 
-            textInfrastructureLevel.text = infrastrctureLevel.ToString();
-            textInfrastructureUsers.text = infrastructure.InfrastructureObject.GetUsers().ToString(); // to fix
-            textInfrastructureUsersMax.text = infrastructure.InfrastructureObject.GetUsersMax().ToString(); // to fix
-
+            MenuInfrastructureUpdatelevel(infrastructure);
+            MenuInfrastructureUpdateUsers(infrastructure);
+            textInfrastructureUsersMax.text = infrastructure.InfrastructureObject.GetUsersMax().ToString();
             menuInfrastructureObject.SetActive(true);
-            gameController.InfrastructureStateAble();
         }
-
-
     }
+
+    public void MenuInfrastructureUpdateUsers(Infrastructure infrastructure) // to rebuild 
+    {
+        if (gameController.InfrastructureState && infrastructure == infrastructureMenuState)
+        {
+            textInfrastructureUsers.text = infrastructure.InfrastructureObject.GetUsers().ToString();
+        }
+    }
+
+    public void MenuInfrastructureUpdatelevel(Infrastructure infrastructure) // to rebuild 
+    {
+        if (gameController.InfrastructureState && infrastructure == infrastructureMenuState)
+        {
+            int infrastructureLevel = 0;
+
+            infrastructureLevel = (int)infrastructure.InfrastructureObject.ObjectLevel;
+            textInfrastructureLevel.text = infrastructureLevel.ToString();
+        }
+    }
+
 }

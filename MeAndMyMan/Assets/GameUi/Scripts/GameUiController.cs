@@ -43,13 +43,11 @@ public class GameUiController : MonoBehaviour
             if (gameController.BuildState)
             {
                 infrastructureController.DestroyNewInfrastructure();
-                //gameController.BuildStateAble(); // ????????????
             }
             else if(gameController.InfrastructureState)
             {
                 Debug.Log("exc infrstructure state");
                 gameUiMenuController.MenuInfrastructureAble(null);
-                gameController.InfrastructureStateAble();
                 // switch off infrastructure menu
             }
         }

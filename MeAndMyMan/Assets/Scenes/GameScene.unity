@@ -6077,8 +6077,8 @@ MonoBehaviour:
   textInfrastructureName: {fileID: 579892211}
   textInfrastructureArea: {fileID: 730516844}
   textInfrastructureLevel: {fileID: 134571302}
-  textInfrastructureUsers: {fileID: 0}
-  textInfrastructureUsersMax: {fileID: 0}
+  textInfrastructureUsers: {fileID: 1488767774}
+  textInfrastructureUsersMax: {fileID: 28054191}
 --- !u!1001 &1878158580
 PrefabInstance:
   m_ObjectHideFlags: 0
