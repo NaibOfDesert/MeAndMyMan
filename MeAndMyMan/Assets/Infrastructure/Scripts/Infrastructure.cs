@@ -86,7 +86,7 @@ public class Infrastructure : MonoBehaviour
         isPlaced = true;
         SetMaterial(infrastructureMaterial);
         infrastructureArea.TextAreaValueAble();
-        boardController.BoardAreaCheckUsedBy(infrastructureArea.BoardList, this);
+        boardController.BoardAreaCheckUsedBy(infrastructureArea.BoardList, this); // to check
         StartCoroutine(infrastructureController.ImproveInfrastructure(this)); 
     }
 

@@ -42,6 +42,7 @@ public class GameController : MonoBehaviour
     void Awake()
     {
         gameManager = new GameManager(this);
+        gameManager.SetCosts(); 
         gameTimeController = FindObjectOfType<GameTimeController>();
         infrastructureController = FindObjectOfType<InfrastructureController>();
         boardController = FindObjectOfType<BoardController>();

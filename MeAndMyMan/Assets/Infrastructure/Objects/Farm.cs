@@ -9,8 +9,12 @@ public class Farm : Object
     int workers;
     int maxWorkers = 12;
 
-    public Farm(ObjectType objectType, int areaSize, ObjectLevel objectLevel, int improvementTime) : base(objectType, areaSize, objectLevel, improvementTime)
+    public Farm() : base()
     {
+        objectType = ObjectType.Farm;
+        size = 2;
+        areaSize = 1;
+        improvementTime = 2; 
         workers = 1; 
 
     }

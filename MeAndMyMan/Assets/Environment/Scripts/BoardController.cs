@@ -72,14 +72,14 @@ public class BoardController : MonoBehaviour
         {
             if(tile.Field.FieldType == FieldType.Rocks){
                 tile.IsUsedByInfrastructure = true;
-                SetMaterial(tile);
+                SetMaterialDefault(tile);
                 GenerateEnvironmentObject(tile.transform.position, rockPrefab);
                 rockList.Add(tile);
             }
             else if (tile.Field.FieldType == FieldType.Forest)
             {
                 tile.IsUsedByInfrastructure = true;
-                SetMaterial(tile);
+                SetMaterialDefault(tile);
                 GenerateEnvironmentObject(tile.transform.position, forestPrefab);
                 forestList.Add(tile);
             }
@@ -133,7 +133,7 @@ public class BoardController : MonoBehaviour
         foreach (var tile in infrastructure.InfrastructureArea.BoardAreaBlockedList)
         {
             tile.AbleMeshRenderer();
-            //++ to add dependence of property
+            // SetMaterialBlocked(tile);
         }
 
     }
@@ -170,8 +170,6 @@ public class BoardController : MonoBehaviour
                 tilePositon += new Vector3(i, 0, j);
                 Tile tileToCheck = GetBoardTile(tilePositon);
 
-                // if (tileToCheck != null && !tileToCheck.IsUsedByInfrastructure && !lastBoardList.Contains(tileToCheck)) // to deleta isUsedByInfrastructure
-
                 if (tileToCheck != null && !lastBoardList.Contains(tileToCheck))
                 {
                     boardAreaCheckList.Add(tileToCheck);
@@ -197,14 +195,14 @@ public class BoardController : MonoBehaviour
 
     public void BoardClear(List<Tile> boardList)
     {
-        SetMaterialForList(lastBoardList);
+        SetMaterialForListDefault(lastBoardList);
         SetMaterialForListUpdate(boardList);
         lastBoardList = boardList;
     }
 
     public void BoardAreaClear(List<Tile> boardAreaList)
     {
-        SetMaterialForList(lastBoardAreaList);
+        SetMaterialForListDefault(lastBoardAreaList);
         SetMaterialForListUpdate(boardAreaList);
         lastBoardAreaList = boardAreaList;
     }
@@ -226,13 +224,13 @@ public class BoardController : MonoBehaviour
     public void QuitBuildState()
     {
         AbleBoardPlane();
-        SetMaterialForList(lastBoardList);
-        SetMaterialForList(lastBoardAreaList);
+        SetMaterialForListDefault(lastBoardList);
+        SetMaterialForListDefault(lastBoardAreaList);
         // lastBoardList.Clear(); //-- no needed?
         // lastBoardAreaList.Clear(); //-- no needed?
     }
 
-    void SetMaterialForList(List<Tile> boardArea) //rename
+    public void SetMaterialForListDefault(List<Tile> boardArea)
     {
         foreach (var tile in boardArea)
         {
@@ -241,6 +239,7 @@ public class BoardController : MonoBehaviour
                 if (tile.IsUsedByInfrastructureArea)
                 {
                     tile.TilePlane.TileMesh.material = blueMaterial;
+                    Debug.Log("blue");
                 }
                 else
                 {
@@ -254,7 +253,7 @@ public class BoardController : MonoBehaviour
         }
     }
 
-    public void SetMaterialForListUpdate(List<Tile> boardArea) //rename
+    public void SetMaterialForListUpdate(List<Tile> boardArea)
     {
         foreach (var tile in boardArea)
         {
@@ -272,8 +271,15 @@ public class BoardController : MonoBehaviour
         }
     }
 
+    public void SetMaterialForListBlocked(List<Tile> boardArea)
+    {
+        foreach (var tile in boardArea)
+        {
+            tile.TilePlane.TileMesh.material = yellowMaterial;
+        }
+    }
 
-    void SetMaterial(Tile tile)
+    void SetMaterialDefault(Tile tile)
     {
         if (!tile.IsUsedByInfrastructure)
         {
@@ -285,6 +291,8 @@ public class BoardController : MonoBehaviour
         }
     }
 
+
+
     public void SetDefaultInfrastructure(List<Tile> infrastructureList)
     {
         Debug.Log("count " + infrastructureList.Count());
@@ -292,7 +300,7 @@ public class BoardController : MonoBehaviour
         {
             tile.SetUsedByDefault();
         }
-        SetMaterialForList(infrastructureList);
+        SetMaterialForListDefault(infrastructureList);
     }
 
     public void SetDefaultInfrastructureArea(List<Tile> infrastructureAreaList)
@@ -301,7 +309,7 @@ public class BoardController : MonoBehaviour
         {
             tile.SetUsedByDefault();
         }
-        SetMaterialForList(infrastructureAreaList);
+        SetMaterialForListDefault(infrastructureAreaList);
     }
 
 

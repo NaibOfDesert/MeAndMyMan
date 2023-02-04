@@ -10,8 +10,12 @@ public class House: Object
     int maxResidents = 8;
 
 
-    public House(ObjectType objectType, int areaSize, ObjectLevel objectLevel, int improvementTime) : base(objectType, areaSize, objectLevel, improvementTime)
+    public House() : base()
     {
+        objectType = ObjectType.House;
+        size = 1;
+        areaSize = 0;
+        improvementTime = 1;
         residents = 1; 
     }
 

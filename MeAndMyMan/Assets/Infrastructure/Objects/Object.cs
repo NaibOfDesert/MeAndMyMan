@@ -10,6 +10,9 @@ public abstract class Object
     protected ObjectType objectType;
     public ObjectType ObjectType { get { return objectType;  } }
 
+    protected int size;
+    public int Size { get { return size; } }
+
     protected int areaSize;
     public int AreaSize { get { return areaSize; } }
 
@@ -25,12 +28,9 @@ public abstract class Object
     protected int improvementTime;
     public int ImprovementTime { get { return improvementTime; } }
 
-    public Object(ObjectType objectType, int areaSize, ObjectLevel objectLevel, int improvementTime)
+    public Object()
     {
-        this.objectType = objectType;
-        this.areaSize = areaSize;
-        this.objectLevel = objectLevel;
-        this.improvementTime = improvementTime;
+        objectLevel = ObjectLevel.Level1;
         areaActiveCount = 0;
         areaDisactiveCount = 0; 
     }

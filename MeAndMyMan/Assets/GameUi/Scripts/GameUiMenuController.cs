@@ -15,11 +15,18 @@ public class GameUiMenuController : MonoBehaviour
     // [SerializeField] GameObject textInfrastructureName;
 
 
+    [Header("InfrastructureStateMenu")]
+
     [SerializeField] TextMeshProUGUI textInfrastructureName;
     [SerializeField] TextMeshProUGUI textInfrastructureArea;
     [SerializeField] TextMeshProUGUI textInfrastructureLevel;
     [SerializeField] TextMeshProUGUI textInfrastructureUsers;
     [SerializeField] TextMeshProUGUI textInfrastructureUsersMax;
+
+
+    [Header("InfrastructureBuildStateMenu")]
+    [SerializeField] TextMeshProUGUI textInfrastructureBuildName;
+
 
 
 
@@ -78,7 +85,6 @@ public class GameUiMenuController : MonoBehaviour
     {
         infrastructureController.DestroyInfrastructure(infrastructureMenuState);
         MenuInfrastructureAble(null);
-        // gameController.InfrastructureStateAble(); // do check
 
 
     }
@@ -103,10 +109,10 @@ public class GameUiMenuController : MonoBehaviour
 
     public void MenuInfrastructureAble(Infrastructure infrastructure)
     {
-
         if (infrastructure == null)
         {
             gameController.InfrastructureStateAble();
+            boardController.SetMaterialForListDefault(infrastructureMenuState.InfrastructureArea.BoardAreaBlockedList);
             boardController.AbleInfrastructurePlane(infrastructureMenuState);
             
             textInfrastructureName.text = null;
@@ -122,22 +128,29 @@ public class GameUiMenuController : MonoBehaviour
         else if (!gameController.BuildState)
         {
             if (!gameController.InfrastructureState) gameController.InfrastructureStateAble();
-            if (infrastructureMenuState != null) boardController.AbleInfrastructurePlane(infrastructureMenuState);
+            if (infrastructure != infrastructureMenuState)
+            {   
+                if (infrastructureMenuState != null)
+                {
+                    boardController.SetMaterialForListDefault(infrastructureMenuState.InfrastructureArea.BoardAreaBlockedList);
+                    boardController.AbleInfrastructurePlane(infrastructureMenuState); 
+                }
+                infrastructureMenuState = infrastructure;
 
-            infrastructureMenuState = infrastructure;
+                boardController.SetMaterialForListBlocked(infrastructure.InfrastructureArea.BoardAreaBlockedList);
+                boardController.AbleInfrastructurePlane(infrastructure);
 
-            boardController.AbleInfrastructurePlane(infrastructure);  
-
-            textInfrastructureName.text = infrastructure.InfrastructureObject.ObjectType.ToString();
-            textInfrastructureArea.text = infrastructure.InfrastructureObject.AreaActiveCount.ToString();
-            MenuInfrastructureUpdatelevel(infrastructure);
-            MenuInfrastructureUpdateUsers(infrastructure);
-            textInfrastructureUsersMax.text = infrastructure.InfrastructureObject.GetUsersMax().ToString();
-            menuInfrastructureObject.SetActive(true);
+                textInfrastructureName.text = infrastructure.InfrastructureObject.ObjectType.ToString();
+                textInfrastructureArea.text = infrastructure.InfrastructureObject.AreaActiveCount.ToString();
+                MenuInfrastructureUpdatelevel(infrastructure);
+                MenuInfrastructureUpdateUsers(infrastructure);
+                textInfrastructureUsersMax.text = infrastructure.InfrastructureObject.GetUsersMax().ToString();
+                menuInfrastructureObject.SetActive(true);
+            }
         }
     }
 
-    public void MenuInfrastructureUpdateUsers(Infrastructure infrastructure) // to rebuild 
+    public void MenuInfrastructureUpdateUsers(Infrastructure infrastructure)
     {
         if (gameController.InfrastructureState && infrastructure == infrastructureMenuState)
         {
@@ -145,7 +158,7 @@ public class GameUiMenuController : MonoBehaviour
         }
     }
 
-    public void MenuInfrastructureUpdatelevel(Infrastructure infrastructure) // to rebuild 
+    public void MenuInfrastructureUpdatelevel(Infrastructure infrastructure)
     {
         if (gameController.InfrastructureState && infrastructure == infrastructureMenuState)
         {

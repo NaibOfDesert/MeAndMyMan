@@ -35,6 +35,10 @@ public class GameManager
     public int IronValue { get { return ironValue; } }
 
 
+    ObjectCost houseCost;
+    ObjectCost farmCost;
+
+
     public GameManager(GameController gameController)
     {
         this.gameController = gameController;
@@ -42,6 +46,10 @@ public class GameManager
         infrastructureController = gameController.InfrastructureController;
     }
 
+    public void SetCosts()
+    {
+        houseCost = new ObjectCost(); 
+    }
     public void CountExpValue()
     {
         foreach(var house in infrastructureController.HouseList)

@@ -39,9 +39,9 @@ public class InfrastructureArea : MonoBehaviour
 
     public void SetAreaLists() /// rebuild
     {
-        boardAreaBlockedList = boardAreaList.FindAll(n => n.IsUsedByInfrastructureArea == true);
+        boardAreaBlockedList = boardAreaList.FindAll(n => n.IsUsedByInfrastructure == true || n.IsUsedByInfrastructureArea == true); //??? is ONLY used by instrastrucutre
         infrastructure.InfrastructureObject.AreaDisactiveCount = boardAreaBlockedList.Count();
-        boardAreaList.RemoveAll(n => n.IsUsedByInfrastructureArea == true);
+        boardAreaList.RemoveAll(n => n.IsUsedByInfrastructure == true || n.IsUsedByInfrastructureArea == true); //??? is ONLY used by instrastrucutre
         SetAreaValue(); 
     }
 

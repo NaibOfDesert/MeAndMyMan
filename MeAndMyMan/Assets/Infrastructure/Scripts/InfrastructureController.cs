@@ -8,18 +8,12 @@ public class InfrastructureController : MonoBehaviour
     [Header("Prefabs")]
     [SerializeField] GameObject housePrefab;
     public GameObject HousePrefab { get { return housePrefab; } }
-    int houseSize = 1;
-    int houseAreaSize = 0;
-    int houseImprovementTime = 1; //++ to add in implementation
 
     List<Infrastructure> houseList;
     public List<Infrastructure> HouseList { get { return houseList; } }
 
     [SerializeField] GameObject farmPrefab;
     public GameObject FarmPrefab { get { return farmPrefab; } }
-    int farmSize = 2;
-    int farmAreaSize = 1;
-    int farmImprovementTime = 2; //++ to add in implementation
 
     List<Infrastructure> farmList;
     public List<Infrastructure> FarmList { get { return farmList; } }
@@ -71,13 +65,13 @@ public class InfrastructureController : MonoBehaviour
         {
             
             case ObjectType.House:
-                infrastructureObject = new House(objectType, houseAreaSize, ObjectLevel.Level1, houseImprovementTime);
-                InstantiateInfrastructure(housePrefab, infrastructureObject, houseSize);
+                infrastructureObject = new House();
+                InstantiateInfrastructure(housePrefab, infrastructureObject, infrastructureObject.Size);
 
                 break;
             case ObjectType.Farm:
-                infrastructureObject = new Farm(objectType, farmAreaSize, ObjectLevel.Level1, farmImprovementTime);
-                InstantiateInfrastructure(farmPrefab, infrastructureObject, farmSize);
+                infrastructureObject = new Farm();
+                InstantiateInfrastructure(farmPrefab, infrastructureObject, infrastructureObject.Size);
 
                 break;
             default:
@@ -174,8 +168,6 @@ public class InfrastructureController : MonoBehaviour
     public void DestroyInfrastructure(Infrastructure infrastructure)
     {
         RemoveInfrastructureFromList(infrastructure);
-        boardController.SetDefaultInfrastructure(infrastructure.InfrastructureArea.BoardList);
-        boardController.SetDefaultInfrastructureArea(infrastructure.InfrastructureArea.BoardAreaList);
         infrastructure.DestroyInfrastructure();
 
     }
@@ -186,9 +178,7 @@ public class InfrastructureController : MonoBehaviour
         {
             if (!infrastructure.InfrastructureObject.DevelopeObjectIsAble()) 
             {
-                StopCoroutine(ImproveInfrastructure(infrastructure)); 
-                // yield return new WaitForSecondsRealtime(0);
-            
+                StopCoroutine(ImproveInfrastructure(infrastructure));             
             }
             else // is else needed ?
             {
