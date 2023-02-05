@@ -69,15 +69,13 @@ Joker:
 Ship:
 <a href="https://www.flaticon.com/free-icons/ship" title="ship icons">Ship icons created by Freepik - Flaticon</a>
 Axes1
-
-
-HolyGral:
-<a href="https://www.flaticon.com/free-icons/holy-grial" title="holy grial icons">Holy grial icons created by Freepik - Flaticon</a>
-Flag:
-<a href="https://www.flaticon.com/free-icons/competition" title="competition icons">Competition icons created by Freepik - Flaticon</a>
-Scroll:
-<a href="https://www.flaticon.com/free-icons/history" title="history icons">History icons created by Freepik - Flaticon</a>
-Anvil:
-<a href="https://www.flaticon.com/free-icons/anvil" title="anvil icons">Anvil icons created by Freepik - Flaticon</a>
-
-<a href="https://www.flaticon.com/free-icons/axe" title="axe icons">Axe icons created by Freepik - Flaticon</a>
+Gem
+<a href="https://www.flaticon.com/free-icons/precious-stone" title="precious stone icons">Precious stone icons created by Freepik - Flaticon</a>
+Gem (1)
+<a href="https://www.flaticon.com/free-icons/precious-stone" title="precious stone icons">Precious stone icons created by Freepik - Flaticon</a>
+Pebble
+<a href="https://www.flaticon.com/free-icons/pebble" title="pebble icons">Pebble icons created by Freepik - Flaticon</a>
+Wheat
+<a href="https://www.flaticon.com/free-icons/barley" title="barley icons">Barley icons created by Freepik - Flaticon</a>
+Logs
+<a href="https://www.flaticon.com/free-icons/deforestation" title="deforestation icons">Deforestation icons created by Freepik - Flaticon</a>

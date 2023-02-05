@@ -41,7 +41,7 @@ public class Infrastructure : MonoBehaviour
 
     }
 
-    void Start() /// to rebuild - move arealists methods & elements to Infrastructure Area
+    void Start()
     {
         infrastructureArea.SetTextRotation();
 

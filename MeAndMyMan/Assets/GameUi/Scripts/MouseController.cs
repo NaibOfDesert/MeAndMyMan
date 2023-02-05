@@ -15,10 +15,7 @@ public class MouseController : MonoBehaviour
     {
         gameController = FindObjectOfType<GameController>();
         infrastructureController = gameController.InfrastructureController;
-
-
     }
-
 
     void Update()
     {
@@ -28,20 +25,14 @@ public class MouseController : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-
                 infrastructureController.BuildInfrastructure(worldPosition);
-
-
-
             }
         }
-
     }
 
     private Vector3 GetWorldPositionInt(LayerMask layersToHit) // return List of posible position by infrastructure size
     {
         worldPosition = GetWorldPosition(layersToHit);
-
         Vector3 worldPositionInt = new Vector3(Mathf.RoundToInt(worldPosition.x), Mathf.RoundToInt(worldPosition.y), Mathf.RoundToInt(worldPosition.z));
 
         return worldPositionInt;
@@ -56,11 +47,8 @@ public class MouseController : MonoBehaviour
         {
             worldPosition = hitData.point;
         }
-
         return worldPosition; 
     }
-
-  
 
     public Vector3 WorldPositionConvert(int infrastructureSize, Vector3 worldPosition)
     {

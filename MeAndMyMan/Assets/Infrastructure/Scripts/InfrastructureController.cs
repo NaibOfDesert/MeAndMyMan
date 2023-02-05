@@ -15,7 +15,7 @@ public class InfrastructureController : MonoBehaviour
     [SerializeField] GameObject farmPrefab;
     public GameObject FarmPrefab { get { return farmPrefab; } }
 
-    List<Infrastructure> farmList;
+    [SerializeField] List<Infrastructure> farmList;
     public List<Infrastructure> FarmList { get { return farmList; } }
 
 
@@ -39,16 +39,18 @@ public class InfrastructureController : MonoBehaviour
     public Infrastructure NewInfrastructure { get { return newInfrastructure; } set { newInfrastructure = value; } }
 
     GameController gameController;
-    BoardController boardController;
+    GameManager gameManager;
     MouseController mouseController;
     GameUiMenuController gameUiMenuController;
+    BoardController boardController;
 
     void Awake()
     {
         gameController = FindObjectOfType<GameController>();
-        boardController = gameController.BoardController;
+        gameManager = gameController.GameManager;
         mouseController = gameController.MouseController;
         gameUiMenuController = gameController.GameUiMenuController;
+        boardController = gameController.BoardController;
 
         houseList = new List<Infrastructure>();
         farmList = new List<Infrastructure>();
@@ -57,9 +59,21 @@ public class InfrastructureController : MonoBehaviour
 
     public void CreateInfrastructure(ObjectType objectType)
     {
+        if(!gameManager.CalculateBuildInfrastructure(objectType))
+        {
+            // throw new System.ArgumentOutOfRangeException();
+            return; 
+        }
+        /*try
+        {
+        }
+        catch
+        {
+
+        }*/
+
         Object infrastructureObject;
         gameController.BuildStateAble();
-
 
         switch (objectType)
         {
@@ -78,7 +92,6 @@ public class InfrastructureController : MonoBehaviour
                 Debug.Log("CreateInfrastructure error");
                 break;
         }
-
     }
 
     Infrastructure InstantiateInfrastructure(GameObject prefabObject, Object infrastructureObject, int infrastructureSize)
@@ -101,10 +114,9 @@ public class InfrastructureController : MonoBehaviour
             boardController.BoardAreaSetAsUsedByInfrastructure(newInfrastructure.InfrastructureArea.BoardList, newInfrastructure);
             boardController.BoardAreaSetAsUsedByInfrastructureArea(newInfrastructure.InfrastructureArea.BoardAreaList, newInfrastructure);
             boardController.EndBuildState();
+            AddNewInfrastructureToList();
 
             newInfrastructure = null;
-
-            AddNewInfrastructureToList();
         }
     }
 
@@ -115,7 +127,8 @@ public class InfrastructureController : MonoBehaviour
             switch (newInfrastructure.InfrastructureObject.ObjectType)
             {
                 case ObjectType.House:
-                    houseList.Add(newInfrastructure); 
+                    houseList.Add(newInfrastructure);
+                    gameManager.AddCitizens(); // to move? 
                     break;
 
                 case ObjectType.Farm:
@@ -162,6 +175,8 @@ public class InfrastructureController : MonoBehaviour
     public void UpgradeInfrastructure(Infrastructure infrastructure)
     {
         infrastructure.InfrastructureObject.UpgradeObject();
+        gameManager.AddCitizens();
+
     }
 
 
@@ -169,13 +184,15 @@ public class InfrastructureController : MonoBehaviour
     {
         RemoveInfrastructureFromList(infrastructure);
         infrastructure.DestroyInfrastructure();
+        // remove value form Gamemanager
 
     }
 
-    public IEnumerator ImproveInfrastructure(Infrastructure infrastructure)
+    public IEnumerator ImproveInfrastructure(Infrastructure infrastructure) // create switch
     {   
         if (infrastructure != null)
         {
+
             if (!infrastructure.InfrastructureObject.DevelopeObjectIsAble()) 
             {
                 StopCoroutine(ImproveInfrastructure(infrastructure));             
@@ -184,6 +201,7 @@ public class InfrastructureController : MonoBehaviour
             {
                 yield return new WaitForSecondsRealtime(infrastructure.InfrastructureObject.ImprovementTime);
                 infrastructure.InfrastructureObject.DevelopeObject();
+                gameManager.AddCitizens(); 
                 gameUiMenuController.MenuInfrastructureUpdateUsers(infrastructure); // to check
                 StartCoroutine(ImproveInfrastructure(infrastructure));
             }

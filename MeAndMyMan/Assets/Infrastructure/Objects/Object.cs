@@ -28,6 +28,12 @@ public abstract class Object
     protected int improvementTime;
     public int ImprovementTime { get { return improvementTime; } }
 
+    protected int users;
+    public int Users { get { return users; } }
+
+    protected int usersMax;
+    public int UsersMax { get { return usersMax; } }
+
     public Object()
     {
         objectLevel = ObjectLevel.Level1;
@@ -52,9 +58,15 @@ public abstract class Object
             return;
         }
     }
-    public abstract int GetUsers();
-    public abstract int GetUsersMax();
-    public abstract void DevelopeObject();
-    public abstract bool DevelopeObjectIsAble();
+    // public abstract int GetUsers();
+    // public abstract int GetUsersMax();
+    public virtual void DevelopeObject()
+    {
+        users++; 
+    }
+    public virtual bool DevelopeObjectIsAble()
+    {
+        return (users < usersMax);
+    }
 }
 

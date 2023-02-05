@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// TODO:
+
+// NOTE: 
 public class GameController : MonoBehaviour
 {
     [SerializeField] int gameSize;
@@ -44,16 +48,14 @@ public class GameController : MonoBehaviour
         gameManager = new GameManager(this);
         gameManager.SetCosts(); 
         gameTimeController = FindObjectOfType<GameTimeController>();
-        infrastructureController = FindObjectOfType<InfrastructureController>();
-        boardController = FindObjectOfType<BoardController>();
         mouseController = FindObjectOfType<MouseController>();
         gameCameraController = FindObjectOfType<GameCameraController>();
-        gameUiMenuController = FindObjectOfType<GameUiMenuController>();
-
         gameCamera = gameCameraController.gameObject;
+        gameUiMenuController = FindObjectOfType<GameUiMenuController>();
+        boardController = FindObjectOfType<BoardController>();
+        infrastructureController = FindObjectOfType<InfrastructureController>();
 
-        InfrastructureStateAble(); // to remove in final version
-        // gameUiMenuController.MenuInfrastructureAble(null); // to remove in final version
+        InfrastructureStateAble(); ///  to comment in final version
     }
 
     void Start()

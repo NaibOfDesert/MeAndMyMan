@@ -13,26 +13,26 @@ public class GameManager
     int experienceAmount = 0;
     public int ExperienceAmount { get { return experienceAmount; } }
 
-    int citizenAmount = 0;
-    public int CitizenAmount { get { return citizenAmount; } }
+    int citizensAmount = 25;
+    public int CitizensAmount { get { return citizensAmount; } }
 
-    int workersAmount = 0;
+    int workersAmount = 50;
     public int WorkersAmount { get { return workersAmount; } }
 
-    int moneyValue = 0;
-    public int MoneyValue { get { return moneyValue; } }
+    int goldAmount = 100;
+    public int GoldAmount { get { return goldAmount; } }
 
-    int foodValue = 0;
-    public int FoodValue { get { return foodValue; } }
+    int foodAmount = 150;
+    public int FoodAmount { get { return foodAmount; } }
 
-    int woodValue = 0;
-    public int WoodValue { get { return woodValue; } }
+    int woodAmount =75;
+    public int WoodAmount { get { return woodAmount; } }
 
-    int stoneValue = 0;
-    public int StoneValue { get { return stoneValue; } }
+    int stoneAmount = 25;
+    public int StoneAmount { get { return stoneAmount; } }
 
-    int ironValue = 0;
-    public int IronValue { get { return ironValue; } }
+    int ironAmount = 25;
+    public int IronAmount { get { return ironAmount; } }
 
 
     ObjectCost houseCost;
@@ -48,7 +48,10 @@ public class GameManager
 
     public void SetCosts()
     {
-        houseCost = new ObjectCost(); 
+        houseCost = new ObjectCost(0, 5, 10, 25, 0, 0);
+        farmCost = new ObjectCost(5, 5, 10, 25, 0, 0);
+
+
     }
     public void CountExpValue()
     {
@@ -60,9 +63,42 @@ public class GameManager
     }
 
 
-    public bool CalculateBuildInfrastructure(Infrastructure infrastructure)
+    public void CalculateInfrastructureIncom()
     {
-        return false; // to change
+        Console.WriteLine(infrastructureController); //to check is infrastructureController null? !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // CalculateIncom(infrastructureController.FarmList);
+
+    }
+    public void AddCitizens()
+    {
+        citizensAmount++;
+    }
+
+    public void RemoveCitizens(int citizensAmout)
+    {
+        citizensAmount -= citizensAmount;
+    }
+    public void CalculateIncom(List <Infrastructure> infrastructureList)
+    {
+        foreach(var infrastructure in infrastructureList)
+        {
+            foodAmount += infrastructure.InfrastructureObject.AreaActiveCount; 
+        }
+    }
+
+    public bool CalculateBuildInfrastructure(ObjectType objectType)
+    {
+        return true; // to change
+    }
+
+    public bool CalculateUpgradeInfrastructure()
+    {
+        return true;
+    }
+
+    public void BalanceBuildInfrastructure(Infrastructure infrastructure)
+    {
+
     }
 
 }

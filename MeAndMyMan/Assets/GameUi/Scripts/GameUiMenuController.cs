@@ -5,8 +5,8 @@ using TMPro;
 
 public class GameUiMenuController : MonoBehaviour
 {
+    [Header("BuildMenu")]
     [SerializeField] GameObject menuInfrastructureObject;
-
     [SerializeField] GameObject buttonHouseBuild;
     [SerializeField] GameObject buttonFarmBuild;
     [SerializeField] GameObject buttonInfrastructureDelete;
@@ -16,19 +16,23 @@ public class GameUiMenuController : MonoBehaviour
 
 
     [Header("InfrastructureStateMenu")]
-
     [SerializeField] TextMeshProUGUI textInfrastructureName;
     [SerializeField] TextMeshProUGUI textInfrastructureArea;
     [SerializeField] TextMeshProUGUI textInfrastructureLevel;
     [SerializeField] TextMeshProUGUI textInfrastructureUsers;
     [SerializeField] TextMeshProUGUI textInfrastructureUsersMax;
 
-
     [Header("InfrastructureBuildStateMenu")]
     [SerializeField] TextMeshProUGUI textInfrastructureBuildName;
 
-
-
+    [Header("ResourcesMenu")]
+    [SerializeField] TextMeshProUGUI textCitizensAmount;
+    [SerializeField] TextMeshProUGUI textWorkersAmount;
+    [SerializeField] TextMeshProUGUI textGoldAmount;
+    [SerializeField] TextMeshProUGUI textFoodAmount;
+    [SerializeField] TextMeshProUGUI textWoodAmount;
+    [SerializeField] TextMeshProUGUI textStoneAmount;
+    [SerializeField] TextMeshProUGUI textIronAmount;
 
 
     Infrastructure infrastructureMenuState;
@@ -37,6 +41,7 @@ public class GameUiMenuController : MonoBehaviour
 
 
     GameController gameController;
+    GameManager gameManager;
     MouseController mouseController;
     BoardController boardController;
     InfrastructureController infrastructureController;
@@ -44,6 +49,7 @@ public class GameUiMenuController : MonoBehaviour
     void Awake()
     {
         gameController = FindObjectOfType<GameController>();
+        gameManager = gameController.GameManager; 
         mouseController = gameController.MouseController;
         boardController = gameController.BoardController;
         infrastructureController = gameController.InfrastructureController;
@@ -59,7 +65,7 @@ public class GameUiMenuController : MonoBehaviour
 
     void Update()
     {
-        
+        MenuResourcesUpdate(); 
     }
 
     public void BuildHouse()
@@ -76,7 +82,6 @@ public class GameUiMenuController : MonoBehaviour
         if (!gameController.BuildState)
         {
             infrastructureController.CreateInfrastructure(ObjectType.Farm);
-
 
         }
     }
@@ -105,7 +110,16 @@ public class GameUiMenuController : MonoBehaviour
         }
     }
 
-
+    void MenuResourcesUpdate()
+    {
+        textCitizensAmount.text = gameManager.CitizensAmount.ToString();
+        textWorkersAmount.text = gameManager.WorkersAmount.ToString();
+        textGoldAmount.text = gameManager.GoldAmount.ToString();
+        textFoodAmount.text = gameManager.FoodAmount.ToString();
+        textWoodAmount.text = gameManager.WoodAmount.ToString();
+        textStoneAmount.text = gameManager.StoneAmount.ToString();
+        textIronAmount.text = gameManager.IronAmount.ToString();
+    }
 
     public void MenuInfrastructureAble(Infrastructure infrastructure)
     {
@@ -144,7 +158,7 @@ public class GameUiMenuController : MonoBehaviour
                 textInfrastructureArea.text = infrastructure.InfrastructureObject.AreaActiveCount.ToString();
                 MenuInfrastructureUpdatelevel(infrastructure);
                 MenuInfrastructureUpdateUsers(infrastructure);
-                textInfrastructureUsersMax.text = infrastructure.InfrastructureObject.GetUsersMax().ToString();
+                textInfrastructureUsersMax.text = infrastructure.InfrastructureObject.UsersMax.ToString();
                 menuInfrastructureObject.SetActive(true);
             }
         }
@@ -154,7 +168,7 @@ public class GameUiMenuController : MonoBehaviour
     {
         if (gameController.InfrastructureState && infrastructure == infrastructureMenuState)
         {
-            textInfrastructureUsers.text = infrastructure.InfrastructureObject.GetUsers().ToString();
+            textInfrastructureUsers.text = infrastructure.InfrastructureObject.Users.ToString();
         }
     }
 

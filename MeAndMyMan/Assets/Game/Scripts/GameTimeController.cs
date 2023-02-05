@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class GameTimeController : MonoBehaviour
 {
-    [SerializeField] float gameLoopsCount = 0; 
+    [SerializeField] float gameLoopsCount = 0;
+    float gameLootTime = 10f;
 
     GameController gameController;
     GameManager gameManager;
@@ -12,12 +13,14 @@ public class GameTimeController : MonoBehaviour
     {
         gameController = FindObjectOfType<GameController>();
         gameManager = gameController.GameManager;
-
         StopAllCoroutines();
+    }
+
+    void Start()
+    {
         StartCoroutine(GameClock());
     }
 
-    // Update is called once per frame
     void Update()
     {
         
@@ -26,13 +29,17 @@ public class GameTimeController : MonoBehaviour
     IEnumerator GameClock()
     {
         gameLoopsCount++;
-        // gameManager.CountExpValue(); // to fix
 
-        yield return new WaitForSecondsRealtime(5);
+        yield return new WaitForSecondsRealtime(gameLootTime);
+        gameManager.CalculateInfrastructureIncom();
+
         StartCoroutine(GameClock());
     }
 
+    public void PauseGameClock()
+    {
 
+    }
 
 }
     
