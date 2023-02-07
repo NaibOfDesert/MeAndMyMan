@@ -39,11 +39,11 @@ public class GameManager
     ObjectCost farmCost;
 
 
-    public GameManager(GameController gameController)
+    public GameManager(GameController gameController, InfrastructureController infrastructureController, BoardController boardController)
     {
         this.gameController = gameController;
-        boardController = gameController.BoardController;
-        infrastructureController = gameController.InfrastructureController;
+        this. boardController = boardController;
+        this.infrastructureController = infrastructureController;
     }
 
     public void SetCosts()
@@ -63,20 +63,37 @@ public class GameManager
     }
 
 
-    public void CalculateInfrastructureIncom()
+    public void CalculateInfrastructureIncom(InfrastructureController infrastructureController)
     {
         Console.WriteLine(infrastructureController); //to check is infrastructureController null? !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // CalculateIncom(infrastructureController.FarmList);
+        CalculateIncom(infrastructureController.FarmList);
 
     }
-    public void AddCitizens()
+    public void AddUsers(Infrastructure infrastructure)
     {
-        citizensAmount++;
+        switch (infrastructure.InfrastructureObject.ObjectType)
+        {
+            case ObjectType.House:
+                citizensAmount++;
+                break;
+            default:
+                workersAmount++;
+                break;
+        }
+
     }
 
-    public void RemoveCitizens(int citizensAmout)
+    public void RemoveCitizens(Infrastructure infrastructure)
     {
-        citizensAmount -= citizensAmount;
+        switch (infrastructure.InfrastructureObject.ObjectType)
+        {
+            case ObjectType.House:
+                citizensAmount -= infrastructure.InfrastructureObject.Users;
+                break;
+            default:
+                workersAmount -= infrastructure.InfrastructureObject.Users;
+                break;
+        }
     }
     public void CalculateIncom(List <Infrastructure> infrastructureList)
     {

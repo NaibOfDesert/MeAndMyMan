@@ -45,8 +45,7 @@ public class GameController : MonoBehaviour
 
     void Awake()
     {
-        gameManager = new GameManager(this);
-        gameManager.SetCosts(); 
+
         gameTimeController = FindObjectOfType<GameTimeController>();
         mouseController = FindObjectOfType<MouseController>();
         gameCameraController = FindObjectOfType<GameCameraController>();
@@ -54,7 +53,8 @@ public class GameController : MonoBehaviour
         gameUiMenuController = FindObjectOfType<GameUiMenuController>();
         boardController = FindObjectOfType<BoardController>();
         infrastructureController = FindObjectOfType<InfrastructureController>();
-
+        gameManager = new GameManager(this, infrastructureController, BoardController);
+        gameManager.SetCosts();
         InfrastructureStateAble(); ///  to comment in final version
     }
 

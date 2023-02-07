@@ -115,7 +115,7 @@ public class InfrastructureController : MonoBehaviour
             boardController.BoardAreaSetAsUsedByInfrastructureArea(newInfrastructure.InfrastructureArea.BoardAreaList, newInfrastructure);
             boardController.EndBuildState();
             AddNewInfrastructureToList();
-
+            gameManager.AddUsers(newInfrastructure);
             newInfrastructure = null;
         }
     }
@@ -128,7 +128,6 @@ public class InfrastructureController : MonoBehaviour
             {
                 case ObjectType.House:
                     houseList.Add(newInfrastructure);
-                    gameManager.AddCitizens(); // to move? 
                     break;
 
                 case ObjectType.Farm:
@@ -175,16 +174,16 @@ public class InfrastructureController : MonoBehaviour
     public void UpgradeInfrastructure(Infrastructure infrastructure)
     {
         infrastructure.InfrastructureObject.UpgradeObject();
-        gameManager.AddCitizens();
+        gameManager.AddUsers(infrastructure);
 
     }
 
 
     public void DestroyInfrastructure(Infrastructure infrastructure)
     {
+        gameManager.RemoveCitizens(infrastructure);
         RemoveInfrastructureFromList(infrastructure);
         infrastructure.DestroyInfrastructure();
-        // remove value form Gamemanager
 
     }
 
@@ -201,7 +200,7 @@ public class InfrastructureController : MonoBehaviour
             {
                 yield return new WaitForSecondsRealtime(infrastructure.InfrastructureObject.ImprovementTime);
                 infrastructure.InfrastructureObject.DevelopeObject();
-                gameManager.AddCitizens(); 
+                gameManager.AddUsers(infrastructure); 
                 gameUiMenuController.MenuInfrastructureUpdateUsers(infrastructure); // to check
                 StartCoroutine(ImproveInfrastructure(infrastructure));
             }

@@ -31,7 +31,7 @@ public class GameTimeController : MonoBehaviour
         gameLoopsCount++;
 
         yield return new WaitForSecondsRealtime(gameLootTime);
-        gameManager.CalculateInfrastructureIncom();
+        gameManager.CalculateInfrastructureIncom(gameController.InfrastructureController);
 
         StartCoroutine(GameClock());
     }
