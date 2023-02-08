@@ -62,13 +62,6 @@ public class GameManager
 
     }
 
-
-    public void CalculateInfrastructureIncom(InfrastructureController infrastructureController)
-    {
-        Console.WriteLine(infrastructureController); //to check is infrastructureController null? !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        CalculateIncom(infrastructureController.FarmList);
-
-    }
     public void AddUsers(Infrastructure infrastructure)
     {
         switch (infrastructure.InfrastructureObject.ObjectType)
@@ -83,18 +76,16 @@ public class GameManager
 
     }
 
-    public void RemoveCitizens(Infrastructure infrastructure)
+    public void CalculateInfrastructureIncom(InfrastructureController infrastructureController)
     {
-        switch (infrastructure.InfrastructureObject.ObjectType)
-        {
-            case ObjectType.House:
-                citizensAmount -= infrastructure.InfrastructureObject.Users;
-                break;
-            default:
-                workersAmount -= infrastructure.InfrastructureObject.Users;
-                break;
-        }
+        Console.WriteLine(infrastructureController); //to check is infrastructureController null? !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        CalculateIncom(infrastructureController.FarmList);
+
     }
+
+
+
+
     public void CalculateIncom(List <Infrastructure> infrastructureList)
     {
         foreach(var infrastructure in infrastructureList)
@@ -103,14 +94,81 @@ public class GameManager
         }
     }
 
-    public bool CalculateBuildInfrastructure(ObjectType objectType)
+
+    public bool CheckBuildInfrastructure(ObjectType objectType) // with upgrade? 
     {
-        return true; // to change
+        bool isAbletoBuild = false; 
+        switch (objectType)
+        {
+            // if (!(citizensAmount < houseCost.UserCost || goldAmount < houseCost.GoldCost || foodAmount < houseCost.FoodCost || woodAmount < houseCost.WoodCost || stoneAmount < houseCost.StoneCost || ironAmount < houseCost.IronCost))
+            case ObjectType.House:
+                if (!(goldAmount < houseCost.GoldCost || foodAmount < houseCost.FoodCost || woodAmount < houseCost.WoodCost))
+                {
+                    isAbletoBuild = true; 
+                }
+                break;
+            default:
+                if (!(citizensAmount < houseCost.UserCost || goldAmount < houseCost.GoldCost || foodAmount < houseCost.FoodCost || woodAmount < houseCost.WoodCost))
+                {
+                    isAbletoBuild = true;
+                }
+                break;
+        }
+        return isAbletoBuild;
+    }
+
+    public bool CheckUpdateInfrastructure(ObjectType objectType)
+    {
+
+        bool isAbletoBuild = false;
+        /*switch (objectType)
+        {
+            // if (!(citizensAmount < houseCost.UserCost || goldAmount < houseCost.GoldCost || foodAmount < houseCost.FoodCost || woodAmount < houseCost.WoodCost || stoneAmount < houseCost.StoneCost || ironAmount < houseCost.IronCost))
+            case ObjectType.House:
+                if (!(goldAmount < houseCost.GoldCost || foodAmount < houseCost.FoodCost || woodAmount < houseCost.WoodCost))
+                {
+                    isAbletoBuild = true;
+                }
+                break;
+            default:
+                if (!(citizensAmount < houseCost.UserCost || goldAmount < houseCost.GoldCost || foodAmount < houseCost.FoodCost || woodAmount < houseCost.WoodCost))
+                {
+                    isAbletoBuild = true;
+                }
+                break;
+        }*/
+
+        return isAbletoBuild;
+    }
+    public void CalculateBuildInfrastructure(ObjectType objectType) // with upgrade? 
+    {
+
+       
     }
 
     public bool CalculateUpgradeInfrastructure()
     {
         return true;
+    }
+
+    public void CalculateDeleteInfrastructure(Infrastructure infrastructure)
+    {
+        switch (infrastructure.InfrastructureObject.ObjectType)
+        {
+            case ObjectType.House:
+                break;
+            default:
+                citizensAmount += infrastructure.InfrastructureObject.Users;
+                if (infrastructure.InfrastructureObject.Users < infrastructure.InfrastructureObject.UsersMax)
+                {
+                    workersAmount -= infrastructure.InfrastructureObject.Users;
+                }
+                else
+                {
+                    workersAmount -= infrastructure.InfrastructureObject.UsersMax;
+                }
+                break;
+        }
     }
 
     public void BalanceBuildInfrastructure(Infrastructure infrastructure)

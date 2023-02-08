@@ -97,8 +97,7 @@ public class Infrastructure : MonoBehaviour
 
     public void DestroyInfrastructure()
     {
-        boardController.SetDefaultInfrastructure(infrastructureArea.BoardList);
-        boardController.SetDefaultInfrastructureArea(infrastructureArea.BoardAreaList); 
+
         Destroy(gameObject);
     }
 

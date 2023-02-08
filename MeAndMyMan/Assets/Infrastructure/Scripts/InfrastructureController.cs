@@ -59,7 +59,7 @@ public class InfrastructureController : MonoBehaviour
 
     public void CreateInfrastructure(ObjectType objectType)
     {
-        if(!gameManager.CalculateBuildInfrastructure(objectType))
+        if(!gameManager.CheckBuildInfrastructure(objectType))
         {
             // throw new System.ArgumentOutOfRangeException();
             return; 
@@ -105,7 +105,16 @@ public class InfrastructureController : MonoBehaviour
         return newInfrastructure; 
     }
 
-    public void BuildInfrastructure(Vector3 worldPosition)
+    public void DestroyInstantiateInfrastructure()
+    {
+
+        gameController.BuildStateAble();
+        boardController.QuitBuildState();
+        newInfrastructure.DestroyInfrastructure();
+        newInfrastructure = null;
+    }
+
+    public void BuildNewInfrastructure(Vector3 worldPosition)
     {
         if (!newInfrastructure.InfrastructureArea.BoardList.Any(n => n.IsUsedByInfrastructure == true) && newInfrastructure.InfrastructureArea.BoardList.Count() == Mathf.Pow(newInfrastructure.InfrastructureSize, 2)) /// implemented as square objects
         {
@@ -115,7 +124,6 @@ public class InfrastructureController : MonoBehaviour
             boardController.BoardAreaSetAsUsedByInfrastructureArea(newInfrastructure.InfrastructureArea.BoardAreaList, newInfrastructure);
             boardController.EndBuildState();
             AddNewInfrastructureToList();
-            gameManager.AddUsers(newInfrastructure);
             newInfrastructure = null;
         }
     }
@@ -162,46 +170,51 @@ public class InfrastructureController : MonoBehaviour
         }
     }
 
-    public void DestroyNewInfrastructure()
-    {
-
-        gameController.BuildStateAble();
-        boardController.QuitBuildState();
-        newInfrastructure.DestroyInfrastructure(); 
-        newInfrastructure = null;
-    }
-
     public void UpgradeInfrastructure(Infrastructure infrastructure)
     {
         infrastructure.InfrastructureObject.UpgradeObject();
         gameManager.AddUsers(infrastructure);
+    }
+
+    public void RebuildInfrastructure(Infrastructure infrastructure)
+    {
+        //++
 
     }
 
-
     public void DestroyInfrastructure(Infrastructure infrastructure)
     {
-        gameManager.RemoveCitizens(infrastructure);
+        try
+        {
+            StopCoroutine(ImproveInfrastructure(infrastructure));
+        }
+        catch 
+        {
+            // ??
+        }
+
+        gameManager.CalculateDeleteInfrastructure(infrastructure);
+        boardController.SetDefaultInfrastructure(infrastructure.InfrastructureArea.BoardList);
+        boardController.SetDefaultInfrastructureArea(infrastructure.InfrastructureArea.BoardAreaList);
         RemoveInfrastructureFromList(infrastructure);
         infrastructure.DestroyInfrastructure();
-
     }
 
     public IEnumerator ImproveInfrastructure(Infrastructure infrastructure) // create switch
     {   
         if (infrastructure != null)
         {
-
             if (!infrastructure.InfrastructureObject.DevelopeObjectIsAble()) 
             {
                 StopCoroutine(ImproveInfrastructure(infrastructure));             
             }
-            else // is else needed ?
+            else 
             {
-                yield return new WaitForSecondsRealtime(infrastructure.InfrastructureObject.ImprovementTime);
                 infrastructure.InfrastructureObject.DevelopeObject();
-                gameManager.AddUsers(infrastructure); 
-                gameUiMenuController.MenuInfrastructureUpdateUsers(infrastructure); // to check
+                gameManager.AddUsers(infrastructure);
+                gameUiMenuController.MenuInfrastructureUpdateUsers(infrastructure); 
+
+                yield return new WaitForSecondsRealtime(infrastructure.InfrastructureObject.ImprovementTime);
                 StartCoroutine(ImproveInfrastructure(infrastructure));
             }
         }

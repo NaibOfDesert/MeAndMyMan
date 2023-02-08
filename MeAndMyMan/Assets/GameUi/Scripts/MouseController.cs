@@ -25,7 +25,7 @@ public class MouseController : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                infrastructureController.BuildInfrastructure(worldPosition);
+                infrastructureController.BuildNewInfrastructure(worldPosition);
             }
         }
     }

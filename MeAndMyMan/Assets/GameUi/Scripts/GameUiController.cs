@@ -42,7 +42,7 @@ public class GameUiController : MonoBehaviour
 
             if (gameController.BuildState)
             {
-                infrastructureController.DestroyNewInfrastructure();
+                infrastructureController.DestroyInstantiateInfrastructure();
             }
             else if(gameController.InfrastructureState)
             {
