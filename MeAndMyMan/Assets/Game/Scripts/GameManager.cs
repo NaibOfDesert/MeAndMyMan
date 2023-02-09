@@ -49,7 +49,7 @@ public class GameManager
     public void SetCosts()
     {
         houseCost = new ObjectCost(0, 5, 10, 25, 0, 0);
-        farmCost = new ObjectCost(5, 5, 10, 25, 0, 0);
+        farmCost = new ObjectCost(12, 5, 10, 25, 0, 0);
 
 
     }
@@ -78,7 +78,6 @@ public class GameManager
 
     public void CalculateInfrastructureIncom(InfrastructureController infrastructureController)
     {
-        Console.WriteLine(infrastructureController); //to check is infrastructureController null? !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         CalculateIncom(infrastructureController.FarmList);
 
     }
@@ -95,60 +94,54 @@ public class GameManager
     }
 
 
-    public bool CheckBuildInfrastructure(ObjectType objectType) // with upgrade? 
+    public bool CheckBuildInfrastructure(ObjectType objectType, ObjectLevel objectLevel) // with upgrade? 
     {
-        bool isAbletoBuild = false; 
+        bool isAbletoBuild = false;
+        int infrastructureLevel = (int) objectLevel;
+
         switch (objectType)
         {
             // if (!(citizensAmount < houseCost.UserCost || goldAmount < houseCost.GoldCost || foodAmount < houseCost.FoodCost || woodAmount < houseCost.WoodCost || stoneAmount < houseCost.StoneCost || ironAmount < houseCost.IronCost))
             case ObjectType.House:
-                if (!(goldAmount < houseCost.GoldCost || foodAmount < houseCost.FoodCost || woodAmount < houseCost.WoodCost))
+                if (!(goldAmount < houseCost.GoldCost * infrastructureLevel || foodAmount < houseCost.FoodCost * infrastructureLevel || woodAmount < houseCost.WoodCost * infrastructureLevel))
                 {
                     isAbletoBuild = true; 
                 }
                 break;
-            default:
-                if (!(citizensAmount < houseCost.UserCost || goldAmount < houseCost.GoldCost || foodAmount < houseCost.FoodCost || woodAmount < houseCost.WoodCost))
+            case ObjectType.Farm:
+                if (!(citizensAmount < farmCost.UserCost * infrastructureLevel || goldAmount < farmCost.GoldCost * infrastructureLevel || foodAmount < farmCost.FoodCost * infrastructureLevel || woodAmount < farmCost.WoodCost * infrastructureLevel))
                 {
                     isAbletoBuild = true;
                 }
+                break;
+            default:
+                isAbletoBuild = false;
                 break;
         }
         return isAbletoBuild;
     }
 
-    public bool CheckUpdateInfrastructure(ObjectType objectType)
+    public void CalculateBuildInfrastructure(ObjectType objectType, ObjectLevel objectLevel) 
     {
+        int infrastructureLevel = (int)objectLevel;
 
-        bool isAbletoBuild = false;
-        /*switch (objectType)
+        switch (objectType)
         {
-            // if (!(citizensAmount < houseCost.UserCost || goldAmount < houseCost.GoldCost || foodAmount < houseCost.FoodCost || woodAmount < houseCost.WoodCost || stoneAmount < houseCost.StoneCost || ironAmount < houseCost.IronCost))
             case ObjectType.House:
-                if (!(goldAmount < houseCost.GoldCost || foodAmount < houseCost.FoodCost || woodAmount < houseCost.WoodCost))
-                {
-                    isAbletoBuild = true;
-                }
+                goldAmount -= houseCost.GoldCost * infrastructureLevel;
+                foodAmount -= houseCost.FoodCost * infrastructureLevel; 
+                woodAmount -= houseCost.WoodCost * infrastructureLevel; 
+
+                break;
+            case ObjectType.Farm:
+                citizensAmount -= farmCost.UserCost * infrastructureLevel; 
+                goldAmount -= farmCost.GoldCost * infrastructureLevel;
+                foodAmount -= farmCost.FoodCost * infrastructureLevel;
+                woodAmount -= farmCost.WoodCost * infrastructureLevel;
                 break;
             default:
-                if (!(citizensAmount < houseCost.UserCost || goldAmount < houseCost.GoldCost || foodAmount < houseCost.FoodCost || woodAmount < houseCost.WoodCost))
-                {
-                    isAbletoBuild = true;
-                }
                 break;
-        }*/
-
-        return isAbletoBuild;
-    }
-    public void CalculateBuildInfrastructure(ObjectType objectType) // with upgrade? 
-    {
-
-       
-    }
-
-    public bool CalculateUpgradeInfrastructure()
-    {
-        return true;
+        }
     }
 
     public void CalculateDeleteInfrastructure(Infrastructure infrastructure)

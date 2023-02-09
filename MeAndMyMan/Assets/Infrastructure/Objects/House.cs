@@ -17,13 +17,10 @@ public class House: Object
         improvementTime = 1;
         users = 1;
         usersMax = 8;
+        usersMaxBacic = 8;
     }
 
-    public override void UpgradeObject()
-    {
-        base.UpgradeObject();
-        usersMax += usersMax * (int)objectLevel;
-    }
+
 
 }
 

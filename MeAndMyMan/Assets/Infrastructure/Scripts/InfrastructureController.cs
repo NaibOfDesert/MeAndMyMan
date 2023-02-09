@@ -59,18 +59,11 @@ public class InfrastructureController : MonoBehaviour
 
     public void CreateInfrastructure(ObjectType objectType)
     {
-        if(!gameManager.CheckBuildInfrastructure(objectType))
+        if(!gameManager.CheckBuildInfrastructure(objectType, ObjectLevel.Level1))
         {
             // throw new System.ArgumentOutOfRangeException();
             return; 
         }
-        /*try
-        {
-        }
-        catch
-        {
-
-        }*/
 
         Object infrastructureObject;
         gameController.BuildStateAble();
@@ -119,7 +112,9 @@ public class InfrastructureController : MonoBehaviour
         if (!newInfrastructure.InfrastructureArea.BoardList.Any(n => n.IsUsedByInfrastructure == true) && newInfrastructure.InfrastructureArea.BoardList.Count() == Mathf.Pow(newInfrastructure.InfrastructureSize, 2)) /// implemented as square objects
         {
             gameController.BuildStateAble();
+            gameManager.CalculateBuildInfrastructure(newInfrastructure.InfrastructureObject.ObjectType, newInfrastructure.InfrastructureObject.ObjectLevel);
             newInfrastructure.SetInfrastructure();
+            StartCoroutine(ImproveInfrastructure(newInfrastructure));
             boardController.BoardAreaSetAsUsedByInfrastructure(newInfrastructure.InfrastructureArea.BoardList, newInfrastructure);
             boardController.BoardAreaSetAsUsedByInfrastructureArea(newInfrastructure.InfrastructureArea.BoardAreaList, newInfrastructure);
             boardController.EndBuildState();
@@ -155,7 +150,7 @@ public class InfrastructureController : MonoBehaviour
         {
             switch (infrastructure.InfrastructureObject.ObjectType)
             {
-                case ObjectType.House:
+                case ObjectType.House:  
                     houseList.Remove(infrastructure);
                     break;
 
@@ -173,7 +168,10 @@ public class InfrastructureController : MonoBehaviour
     public void UpgradeInfrastructure(Infrastructure infrastructure)
     {
         infrastructure.InfrastructureObject.UpgradeObject();
-        gameManager.AddUsers(infrastructure);
+        gameManager.CalculateBuildInfrastructure(newInfrastructure.InfrastructureObject.ObjectType, newInfrastructure.InfrastructureObject.ObjectLevel);
+        StartCoroutine(ImproveInfrastructure(newInfrastructure));
+
+        // gameManager.AddUsers(infrastructure);
     }
 
     public void RebuildInfrastructure(Infrastructure infrastructure)
@@ -211,7 +209,7 @@ public class InfrastructureController : MonoBehaviour
             else 
             {
                 infrastructure.InfrastructureObject.DevelopeObject();
-                gameManager.AddUsers(infrastructure);
+                gameManager.AddUsers(infrastructure); // double count???? 
                 gameUiMenuController.MenuInfrastructureUpdateUsers(infrastructure); 
 
                 yield return new WaitForSecondsRealtime(infrastructure.InfrastructureObject.ImprovementTime);

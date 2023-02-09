@@ -14,6 +14,7 @@ public class Farm : Object
         improvementTime = 2; 
         users = 1;
         usersMax = 12;
+        usersMaxBacic = 12; 
 
 
     }
@@ -21,9 +22,6 @@ public class Farm : Object
     public override void UpgradeObject()
     {
         base.UpgradeObject();
-        usersMax += usersMax * 2; 
-
     }
 
-    
 }

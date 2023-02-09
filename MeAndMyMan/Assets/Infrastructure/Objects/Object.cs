@@ -31,6 +31,8 @@ public abstract class Object
     protected int users;
     public int Users { get { return users; } }
 
+    protected int usersMaxBacic;
+
     protected int usersMax;
     public int UsersMax { get { return usersMax; } }
 
@@ -45,15 +47,18 @@ public abstract class Object
     {
         if (objectLevel == ObjectLevel.Level4) return;
         else if (objectLevel == ObjectLevel.Level1){
+            usersMax = usersMaxBacic * (int) ObjectLevel.Level2; 
             objectLevel = ObjectLevel.Level2;
             return; 
         } 
         else if (objectLevel == ObjectLevel.Level2){
             objectLevel = ObjectLevel.Level3;
+            usersMax = usersMaxBacic * (int)ObjectLevel.Level3;
             return;
         }
         else if (objectLevel == ObjectLevel.Level3)
         {
+            usersMax = usersMaxBacic * (int)ObjectLevel.Level4;
             objectLevel = ObjectLevel.Level4;
             return;
         }

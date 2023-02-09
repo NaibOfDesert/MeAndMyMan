@@ -87,7 +87,6 @@ public class Infrastructure : MonoBehaviour
         SetMaterial(infrastructureMaterial);
         infrastructureArea.TextAreaValueAble();
         boardController.BoardAreaCheckUsedBy(infrastructureArea.BoardList, this); // to check
-        StartCoroutine(infrastructureController.ImproveInfrastructure(this)); 
     }
 
     void SetMaterial(Material material)
@@ -101,9 +100,4 @@ public class Infrastructure : MonoBehaviour
         Destroy(gameObject);
     }
 
-
-
-    // start working
-
-    // pause
 }
