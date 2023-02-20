@@ -34,9 +34,14 @@ public class GameManager
     int ironAmount = 25;
     public int IronAmount { get { return ironAmount; } }
 
+    int goldValueToRebuildSingle = 25;
 
     ObjectCost houseCost;
     ObjectCost farmCost;
+
+
+    public bool Test; 
+
 
 
     public GameManager(GameController gameController, InfrastructureController infrastructureController, BoardController boardController)
@@ -76,22 +81,6 @@ public class GameManager
 
     }
 
-    public void CalculateInfrastructureIncom(InfrastructureController infrastructureController)
-    {
-        CalculateIncom(infrastructureController.FarmList);
-
-    }
-
-
-
-
-    public void CalculateIncom(List <Infrastructure> infrastructureList)
-    {
-        foreach(var infrastructure in infrastructureList)
-        {
-            foodAmount += infrastructure.InfrastructureObject.AreaActiveCount; 
-        }
-    }
 
 
     public bool CheckBuildInfrastructure(ObjectType objectType, ObjectLevel objectLevel) // with upgrade? 
@@ -121,7 +110,34 @@ public class GameManager
         return isAbletoBuild;
     }
 
-    public void CalculateBuildInfrastructure(ObjectType objectType, ObjectLevel objectLevel) 
+
+
+
+
+    public bool CheckRebuildInfrastructure(int fieldsToRebuild)
+    {
+        return (fieldsToRebuild * goldValueToRebuildSingle <= goldAmount) ? true : false;
+    }
+
+    public void CalculateInfrastructureIncom(InfrastructureController infrastructureController)
+    {
+        CalculateIncom(infrastructureController.FarmList);
+
+    }
+
+
+
+
+    public void CalculateIncom(List<Infrastructure> infrastructureList)
+    {
+        foreach (var infrastructure in infrastructureList)
+        {
+            foodAmount += infrastructure.InfrastructureObject.AreaActiveCount;
+        }
+    }
+
+
+    public void CalculateBuildInfrastructure(ObjectType objectType, ObjectLevel objectLevel)
     {
         int infrastructureLevel = (int)objectLevel;
 
@@ -129,12 +145,12 @@ public class GameManager
         {
             case ObjectType.House:
                 goldAmount -= houseCost.GoldCost * infrastructureLevel;
-                foodAmount -= houseCost.FoodCost * infrastructureLevel; 
-                woodAmount -= houseCost.WoodCost * infrastructureLevel; 
+                foodAmount -= houseCost.FoodCost * infrastructureLevel;
+                woodAmount -= houseCost.WoodCost * infrastructureLevel;
 
                 break;
             case ObjectType.Farm:
-                citizensAmount -= farmCost.UserCost * infrastructureLevel; 
+                citizensAmount -= farmCost.UserCost * infrastructureLevel;
                 goldAmount -= farmCost.GoldCost * infrastructureLevel;
                 foodAmount -= farmCost.FoodCost * infrastructureLevel;
                 woodAmount -= farmCost.WoodCost * infrastructureLevel;
@@ -144,25 +160,34 @@ public class GameManager
         }
     }
 
+    public void CalculateRebuildInfrastructure(int fieldsToRebuild)
+    {
+        goldAmount -= fieldsToRebuild * goldValueToRebuildSingle;
+    }
     public void CalculateDeleteInfrastructure(Infrastructure infrastructure)
     {
         switch (infrastructure.InfrastructureObject.ObjectType)
         {
             case ObjectType.House:
+                citizensAmount -= infrastructure.InfrastructureObject.Users;
                 break;
             default:
-                citizensAmount += infrastructure.InfrastructureObject.Users;
-                if (infrastructure.InfrastructureObject.Users < infrastructure.InfrastructureObject.UsersMax)
+                citizensAmount += infrastructure.InfrastructureObject.UsersMax;
+                workersAmount -= infrastructure.InfrastructureObject.Users; // TO DO: fix removing 1 user less
+
+                /*if (infrastructure.InfrastructureObject.Users < infrastructure.InfrastructureObject.UsersMax)
                 {
-                    workersAmount -= infrastructure.InfrastructureObject.Users;
                 }
                 else
                 {
                     workersAmount -= infrastructure.InfrastructureObject.UsersMax;
-                }
+                }*/
                 break;
         }
     }
+
+
+
 
     public void BalanceBuildInfrastructure(Infrastructure infrastructure)
     {

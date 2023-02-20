@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System.Threading.Tasks;
 
 public class InfrastructureController : MonoBehaviour
 {
@@ -61,7 +62,7 @@ public class InfrastructureController : MonoBehaviour
     {
         if(!gameManager.CheckBuildInfrastructure(objectType, ObjectLevel.Level1))
         {
-            // throw new System.ArgumentOutOfRangeException();
+            // throw new System.ArgumentOutOfRangeException(); // check
             return; 
         }
 
@@ -168,16 +169,27 @@ public class InfrastructureController : MonoBehaviour
     public void UpgradeInfrastructure(Infrastructure infrastructure)
     {
         infrastructure.InfrastructureObject.UpgradeObject();
-        gameManager.CalculateBuildInfrastructure(newInfrastructure.InfrastructureObject.ObjectType, newInfrastructure.InfrastructureObject.ObjectLevel);
-        StartCoroutine(ImproveInfrastructure(newInfrastructure));
-
-        // gameManager.AddUsers(infrastructure);
+        gameManager.CalculateBuildInfrastructure(infrastructure.InfrastructureObject.ObjectType, infrastructure.InfrastructureObject.ObjectLevel);
+        StartCoroutine(ImproveInfrastructure(infrastructure));
     }
 
     public void RebuildInfrastructure(Infrastructure infrastructure)
     {
         //++
+        // to add in infArea change Lists
 
+        // callout board change
+        
+
+
+
+    }
+
+    public List<Tile> CheckAreaToRebuildInfrastructure(Infrastructure infrastructure)
+    {
+        List<Tile> areaListToRebuild = infrastructure.InfrastructureArea.BoardAreaBlockedList;
+        areaListToRebuild.RemoveAll(n => n.IsUsedByInfrastructure == true); 
+        return areaListToRebuild; 
     }
 
     public void DestroyInfrastructure(Infrastructure infrastructure)
@@ -188,7 +200,7 @@ public class InfrastructureController : MonoBehaviour
         }
         catch 
         {
-            // ??
+            //TODO: event system
         }
 
         gameManager.CalculateDeleteInfrastructure(infrastructure);
@@ -202,20 +214,28 @@ public class InfrastructureController : MonoBehaviour
     {   
         if (infrastructure != null)
         {
+            
             if (!infrastructure.InfrastructureObject.DevelopeObjectIsAble()) 
             {
                 StopCoroutine(ImproveInfrastructure(infrastructure));             
             }
             else 
             {
+                WaitUnitlEndOfApuse();  //TODO: implemet
                 infrastructure.InfrastructureObject.DevelopeObject();
-                gameManager.AddUsers(infrastructure); // double count???? 
+                gameManager.AddUsers(infrastructure); 
                 gameUiMenuController.MenuInfrastructureUpdateUsers(infrastructure); 
 
                 yield return new WaitForSecondsRealtime(infrastructure.InfrastructureObject.ImprovementTime);
                 StartCoroutine(ImproveInfrastructure(infrastructure));
             }
         }
+    }
+
+    private async Task WaitUnitlEndOfApuse()
+    {
+       // to add await or wait until?????????????
+
     }
 }
 

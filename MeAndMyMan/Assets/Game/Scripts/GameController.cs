@@ -17,6 +17,9 @@ public class GameController : MonoBehaviour
     [SerializeField] bool infrastructureState; // to check
     public bool InfrastructureState { get { return infrastructureState; } set { infrastructureState = value; } }
 
+    [SerializeField] bool pauseState;
+    public bool PauseState { get { return pauseState; } set { pauseState = value; } }
+
     GameManager gameManager;
     public GameManager GameManager { get { return gameManager; } }
 
@@ -62,6 +65,7 @@ public class GameController : MonoBehaviour
     {
         buildState = false;
         infrastructureState = false;
+        pauseState = false;
     }
 
     public void BuildStateAble()
@@ -71,6 +75,13 @@ public class GameController : MonoBehaviour
         {
             gameUiMenuController.MenuInfrastructureAble(null); // set all other states false?
         }
+
+    }
+
+    public void PauseStateAble()
+    {
+        pauseState = !pauseState;
+        gameUiMenuController.PauseStateMenusAble(); 
 
     }
 

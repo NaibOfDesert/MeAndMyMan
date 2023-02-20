@@ -291,8 +291,6 @@ public class BoardController : MonoBehaviour
         }
     }
 
-
-
     public void SetDefaultInfrastructure(List<Tile> infrastructureList)
     {
         Debug.Log("count " + infrastructureList.Count());

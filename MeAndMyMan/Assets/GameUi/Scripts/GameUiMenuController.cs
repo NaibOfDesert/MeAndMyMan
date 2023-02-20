@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro; 
+using TMPro;
+using System.Linq;
 
 public class GameUiMenuController : MonoBehaviour
 {
@@ -66,6 +67,11 @@ public class GameUiMenuController : MonoBehaviour
     void Update()
     {
         MenuResourcesUpdate(); 
+
+        if(infrastructureMenuState != null) 
+        {
+
+        }
     }
 
     public void BuildHouse()
@@ -88,17 +94,25 @@ public class GameUiMenuController : MonoBehaviour
 
     public void DeteleInfrastructure()
     {
-        infrastructureController.DestroyInfrastructure(infrastructureMenuState);
-        MenuInfrastructureAble(null);
-
-
+        if (infrastructureMenuState != null)
+        {
+            infrastructureController.DestroyInfrastructure(infrastructureMenuState);
+            MenuInfrastructureAble(null);
+        }
     }
 
     public void RebuildInfrastructure()
     {
 
+        if (infrastructureMenuState != null)
+        {
+            if (gameManager.CheckRebuildInfrastructure(infrastructureController.CheckAreaToRebuildInfrastructure(infrastructureMenuState).Count())) {
+                infrastructureController.UpgradeInfrastructure(infrastructureMenuState);
+                // gameManager. to implement
+            }
 
-
+        }
+        
     }
 
     public void UpgradeInfrastructure()
@@ -106,7 +120,7 @@ public class GameUiMenuController : MonoBehaviour
         if (infrastructureMenuState != null)
         {
             infrastructureController.UpgradeInfrastructure(infrastructureMenuState);
-            MenuInfrastructureUpdatelevel(infrastructureMenuState); 
+            MenuInfrastructureUpdateLevel(infrastructureMenuState); 
         }
     }
 
@@ -156,7 +170,7 @@ public class GameUiMenuController : MonoBehaviour
 
                 textInfrastructureName.text = infrastructure.InfrastructureObject.ObjectType.ToString();
                 textInfrastructureArea.text = infrastructure.InfrastructureObject.AreaActiveCount.ToString();
-                MenuInfrastructureUpdatelevel(infrastructure);
+                MenuInfrastructureUpdateLevel(infrastructure);
                 MenuInfrastructureUpdateUsers(infrastructure);
                 textInfrastructureUsersMax.text = infrastructure.InfrastructureObject.UsersMax.ToString();
                 menuInfrastructureObject.SetActive(true);
@@ -172,7 +186,7 @@ public class GameUiMenuController : MonoBehaviour
         }
     }
 
-    public void MenuInfrastructureUpdatelevel(Infrastructure infrastructure)
+    public void MenuInfrastructureUpdateLevel(Infrastructure infrastructure)
     {
         if (gameController.InfrastructureState && infrastructure == infrastructureMenuState)
         {
@@ -183,4 +197,10 @@ public class GameUiMenuController : MonoBehaviour
         }
     }
 
+    public void PauseStateMenusAble()
+    {
+        // PauseAllCoroutines(); 
+        // PauseAllAnimations(); 
+        // PauseAll
+    }
 }

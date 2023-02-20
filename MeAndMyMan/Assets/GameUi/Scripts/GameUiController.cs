@@ -46,9 +46,7 @@ public class GameUiController : MonoBehaviour
             }
             else if(gameController.InfrastructureState)
             {
-                Debug.Log("exc infrstructure state");
                 gameUiMenuController.MenuInfrastructureAble(null);
-                // switch off infrastructure menu
             }
         }
 
@@ -88,6 +86,12 @@ public class GameUiController : MonoBehaviour
         {
             gameCamera.transform.position -= mainCamera.transform.right;
 
+
+        }
+
+        if (Input.GetKey(KeyCode.Space)) //++ add mouse scroll wheel
+        {
+            // gameController.Puase(able)
 
         }
 
