@@ -18,6 +18,12 @@ public class Infrastructure : MonoBehaviour
     InfrastructureArea infrastructureArea;
     public InfrastructureArea InfrastructureArea { get { return infrastructureArea; } }
 
+    InfrastructureAudio infrastructureAudio;
+    public InfrastructureAudio InfrastructureAudio { get { return infrastructureAudio; } }
+
+    InfrastructureUiController infrastructureUiController;
+    public InfrastructureUiController InfrastructureUiController { get { return infrastructureUiController; } }
+
     MeshRenderer meshRenderer;
     Material infrastructureMaterial;
 
@@ -34,6 +40,8 @@ public class Infrastructure : MonoBehaviour
         infrastructureController = gameController.InfrastructureController;
         infrastructureArea = GetComponentInChildren<InfrastructureArea>(); 
         meshRenderer = GetComponentInChildren<MeshRenderer>();
+        infrastructureAudio = GetComponent<InfrastructureAudio>();
+        infrastructureUiController = GetComponent<InfrastructureUiController>();
         infrastructureMaterial = meshRenderer.material;
 
 

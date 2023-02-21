@@ -83,8 +83,9 @@ public class GameManager
 
 
 
-    public bool CheckBuildInfrastructure(ObjectType objectType, ObjectLevel objectLevel) // with upgrade? 
+    public bool CheckBuildInfrastructure(ObjectType objectType, ObjectLevel objectLevel) /// TOCHECK: with upgrade?  
     {
+        // TODO: add if value < 0
         bool isAbletoBuild = false;
         int infrastructureLevel = (int) objectLevel;
 

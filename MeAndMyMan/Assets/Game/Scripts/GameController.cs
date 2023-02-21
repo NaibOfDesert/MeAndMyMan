@@ -48,7 +48,6 @@ public class GameController : MonoBehaviour
 
     void Awake()
     {
-
         gameTimeController = FindObjectOfType<GameTimeController>();
         mouseController = FindObjectOfType<MouseController>();
         gameCameraController = FindObjectOfType<GameCameraController>();

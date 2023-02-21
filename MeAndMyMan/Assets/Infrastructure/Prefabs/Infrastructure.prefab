@@ -65,6 +65,7 @@ GameObject:
   - component: {fileID: 6242675484779806318}
   - component: {fileID: 7946733135729079619}
   - component: {fileID: 1690564238224272829}
+  - component: {fileID: 4357656884576564851}
   - component: {fileID: 5209378121868582927}
   m_Layer: 0
   m_Name: Infrastructure
@@ -113,6 +114,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c7aebfb60d6579344a63a32f14c305cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  infrastructure: {fileID: 0}
+--- !u!114 &4357656884576564851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4971671357481511543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68ae042b921b7b0428f4d432ed6b2b71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!54 &5209378121868582927
@@ -177,6 +191,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textCount: {fileID: 0}
+  boardAreaList: []
+  boardAreaBlockedList: []
 --- !u!1 &7930712580491992465
 GameObject:
   m_ObjectHideFlags: 0
