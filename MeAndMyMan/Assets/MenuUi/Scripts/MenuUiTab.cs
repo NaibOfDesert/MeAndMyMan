@@ -7,22 +7,28 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(Image))]   
 public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler 
 {
-    MenuUiController menuUiController; 
+    [SerializeField] private Sprite tabIdleSprite;
+    [SerializeField] private Sprite tabHoverSprite;
+    [SerializeField] private Sprite tabActiveSprite;
 
     private Image tabBackgroundImage;
-    public Image TabBackgroundImage { get { return tabBackgroundImage; } set { tabBackgroundImage = value; } }
 
+    MenuUiController menuUiController;
 
     void Awake()
     {
-        menuUiController = FindObjectOfType<MenuUiController>(); // TODO: fix
+        menuUiController = FindObjectOfType<MenuUiController>(); 
         tabBackgroundImage = GetComponent<Image>();
-        menuUiController.AddToTabList(this); 
     }
 
     void Update()
     {
         
+    }
+    void Start()
+    {
+        menuUiController.AddToTabList(this);
+
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -38,5 +44,20 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
     public void OnPointerExit(PointerEventData eventData)
     {
         menuUiController.OnTabExit(this);
+    }
+
+    public void SetTabIdleSprite()
+    {
+        tabBackgroundImage.sprite = tabIdleSprite; 
+    }
+    public void SetTabHoverSprite()
+    {
+        tabBackgroundImage.sprite = tabHoverSprite;
+
+    }
+    public void SetTabActiveSprite()
+    {
+        tabBackgroundImage.sprite = tabActiveSprite;
+
     }
 }

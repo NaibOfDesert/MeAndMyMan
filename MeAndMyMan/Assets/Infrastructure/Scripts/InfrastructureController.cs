@@ -8,16 +8,16 @@ public class InfrastructureController : MonoBehaviour
 {
     [Header("Prefabs")]
     [SerializeField] GameObject housePrefab;
-    public GameObject HousePrefab { get { return housePrefab; } }
+    public GameObject HousePrefab { get { return housePrefab; } } // TODO: check is needed? 
 
     List<Infrastructure> houseList;
     public List<Infrastructure> HouseList { get { return houseList; } }
 
     [SerializeField] GameObject farmPrefab;
-    public GameObject FarmPrefab { get { return farmPrefab; } }
+    public GameObject FarmPrefab { get { return farmPrefab; } } // TODO: check is needed? 
 
     [SerializeField] List<Infrastructure> farmList;
-    public List<Infrastructure> FarmList { get { return farmList; } }
+    public List<Infrastructure> FarmList { get { return farmList; } } 
 
 
     [Header("Infrastructure")]
