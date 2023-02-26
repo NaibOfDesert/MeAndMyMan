@@ -11,6 +11,7 @@ public class InfrastructureController : MonoBehaviour
     public GameObject HousePrefab { get { return housePrefab; } } // TODO: check is needed? 
 
     List<Infrastructure> houseList;
+
     public List<Infrastructure> HouseList { get { return houseList; } }
 
     [SerializeField] GameObject farmPrefab;

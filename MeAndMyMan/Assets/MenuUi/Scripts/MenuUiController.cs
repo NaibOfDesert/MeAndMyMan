@@ -54,8 +54,14 @@ public class MenuUiController : MonoBehaviour
 
     public void OnTabSelected(MenuUiTab menuUiTab)
     {
-        ResetTabs();
+        if(activeTab != null)
+        {
+            activeTab.Deselect();
+        }
         activeTab = menuUiTab;
+        activeTab.Select();
+
+        ResetTabs();
         menuUiTab.SetTabActiveSprite(); 
         for(int i = 0; i < activeTabObjects.Count; i++)
         {

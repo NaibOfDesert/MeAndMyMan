@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems; 
+using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Image))]   
 public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler 
@@ -12,6 +13,9 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
     [SerializeField] private Sprite tabActiveSprite;
 
     private Image tabBackgroundImage;
+
+    public UnityEvent onTabSelected;
+    public UnityEvent onTabDeselected; 
 
     MenuUiController menuUiController;
 
@@ -59,5 +63,21 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
     {
         tabBackgroundImage.sprite = tabActiveSprite;
 
+    }
+
+    public void Select()
+    {
+        if(onTabSelected != null)
+        {
+            onTabSelected.Invoke();
+        }
+    }
+
+    public void Deselect()
+    {
+        if (onTabDeselected != null)
+        {
+            onTabDeselected.Invoke();
+        }
     }
 }
