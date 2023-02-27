@@ -93,8 +93,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 12
+  m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -142,9 +142,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 446431675877457840, guid: b64095e557bbb174d8059ba16978aaa6, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 915617297310026297, guid: b64095e557bbb174d8059ba16978aaa6, type: 3}
       propertyPath: m_Name
       value: UiTabHeader
+      objectReference: {fileID: 0}
+    - target: {fileID: 1966686380992872967, guid: b64095e557bbb174d8059ba16978aaa6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7227670723465979161, guid: b64095e557bbb174d8059ba16978aaa6, type: 3}
       propertyPath: m_Pivot.x
