@@ -144,13 +144,17 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 446431675877457840, guid: b64095e557bbb174d8059ba16978aaa6, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 915617297310026297, guid: b64095e557bbb174d8059ba16978aaa6, type: 3}
       propertyPath: m_Name
       value: UiTabHeader
       objectReference: {fileID: 0}
     - target: {fileID: 1966686380992872967, guid: b64095e557bbb174d8059ba16978aaa6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2923782901539970432, guid: b64095e557bbb174d8059ba16978aaa6, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
