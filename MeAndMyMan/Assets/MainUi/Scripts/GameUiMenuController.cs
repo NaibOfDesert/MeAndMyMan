@@ -6,15 +6,11 @@ using System.Linq;
 
 public class GameUiMenuController : MonoBehaviour
 {
-    [Header("BuildMenu")]
-    [SerializeField] GameObject menuInfrastructureObject;
-    [SerializeField] GameObject buttonHouseBuild;
-    [SerializeField] GameObject buttonFarmBuild;
-    [SerializeField] GameObject buttonInfrastructureDelete;
-    [SerializeField] GameObject buttonInfrastructureRebuildArea;
-    [SerializeField] GameObject buttonInfrastructureUpgrade;
-    // [SerializeField] GameObject textInfrastructureName;
-
+    [Header("MenuSectionObjects")]
+    [SerializeField] GameObject menuUi;
+    [SerializeField] GameObject gameUiAbout;
+    [SerializeField] GameObject gameUiBuild;
+    [SerializeField] GameObject gameUiBuildExit;
 
     [Header("InfrastructureStateMenu")]
     [SerializeField] TextMeshProUGUI textInfrastructureName;
@@ -35,15 +31,10 @@ public class GameUiMenuController : MonoBehaviour
     [SerializeField] TextMeshProUGUI textStoneAmount;
     [SerializeField] TextMeshProUGUI textIronAmount;
 
-
     Infrastructure infrastructureMenuState;
-
-
-
 
     GameController gameController;
     GameManager gameManager;
-    MouseController mouseController;
     BoardController boardController;
     InfrastructureController infrastructureController;
 
@@ -51,7 +42,6 @@ public class GameUiMenuController : MonoBehaviour
     {
         gameController = FindObjectOfType<GameController>();
         gameManager = gameController.GameManager; 
-        mouseController = gameController.MouseController;
         boardController = gameController.BoardController;
         infrastructureController = gameController.InfrastructureController;
 
@@ -62,6 +52,8 @@ public class GameUiMenuController : MonoBehaviour
     void Start()
     {
         infrastructureMenuState = null;
+        gameUiAbout.SetActive(false);
+        gameUiBuildExit.SetActive(false);
     }
 
     void Update()
@@ -150,7 +142,7 @@ public class GameUiMenuController : MonoBehaviour
             textInfrastructureUsersMax.text = null;
             infrastructureMenuState = null;
 
-            menuInfrastructureObject.SetActive(false);
+            gameUiAbout.SetActive(false); // change to method
             return;
         }
         else if (!gameController.BuildState)
@@ -173,7 +165,7 @@ public class GameUiMenuController : MonoBehaviour
                 MenuInfrastructureUpdateLevel(infrastructure);
                 MenuInfrastructureUpdateUsers(infrastructure);
                 textInfrastructureUsersMax.text = infrastructure.InfrastructureObject.UsersMax.ToString();
-                menuInfrastructureObject.SetActive(true);
+                gameUiAbout.SetActive(true); // change to method
             }
         }
     }

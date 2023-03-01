@@ -15,13 +15,15 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
     private Image tabBackgroundImage;
 
     public UnityEvent onTabSelected;
-    public UnityEvent onTabDeselected; 
+    public UnityEvent onTabDeselected;
 
-    MenuUiController menuUiController;
+    GameController gameController; 
+    MenuUiTabController menuUiController;
 
     void Awake()
     {
-        menuUiController = FindObjectOfType<MenuUiController>(); 
+        gameController = FindObjectOfType<GameController>();
+        menuUiController = gameController.MenuUiTabController; 
         tabBackgroundImage = GetComponent<Image>();
     }
 

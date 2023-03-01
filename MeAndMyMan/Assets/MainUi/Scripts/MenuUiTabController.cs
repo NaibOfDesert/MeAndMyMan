@@ -2,20 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MenuUiController : MonoBehaviour
+public class MenuUiTabController : MonoBehaviour
 {
     [SerializeField] List<MenuUiTab> tabList;
-    [SerializeField] GameObject menuUiObject; 
+
+    GameController gameController; 
+    GameUiMenuController gameUiMenuController; 
     MenuUiTab activeTab;
     List<GameObject> activeTabObjects;  // to rename
     // [SerializeField] Transform[] tabTransformtList; // TODO: to add objects to  active
 
     void Awake()
     {
+        gameController = FindObjectOfType<GameController>();
+        gameUiMenuController = gameController.GameUiMenuController; 
+        
         tabList = new List<MenuUiTab>();
         activeTabObjects = new List<GameObject>();
-        GetActiveTabObjectList(); 
-
+        GetActiveTabObjectList();
     }
 
     void Update()
@@ -49,7 +53,6 @@ public class MenuUiController : MonoBehaviour
     public void OnTabExit(MenuUiTab menuUiTab)
     {
         ResetTabs();
-
     }
 
     public void OnTabSelected(MenuUiTab menuUiTab)
@@ -84,5 +87,9 @@ public class MenuUiController : MonoBehaviour
             menuUiTab.SetTabIdleSprite();
         }
     }
+
+
+
+
 
 }

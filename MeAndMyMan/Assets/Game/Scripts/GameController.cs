@@ -44,6 +44,11 @@ public class GameController : MonoBehaviour
     GameUiMenuController gameUiMenuController;
     public GameUiMenuController GameUiMenuController { get { return gameUiMenuController; } }
 
+    MenuUiSectionController menuUiSectionController;
+    public MenuUiSectionController MenuUiSectionController { get { return menuUiSectionController; } }
+
+    MenuUiTabController menuUiTabController;
+    public MenuUiTabController MenuUiTabController { get { return menuUiTabController; } }
 
 
     void Awake()
@@ -53,6 +58,8 @@ public class GameController : MonoBehaviour
         gameCameraController = FindObjectOfType<GameCameraController>();
         gameCamera = gameCameraController.gameObject;
         gameUiMenuController = FindObjectOfType<GameUiMenuController>();
+        menuUiSectionController = FindObjectOfType<MenuUiSectionController>();
+        menuUiTabController = FindObjectOfType<MenuUiTabController>();
         boardController = FindObjectOfType<BoardController>();
         infrastructureController = FindObjectOfType<InfrastructureController>();
         gameManager = new GameManager(this, infrastructureController, BoardController);
