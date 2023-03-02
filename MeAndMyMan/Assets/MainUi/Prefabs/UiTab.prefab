@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7227670723465979161}
   - component: {fileID: 5695590754811160132}
   - component: {fileID: 2180323601876627105}
-  - component: {fileID: 5780579443929443934}
+  - component: {fileID: 8240873348258519158}
   m_Layer: 0
   m_Name: UiTab
   m_TagString: Untagged
@@ -78,7 +78,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5780579443929443934
+--- !u!114 &8240873348258519158
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

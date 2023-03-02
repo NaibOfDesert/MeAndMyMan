@@ -70,11 +70,11 @@ public class MenuUiTabController : MonoBehaviour
         {
             if(i == menuUiTab.transform.GetSiblingIndex())
             {
-                activeTabObjects[i].SetActive(true);
+                // activeTabObjects[i].SetActive(true); // TODO fix
             }
             else
             {
-                activeTabObjects[i].SetActive(false);
+                // activeTabObjects[i].SetActive(false); // TODO fix
             }
         }
     }
