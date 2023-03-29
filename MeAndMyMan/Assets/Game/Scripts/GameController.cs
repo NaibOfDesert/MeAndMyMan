@@ -44,7 +44,7 @@ public class GameController : MonoBehaviour
     GameUiMenuController gameUiMenuController;
     public GameUiMenuController GameUiMenuController { get { return gameUiMenuController; } }
 
-    MenuUiSectionController menuUiSectionController;
+    [SerializeField] MenuUiSectionController menuUiSectionController;
     public MenuUiSectionController MenuUiSectionController { get { return menuUiSectionController; } }
 
     MenuUiTabController menuUiTabController;
@@ -77,10 +77,10 @@ public class GameController : MonoBehaviour
     public void BuildStateAble()
     {
         buildState = !buildState;
-        if (InfrastructureState)
-        {
-            gameUiMenuController.MenuInfrastructureAble(null); // set all other states false?
-        }
+        //if (InfrastructureState)
+        //{
+        //    gameUiMenuController.MenuInformationAble(null); // set all other states false?
+        //}
 
     }
 

@@ -6,8 +6,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(Image))]   
-public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler 
+public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler, IMenuUi
 {
+    [SerializeField] private Sprite tabBlockSprite;
     [SerializeField] private Sprite tabIdleSprite;
     [SerializeField] private Sprite tabHoverSprite;
     [SerializeField] private Sprite tabActiveSprite;
@@ -18,12 +19,12 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
     public UnityEvent onTabDeselected;
 
     GameController gameController; 
-    MenuUiTabController menuUiController;
+    MenuUiTabController menuUiTabController;
 
     void Awake()
     {
         gameController = FindObjectOfType<GameController>();
-        menuUiController = gameController.MenuUiTabController; 
+        menuUiTabController = gameController.MenuUiTabController; 
         tabBackgroundImage = GetComponent<Image>();
     }
 
@@ -33,23 +34,24 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
     }
     void Start()
     {
-        menuUiController.AddToTabList(this);
-
+        menuUiTabController.AddToUiList(this);
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        menuUiController.OnTabSelected(this); 
+        menuUiTabController.OnTabSelected(this); 
+
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        menuUiController.OnTabEnter(this); 
+        menuUiTabController.OnTabEnter(this);
+        
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        menuUiController.OnTabExit(this);
+        menuUiTabController.OnTabExit(this);
     }
 
     public void SetTabIdleSprite()
@@ -64,7 +66,6 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
     public void SetTabActiveSprite()
     {
         tabBackgroundImage.sprite = tabActiveSprite;
-
     }
 
     public void Select()

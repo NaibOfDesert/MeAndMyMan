@@ -36,11 +36,21 @@ public abstract class Object
     protected int usersMax;
     public int UsersMax { get { return usersMax; } }
 
+    protected int energy;
+    public int Energy { get { return energy; } }
+
+    protected int health;
+    public int Health { get { return health; } }
+
+    protected int healthMax;
+    public int HealthMax { get { return healthMax; } }
+
     public Object()
     {
         objectLevel = ObjectLevel.Level1;
         areaActiveCount = 0;
-        areaDisactiveCount = 0; 
+        areaDisactiveCount = 0;
+        energy = 0;
     }
  
     public virtual void UpgradeObject()

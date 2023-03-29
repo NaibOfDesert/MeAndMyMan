@@ -90,6 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 336055044d3e7b44286ae0dad23e84c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tabBlockSprite: {fileID: 0}
   tabIdleSprite: {fileID: 0}
   tabHoverSprite: {fileID: 0}
   tabActiveSprite: {fileID: 0}
@@ -140,7 +141,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1983465277108427606, guid: 1d8adf3da1e894944a919a5e57fc6d04, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 100
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 1983465277108427606, guid: 1d8adf3da1e894944a919a5e57fc6d04, type: 3}
       propertyPath: m_SizeDelta.y
@@ -176,7 +177,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1983465277108427606, guid: 1d8adf3da1e894944a919a5e57fc6d04, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 50
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1983465277108427606, guid: 1d8adf3da1e894944a919a5e57fc6d04, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -193,6 +194,14 @@ PrefabInstance:
     - target: {fileID: 1983465277108427606, guid: 1d8adf3da1e894944a919a5e57fc6d04, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1983465277108427607, guid: 1d8adf3da1e894944a919a5e57fc6d04, type: 3}
+      propertyPath: m_fontSize
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1983465277108427607, guid: 1d8adf3da1e894944a919a5e57fc6d04, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d8adf3da1e894944a919a5e57fc6d04, type: 3}

@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c79a5c184fca4ed4584439a9e3ef0f56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPlaced: 0
+  infrastructureImage: {fileID: 0}
 --- !u!114 &1690564238224272829
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,7 +116,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7aebfb60d6579344a63a32f14c305cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  infrastructure: {fileID: 0}
 --- !u!114 &4357656884576564851
 MonoBehaviour:
   m_ObjectHideFlags: 0

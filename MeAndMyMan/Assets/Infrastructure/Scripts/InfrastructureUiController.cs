@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InfrastructureUiController : MonoBehaviour
 {
-    [SerializeField] Infrastructure infrastructure;
+    Infrastructure infrastructure;
 
     GameController gameController;
     GameUiMenuController gameUiMenuController;
@@ -25,7 +25,7 @@ public class InfrastructureUiController : MonoBehaviour
     {
         if (infrastructure.IsPlaced)
         {
-            gameUiMenuController.MenuInfrastructureAble(infrastructure);
+            gameUiMenuController.MenuInformationAble(infrastructure);
         }
 
     }

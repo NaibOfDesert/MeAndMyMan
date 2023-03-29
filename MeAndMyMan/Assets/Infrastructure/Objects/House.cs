@@ -18,6 +18,9 @@ public class House: Object
         users = 1;
         usersMax = 8;
         usersMaxBacic = 8;
+        health = 10;
+        healthMax = 10;
+
     }
 
 

@@ -6,7 +6,10 @@ using TMPro;
 
 public class Infrastructure : MonoBehaviour
 {
-    [SerializeField] bool isPlaced;
+    [SerializeField] Sprite infrastructureImage;
+    public Sprite InfrastructureImage { get { return infrastructureImage; } }
+
+    bool isPlaced;
     public bool IsPlaced { get { return isPlaced; }  set { isPlaced = value; } }
 
     int infrastructureSize = 0;
@@ -43,16 +46,11 @@ public class Infrastructure : MonoBehaviour
         infrastructureAudio = GetComponent<InfrastructureAudio>();
         infrastructureUiController = GetComponent<InfrastructureUiController>();
         infrastructureMaterial = meshRenderer.material;
-
-
-
-
     }
 
     void Start()
     {
         infrastructureArea.SetTextRotation();
-
     }
 
     void Update() 
@@ -104,7 +102,6 @@ public class Infrastructure : MonoBehaviour
 
     public void DestroyInfrastructure()
     {
-
         Destroy(gameObject);
     }
 

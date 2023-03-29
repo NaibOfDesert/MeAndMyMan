@@ -171,7 +171,7 @@ public class InfrastructureController : MonoBehaviour
     {
         infrastructure.InfrastructureObject.UpgradeObject();
         gameManager.CalculateBuildInfrastructure(infrastructure.InfrastructureObject.ObjectType, infrastructure.InfrastructureObject.ObjectLevel);
-        StartCoroutine(ImproveInfrastructure(infrastructure));
+        StartCoroutine(ImproveInfrastructure(infrastructure)); // stop all coroutine
     }
 
     public void RebuildInfrastructure(Infrastructure infrastructure)

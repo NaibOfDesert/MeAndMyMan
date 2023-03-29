@@ -46,7 +46,7 @@ public class GameUiController : MonoBehaviour
             }
             else if(gameController.InfrastructureState)
             {
-                gameUiMenuController.MenuInfrastructureAble(null);
+                gameUiMenuController.MenuInformationEnable();
             }
         }
 

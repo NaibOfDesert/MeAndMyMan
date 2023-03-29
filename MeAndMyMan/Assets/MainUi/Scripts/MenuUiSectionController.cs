@@ -1,18 +1,28 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MenuUiSectionController : MonoBehaviour
+
+public class MenuUiSectionController : MonoBehaviour, IMenuUiController
 {
-    [SerializeField] List<MenuUiSection> menuUiInfrastrucutreList;
+    [SerializeField] List<IMenuUi> menuUiSectionList;
+
     void Start()
+    {
+        menuUiSectionList = new List<IMenuUi>();
+    }
+
+
+    void Update()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+  
+
+    public void AddToUiList(IMenuUi menuUiSection)
     {
-        
+        menuUiSectionList.Add(menuUiSection);
     }
 }

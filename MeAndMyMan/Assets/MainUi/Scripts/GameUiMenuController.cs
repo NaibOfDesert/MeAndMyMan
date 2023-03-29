@@ -7,20 +7,22 @@ using System.Linq;
 public class GameUiMenuController : MonoBehaviour
 {
     [Header("MenuSectionObjects")]
-    [SerializeField] GameObject menuUi;
-    [SerializeField] GameObject gameUiAbout;
-    [SerializeField] GameObject gameUiBuild;
-    [SerializeField] GameObject gameUiBuildExit;
+    [SerializeField] MenuUiSection optionsSection;
+    [SerializeField] MenuUiSection gameSection;
+    [SerializeField] MenuUiSection informationDescriptionSection;
+    [SerializeField] MenuUiSection informationValueSection;
+    [SerializeField] MenuUiSection infrastructureSection;
+    [SerializeField] MenuUiSection infrastructureBuildSection;
+    [SerializeField] MenuUiSection infrastructureBuildExitSection;
 
     [Header("InfrastructureStateMenu")]
     [SerializeField] TextMeshProUGUI textInfrastructureName;
     [SerializeField] TextMeshProUGUI textInfrastructureArea;
     [SerializeField] TextMeshProUGUI textInfrastructureLevel;
+    [SerializeField] TextMeshProUGUI textInfrastructureHealth;
     [SerializeField] TextMeshProUGUI textInfrastructureUsers;
-    [SerializeField] TextMeshProUGUI textInfrastructureUsersMax;
-
-    [Header("InfrastructureBuildStateMenu")]
-    [SerializeField] TextMeshProUGUI textInfrastructureBuildName;
+    [SerializeField] TextMeshProUGUI textInfrastructureProduction;
+    [SerializeField] TextMeshProUGUI textInfrastructureEnergy;
 
     [Header("ResourcesMenu")]
     [SerializeField] TextMeshProUGUI textCitizensAmount;
@@ -32,7 +34,6 @@ public class GameUiMenuController : MonoBehaviour
     [SerializeField] TextMeshProUGUI textIronAmount;
 
     Infrastructure infrastructureMenuState;
-
     GameController gameController;
     GameManager gameManager;
     BoardController boardController;
@@ -44,16 +45,15 @@ public class GameUiMenuController : MonoBehaviour
         gameManager = gameController.GameManager; 
         boardController = gameController.BoardController;
         infrastructureController = gameController.InfrastructureController;
-
-
-
     }
 
     void Start()
     {
         infrastructureMenuState = null;
-        gameUiAbout.SetActive(false);
-        gameUiBuildExit.SetActive(false);
+        infrastructureSection.SetSectionEnable();
+        infrastructureBuildExitSection.SetSectionEnable();
+        informationDescriptionSection.SetSectionEnable();
+        informationValueSection.SetSectionEnable();
     }
 
     void Update()
@@ -71,7 +71,6 @@ public class GameUiMenuController : MonoBehaviour
         if (!gameController.BuildState)
         {
             infrastructureController.CreateInfrastructure(ObjectType.House);
-
         }
     }
 
@@ -80,7 +79,6 @@ public class GameUiMenuController : MonoBehaviour
         if (!gameController.BuildState)
         {
             infrastructureController.CreateInfrastructure(ObjectType.Farm);
-
         }
     }
 
@@ -89,7 +87,7 @@ public class GameUiMenuController : MonoBehaviour
         if (infrastructureMenuState != null)
         {
             infrastructureController.DestroyInfrastructure(infrastructureMenuState);
-            MenuInfrastructureAble(null);
+            MenuInformationAble(null);
         }
     }
 
@@ -108,7 +106,7 @@ public class GameUiMenuController : MonoBehaviour
     }
 
     public void UpgradeInfrastructure()
-    {
+    {   
         if (infrastructureMenuState != null)
         {
             infrastructureController.UpgradeInfrastructure(infrastructureMenuState);
@@ -116,18 +114,9 @@ public class GameUiMenuController : MonoBehaviour
         }
     }
 
-    void MenuResourcesUpdate()
-    {
-        textCitizensAmount.text = gameManager.CitizensAmount.ToString();
-        textWorkersAmount.text = gameManager.WorkersAmount.ToString();
-        textGoldAmount.text = gameManager.GoldAmount.ToString();
-        textFoodAmount.text = gameManager.FoodAmount.ToString();
-        textWoodAmount.text = gameManager.WoodAmount.ToString();
-        textStoneAmount.text = gameManager.StoneAmount.ToString();
-        textIronAmount.text = gameManager.IronAmount.ToString();
-    }
 
-    public void MenuInfrastructureAble(Infrastructure infrastructure)
+
+    public void MenuInformationAble(Infrastructure infrastructure)
     {
         if (infrastructure == null)
         {
@@ -138,14 +127,16 @@ public class GameUiMenuController : MonoBehaviour
             textInfrastructureName.text = null;
             textInfrastructureArea.text = null;
             textInfrastructureLevel.text = null;
+            textInfrastructureHealth.text = null;
             textInfrastructureUsers.text = null;
-            textInfrastructureUsersMax.text = null;
+            textInfrastructureProduction.text = null;
+            textInfrastructureEnergy.text = null;
             infrastructureMenuState = null;
 
-            gameUiAbout.SetActive(false); // change to method
+            infrastructureSection.SetSectionEnable(); // change to method
             return;
         }
-        else if (!gameController.BuildState)
+        else if (!gameController.BuildState) // add possibilty to able section i build mode
         {
             if (!gameController.InfrastructureState) gameController.InfrastructureStateAble();
             if (infrastructure != infrastructureMenuState)
@@ -160,12 +151,14 @@ public class GameUiMenuController : MonoBehaviour
                 boardController.SetMaterialForListBlocked(infrastructure.InfrastructureArea.BoardAreaBlockedList);
                 boardController.AbleInfrastructurePlane(infrastructure);
 
-                textInfrastructureName.text = infrastructure.InfrastructureObject.ObjectType.ToString();
-                textInfrastructureArea.text = infrastructure.InfrastructureObject.AreaActiveCount.ToString();
+                textInfrastructureName.text = $"{infrastructure.InfrastructureObject.ObjectType}";
+                textInfrastructureArea.text = $"{infrastructure.InfrastructureObject.AreaActiveCount}/{infrastructure.InfrastructureObject.AreaSize}";
                 MenuInfrastructureUpdateLevel(infrastructure);
+                textInfrastructureHealth.text = $"{infrastructure.InfrastructureObject.Health}/{infrastructure.InfrastructureObject.HealthMax}";
+                textInfrastructureProduction.text = $"{infrastructure.InfrastructureObject.AreaActiveCount}"; // TODO: add method for counting production value 
+                textInfrastructureEnergy.text = $"{infrastructure.InfrastructureObject.Energy}/1";
                 MenuInfrastructureUpdateUsers(infrastructure);
-                textInfrastructureUsersMax.text = infrastructure.InfrastructureObject.UsersMax.ToString();
-                gameUiAbout.SetActive(true); // change to method
+                infrastructureSection.SetSectionAble();
             }
         }
     }
@@ -174,7 +167,7 @@ public class GameUiMenuController : MonoBehaviour
     {
         if (gameController.InfrastructureState && infrastructure == infrastructureMenuState)
         {
-            textInfrastructureUsers.text = infrastructure.InfrastructureObject.Users.ToString();
+            textInfrastructureUsers.text = $"{infrastructure.InfrastructureObject.Users}/{infrastructure.InfrastructureObject.UsersMax}";
         }
     }
 
@@ -185,9 +178,32 @@ public class GameUiMenuController : MonoBehaviour
             int infrastructureLevel = 0;
 
             infrastructureLevel = (int)infrastructure.InfrastructureObject.ObjectLevel;
-            textInfrastructureLevel.text = infrastructureLevel.ToString();
+            textInfrastructureLevel.text = $"{infrastructureLevel}/3";
         }
     }
+
+    public void MenuInformationEnable()
+    {
+        informationDescriptionSection.SetSectionEnable();
+        informationValueSection.SetSectionEnable();
+    }
+
+
+    public void MenuInfrastructureBuildAble()
+    {
+
+    }
+    void MenuResourcesUpdate()
+    {
+        textCitizensAmount.text = gameManager.CitizensAmount.ToString();
+        textWorkersAmount.text = gameManager.WorkersAmount.ToString();
+        textGoldAmount.text = gameManager.GoldAmount.ToString();
+        textFoodAmount.text = gameManager.FoodAmount.ToString();
+        textWoodAmount.text = gameManager.WoodAmount.ToString();
+        textStoneAmount.text = gameManager.StoneAmount.ToString();
+        textIronAmount.text = gameManager.IronAmount.ToString();
+    }
+
 
     public void PauseStateMenusAble()
     {
