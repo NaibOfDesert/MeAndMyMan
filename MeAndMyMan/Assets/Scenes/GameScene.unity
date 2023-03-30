@@ -396,50 +396,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 539442260291146370, guid: f4d341a25a192654fa50ff7c753645b3, type: 3}
   m_PrefabInstance: {fileID: 716070277}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &60517245
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 60517246}
-  - component: {fileID: 60517247}
-  m_Layer: 0
-  m_Name: GameUiController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &60517246
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 60517245}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -960, y: -540, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 353222501}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &60517247
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 60517245}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3332f4f9ad9344443a3a75e448d8f2a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &69510750
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -976,7 +932,7 @@ RectTransform:
   - {fileID: 1587305606}
   - {fileID: 275040051}
   m_Father: {fileID: 353222501}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -2051,7 +2007,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1850989136}
-  - {fileID: 60517246}
   - {fileID: 157687062}
   m_Father: {fileID: 0}
   m_RootOrder: 9
@@ -4334,9 +4289,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameSize: 2
-  buildState: 0
-  infrastructureState: 0
-  pauseState: 0
   menuUiSectionController: {fileID: 0}
 --- !u!4 &911030830
 Transform:
@@ -6141,7 +6093,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1966150085457862040, guid: f4d341a25a192654fa50ff7c753645b3, type: 3}
       propertyPath: m_Name
-      value: GameUiBuildExit
+      value: GameUiBuild
       objectReference: {fileID: 0}
     - target: {fileID: 1966150085457862040, guid: f4d341a25a192654fa50ff7c753645b3, type: 3}
       propertyPath: m_IsActive
@@ -7633,7 +7585,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1966150085457862040, guid: f4d341a25a192654fa50ff7c753645b3, type: 3}
       propertyPath: m_Name
-      value: GameUiBuild
+      value: GameUiManage
       objectReference: {fileID: 0}
     - target: {fileID: 1966150085457862040, guid: f4d341a25a192654fa50ff7c753645b3, type: 3}
       propertyPath: m_IsActive
@@ -10016,11 +9968,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1850989136}
+  - component: {fileID: 1850989140}
   - component: {fileID: 1850989137}
   - component: {fileID: 1850989139}
   - component: {fileID: 1850989138}
   m_Layer: 0
-  m_Name: GameUiMenuController
+  m_Name: GameUiController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10053,13 +10006,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: defa584c1bcc7624da2f27202000ce86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  optionsSection: {fileID: 1587305609}
-  gameSection: {fileID: 275040054}
-  informationDescriptionSection: {fileID: 1542670146}
-  informationValueSection: {fileID: 1437995718}
-  infrastructureSection: {fileID: 975495156}
-  infrastructureBuildSection: {fileID: 1454312644}
-  infrastructureBuildExitSection: {fileID: 1683175527}
   textInfrastructureName: {fileID: 301066370}
   textInfrastructureArea: {fileID: 424740357}
   textInfrastructureLevel: {fileID: 1015872427}
@@ -10074,6 +10020,8 @@ MonoBehaviour:
   textWoodAmount: {fileID: 1956430188}
   textStoneAmount: {fileID: 1459680174}
   textIronAmount: {fileID: 12219386}
+  menuUiState: 0
+  pauseState: 0
 --- !u!114 &1850989138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10086,6 +10034,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20bff4709a38c484fbef61770a4e0e83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  optionsSection: {fileID: 1587305609}
+  gameSection: {fileID: 275040054}
+  informationDescriptionSection: {fileID: 1542670146}
+  informationValueSection: {fileID: 1437995718}
+  infrastructureSection: {fileID: 975495156}
+  infrastructureManageSection: {fileID: 1454312644}
+  infrastructureBuildSection: {fileID: 1683175527}
 --- !u!114 &1850989139
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10096,6 +10051,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1eb483eb009c8104caf6a65c99f23db0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1850989140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1850989135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3332f4f9ad9344443a3a75e448d8f2a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1851469743

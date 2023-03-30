@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameUiController : MonoBehaviour
 {
+
+
     float cameraRotationSpeed = 0.5f;
     float cameraZoomSpeed = 0.5f;
 
@@ -15,7 +17,9 @@ public class GameUiController : MonoBehaviour
     Camera mainCamera;
     GameObject gameCamera;
     GameCameraController gameCameraController;
-    GameUiMenuController gameUiMenuController; 
+    GameUiMenuController gameUiMenuController;
+    MenuUiSectionController menuUiSectionController;
+    MenuUiTabController menuUiTabController;
 
 
     void Awake()
@@ -27,9 +31,17 @@ public class GameUiController : MonoBehaviour
         mainCamera = gameCameraController.gameObject.GetComponentInChildren<Camera>();
         infrastructureController = gameController.InfrastructureController;
         gameUiMenuController = gameController.GameUiMenuController;
+        menuUiSectionController = gameController.MenuUiSectionController;
+        menuUiTabController = gameController.MenuUiTabController;
         boardController = gameController.BoardController;
 
 
+
+    }
+
+    void Start()
+    {
+        gameUiMenuController.ChangeMenuUiState(MenuUiStates.infrastructureState);
 
     }
 
@@ -37,16 +49,14 @@ public class GameUiController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Debug.Log(gameController.InfrastructureState);
-
-
-            if (gameController.BuildState)
+            if (gameUiMenuController.MenuUiState == MenuUiStates.infrastructureBuildState)
             {
                 infrastructureController.DestroyInstantiateInfrastructure();
+                gameUiMenuController.ChangeMenuUiState(MenuUiStates.infrastructureBuildState);
             }
-            else if(gameController.InfrastructureState)
+            else if(gameUiMenuController.MenuUiState == MenuUiStates.infrastructureManageState)
             {
-                gameUiMenuController.MenuInformationEnable();
+                gameUiMenuController.ChangeMenuUiState(MenuUiStates.infrastructureManageState);
             }
         }
 

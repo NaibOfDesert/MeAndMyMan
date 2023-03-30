@@ -3,18 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.Linq;
+using System;
 
 public class GameUiMenuController : MonoBehaviour
 {
-    [Header("MenuSectionObjects")]
-    [SerializeField] MenuUiSection optionsSection;
-    [SerializeField] MenuUiSection gameSection;
-    [SerializeField] MenuUiSection informationDescriptionSection;
-    [SerializeField] MenuUiSection informationValueSection;
-    [SerializeField] MenuUiSection infrastructureSection;
-    [SerializeField] MenuUiSection infrastructureBuildSection;
-    [SerializeField] MenuUiSection infrastructureBuildExitSection;
-
     [Header("InfrastructureStateMenu")]
     [SerializeField] TextMeshProUGUI textInfrastructureName;
     [SerializeField] TextMeshProUGUI textInfrastructureArea;
@@ -33,11 +25,21 @@ public class GameUiMenuController : MonoBehaviour
     [SerializeField] TextMeshProUGUI textStoneAmount;
     [SerializeField] TextMeshProUGUI textIronAmount;
 
-    Infrastructure infrastructureMenuState;
+    [SerializeField] MenuUiStates menuUiState;
+    public MenuUiStates MenuUiState { get { return menuUiState; } set { menuUiState = value; } } //-- ??
+
+    [SerializeField] bool pauseState;
+    public bool PauseState { get { return pauseState; } set { pauseState = value; } }
+
+
+    Infrastructure infrastructureMenu;
     GameController gameController;
     GameManager gameManager;
     BoardController boardController;
     InfrastructureController infrastructureController;
+    GameUiController gameUiController; 
+    MenuUiSectionController menuUiSectionController;
+    MenuUiTabController menuUiTabController;
 
     void Awake()
     {
@@ -45,22 +47,22 @@ public class GameUiMenuController : MonoBehaviour
         gameManager = gameController.GameManager; 
         boardController = gameController.BoardController;
         infrastructureController = gameController.InfrastructureController;
+        gameUiController = gameController.GameUiController;
+        menuUiSectionController = gameController.MenuUiSectionController;
+        menuUiTabController = gameController.MenuUiTabController;
     }
 
     void Start()
     {
-        infrastructureMenuState = null;
-        infrastructureSection.SetSectionEnable();
-        infrastructureBuildExitSection.SetSectionEnable();
-        informationDescriptionSection.SetSectionEnable();
-        informationValueSection.SetSectionEnable();
+        infrastructureMenu = null;
+        ChangeMenuUiState(MenuUiStates.infrastructureState);
     }
 
     void Update()
     {
         MenuResourcesUpdate(); 
 
-        if(infrastructureMenuState != null) 
+        if(infrastructureMenu != null) 
         {
 
         }
@@ -68,131 +70,95 @@ public class GameUiMenuController : MonoBehaviour
 
     public void BuildHouse()
     {
-        if (!gameController.BuildState)
-        {
-            infrastructureController.CreateInfrastructure(ObjectType.House);
-        }
+        BuildInfrastructure(ObjectType.House);
     }
 
     public void BuildFarm()
     {
-        if (!gameController.BuildState)
-        {
-            infrastructureController.CreateInfrastructure(ObjectType.Farm);
-        }
+        BuildInfrastructure(ObjectType.Farm);
     }
 
+    public void BuildInfrastructure(ObjectType objectType)
+    {
+        ChangeMenuUiState(MenuUiStates.infrastructureBuildState);
+        infrastructureController.CreateInfrastructure(objectType);
+
+    }
     public void DeteleInfrastructure()
     {
-        if (infrastructureMenuState != null)
-        {
-            infrastructureController.DestroyInfrastructure(infrastructureMenuState);
-            MenuInformationAble(null);
-        }
+        ChangeMenuUiState(MenuUiStates.infrastructureManageState);
+        infrastructureController.DestroyInfrastructure(infrastructureMenu);
     }
+
 
     public void RebuildInfrastructure()
     {
 
-        if (infrastructureMenuState != null)
+        if (gameManager.CheckRebuildInfrastructure(infrastructureController.CheckAreaToRebuildInfrastructure(infrastructureMenu).Count()))
         {
-            if (gameManager.CheckRebuildInfrastructure(infrastructureController.CheckAreaToRebuildInfrastructure(infrastructureMenuState).Count())) {
-                infrastructureController.UpgradeInfrastructure(infrastructureMenuState);
-                // gameManager. to implement
-            }
-
+            infrastructureController.UpgradeInfrastructure(infrastructureMenu);
+            // gameManager. to implement
         }
         
     }
 
     public void UpgradeInfrastructure()
     {   
-        if (infrastructureMenuState != null)
+        if (infrastructureMenu != null)
         {
-            infrastructureController.UpgradeInfrastructure(infrastructureMenuState);
-            MenuInfrastructureUpdateLevel(infrastructureMenuState); 
+            infrastructureController.UpgradeInfrastructure(infrastructureMenu);
+            MenuInfrastructureUpdateLevel(infrastructureMenu); 
         }
     }
 
-
+    public void ChangeMenuUiState(MenuUiStates menuUiState)
+    {
+        this.menuUiState = menuUiState;
+        menuUiSectionController.MenuInfrastructureStateManage(menuUiState);
+    }
 
     public void MenuInformationAble(Infrastructure infrastructure)
     {
-        if (infrastructure == null)
-        {
-            gameController.InfrastructureStateAble();
-            boardController.SetMaterialForListDefault(infrastructureMenuState.InfrastructureArea.BoardAreaBlockedList);
-            boardController.AbleInfrastructurePlane(infrastructureMenuState);
-            
-            textInfrastructureName.text = null;
-            textInfrastructureArea.text = null;
-            textInfrastructureLevel.text = null;
-            textInfrastructureHealth.text = null;
-            textInfrastructureUsers.text = null;
-            textInfrastructureProduction.text = null;
-            textInfrastructureEnergy.text = null;
-            infrastructureMenuState = null;
+        if (menuUiState != MenuUiStates.infrastructureState) ChangeMenuUiState(MenuUiStates.infrastructureState);
+        if (infrastructureMenu != infrastructure) SetBoardDefault(infrastructureMenu);
 
-            infrastructureSection.SetSectionEnable(); // change to method
-            return;
-        }
-        else if (!gameController.BuildState) // add possibilty to able section i build mode
-        {
-            if (!gameController.InfrastructureState) gameController.InfrastructureStateAble();
-            if (infrastructure != infrastructureMenuState)
-            {   
-                if (infrastructureMenuState != null)
-                {
-                    boardController.SetMaterialForListDefault(infrastructureMenuState.InfrastructureArea.BoardAreaBlockedList);
-                    boardController.AbleInfrastructurePlane(infrastructureMenuState); 
-                }
-                infrastructureMenuState = infrastructure;
-
-                boardController.SetMaterialForListBlocked(infrastructure.InfrastructureArea.BoardAreaBlockedList);
-                boardController.AbleInfrastructurePlane(infrastructure);
-
-                textInfrastructureName.text = $"{infrastructure.InfrastructureObject.ObjectType}";
-                textInfrastructureArea.text = $"{infrastructure.InfrastructureObject.AreaActiveCount}/{infrastructure.InfrastructureObject.AreaSize}";
-                MenuInfrastructureUpdateLevel(infrastructure);
-                textInfrastructureHealth.text = $"{infrastructure.InfrastructureObject.Health}/{infrastructure.InfrastructureObject.HealthMax}";
-                textInfrastructureProduction.text = $"{infrastructure.InfrastructureObject.AreaActiveCount}"; // TODO: add method for counting production value 
-                textInfrastructureEnergy.text = $"{infrastructure.InfrastructureObject.Energy}/1";
-                MenuInfrastructureUpdateUsers(infrastructure);
-                infrastructureSection.SetSectionAble();
-            }
-        }
+        infrastructureMenu = infrastructure;
+        MenuInfrastructureSetValues(infrastructure);
     }
 
-    public void MenuInfrastructureUpdateUsers(Infrastructure infrastructure)
+    public void SetBoardDefault(Infrastructure infrastructure)
     {
-        if (gameController.InfrastructureState && infrastructure == infrastructureMenuState)
+        try
         {
-            textInfrastructureUsers.text = $"{infrastructure.InfrastructureObject.Users}/{infrastructure.InfrastructureObject.UsersMax}";
+            boardController.SetMaterialForListDefault(infrastructure.InfrastructureArea.BoardAreaBlockedList);
+            boardController.AbleInfrastructurePlane(infrastructure);
         }
+        catch (Exception e)
+        {
+            throw new ArgumentNullException("{0} Exception caught.", e);
+        }
+
+    }
+
+    public void MenuInfrastructureSetValues(Infrastructure infrastructure)
+    {
+        textInfrastructureName.text = $"{infrastructure.InfrastructureObject.ObjectType}";
+        textInfrastructureArea.text = $"{infrastructure.InfrastructureObject.AreaActiveCount}/{infrastructure.InfrastructureObject.AreaSize}";
+        textInfrastructureUsers.text = $"{infrastructure.InfrastructureObject.Users}/{infrastructure.InfrastructureObject.UsersMax}";
+        textInfrastructureHealth.text = $"{infrastructure.InfrastructureObject.Health}/{infrastructure.InfrastructureObject.HealthMax}";
+        textInfrastructureProduction.text = $"{infrastructure.InfrastructureObject.AreaActiveCount}"; // TODO: add method for counting production value 
+        textInfrastructureEnergy.text = $"{infrastructure.InfrastructureObject.Energy}/1";
+        MenuInfrastructureUpdateLevel(infrastructure);
     }
 
     public void MenuInfrastructureUpdateLevel(Infrastructure infrastructure)
     {
-        if (gameController.InfrastructureState && infrastructure == infrastructureMenuState)
-        {
-            int infrastructureLevel = 0;
+        int infrastructureLevel = 0;
 
-            infrastructureLevel = (int)infrastructure.InfrastructureObject.ObjectLevel;
-            textInfrastructureLevel.text = $"{infrastructureLevel}/3";
-        }
+        infrastructureLevel = (int)infrastructure.InfrastructureObject.ObjectLevel;
+        textInfrastructureLevel.text = $"{infrastructureLevel}/3";
     }
 
-    public void MenuInformationEnable()
-    {
-        informationDescriptionSection.SetSectionEnable();
-        informationValueSection.SetSectionEnable();
-    }
-
-
-    public void MenuInfrastructureBuildAble()
-    {
-
-    }
     void MenuResourcesUpdate()
     {
         textCitizensAmount.text = gameManager.CitizensAmount.ToString();

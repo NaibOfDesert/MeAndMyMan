@@ -11,17 +11,19 @@ public class MouseController : MonoBehaviour
 
     GameController gameController;
     InfrastructureController infrastructureController;
+    GameUiMenuController gameUiMenuController; 
     void Awake()
     {
         gameController = FindObjectOfType<GameController>();
         infrastructureController = gameController.InfrastructureController;
+        gameUiMenuController = gameController.GameUiMenuController;
     }
 
     void Update()
     {
         worldPosition = GetWorldPositionInt(infrastructureController.InfrastructureLayersToHit);
 
-        if (gameController.BuildState) // as second?
+        if (gameUiMenuController.MenuUiState == MenuUiStates.infrastructureBuildState) // as second?
         {
             if (Input.GetMouseButtonDown(0))
             {

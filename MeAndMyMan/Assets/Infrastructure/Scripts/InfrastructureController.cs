@@ -68,7 +68,7 @@ public class InfrastructureController : MonoBehaviour
         }
 
         Object infrastructureObject;
-        gameController.BuildStateAble();
+        // gameController.BuildStateAble();
 
         switch (objectType)
         {
@@ -103,7 +103,7 @@ public class InfrastructureController : MonoBehaviour
     public void DestroyInstantiateInfrastructure()
     {
 
-        gameController.BuildStateAble();
+        // gameController.BuildStateAble();
         boardController.QuitBuildState();
         newInfrastructure.DestroyInfrastructure();
         newInfrastructure = null;
@@ -113,7 +113,7 @@ public class InfrastructureController : MonoBehaviour
     {
         if (!newInfrastructure.InfrastructureArea.BoardList.Any(n => n.IsUsedByInfrastructure == true) && newInfrastructure.InfrastructureArea.BoardList.Count() == Mathf.Pow(newInfrastructure.InfrastructureSize, 2)) /// implemented as square objects
         {
-            gameController.BuildStateAble();
+            // gameController.BuildStateAble();
             gameManager.CalculateBuildInfrastructure(newInfrastructure.InfrastructureObject.ObjectType, newInfrastructure.InfrastructureObject.ObjectLevel);
             newInfrastructure.SetInfrastructure();
             StartCoroutine(ImproveInfrastructure(newInfrastructure));
@@ -225,7 +225,7 @@ public class InfrastructureController : MonoBehaviour
                 WaitUnitlEndOfApuse();  //TODO: implemet
                 infrastructure.InfrastructureObject.DevelopeObject();
                 gameManager.AddUsers(infrastructure); 
-                gameUiMenuController.MenuInfrastructureUpdateUsers(infrastructure); 
+                gameUiMenuController.MenuInformationAble(infrastructure); 
 
                 yield return new WaitForSecondsRealtime(infrastructure.InfrastructureObject.ImprovementTime);
                 StartCoroutine(ImproveInfrastructure(infrastructure));

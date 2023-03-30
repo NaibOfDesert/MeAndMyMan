@@ -37,11 +37,7 @@ public class MenuUiSection : MonoBehaviour, IMenuUi
     }
     public void SetSectionAble()
     {
-        this.gameObject.SetActive(true);
+        this.gameObject.SetActive(!this.gameObject.activeSelf);
     }
 
-    public void SetSectionEnable()
-    {
-        this.gameObject.SetActive(false);
-    }
 }

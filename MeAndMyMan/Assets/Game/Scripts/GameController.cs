@@ -11,15 +11,6 @@ public class GameController : MonoBehaviour
     [SerializeField] int gameSize;
     public int GameSize { get { return gameSize; } }
 
-    [SerializeField] bool buildState;
-    public bool BuildState { get { return buildState; } set { buildState = value; } } //-- ??
-
-    [SerializeField] bool infrastructureState; // to check
-    public bool InfrastructureState { get { return infrastructureState; } set { infrastructureState = value; } }
-
-    [SerializeField] bool pauseState;
-    public bool PauseState { get { return pauseState; } set { pauseState = value; } }
-
     GameManager gameManager;
     public GameManager GameManager { get { return gameManager; } }
 
@@ -40,6 +31,9 @@ public class GameController : MonoBehaviour
 
     MouseController mouseController;
     public MouseController MouseController { get { return mouseController; } }
+    
+    GameUiController gameUiController;
+    public GameUiController GameUiController { get { return gameUiController; } }
 
     GameUiMenuController gameUiMenuController;
     public GameUiMenuController GameUiMenuController { get { return gameUiMenuController; } }
@@ -57,6 +51,7 @@ public class GameController : MonoBehaviour
         mouseController = FindObjectOfType<MouseController>();
         gameCameraController = FindObjectOfType<GameCameraController>();
         gameCamera = gameCameraController.gameObject;
+        gameUiController = FindObjectOfType<GameUiController>();
         gameUiMenuController = FindObjectOfType<GameUiMenuController>();
         menuUiSectionController = FindObjectOfType<MenuUiSectionController>();
         menuUiTabController = FindObjectOfType<MenuUiTabController>();
@@ -64,38 +59,15 @@ public class GameController : MonoBehaviour
         infrastructureController = FindObjectOfType<InfrastructureController>();
         gameManager = new GameManager(this, infrastructureController, BoardController);
         gameManager.SetCosts();
-        InfrastructureStateAble(); ///  to comment in final version
     }
 
     void Start()
     {
-        buildState = false;
-        infrastructureState = false;
-        pauseState = false;
-    }
 
-    public void BuildStateAble()
-    {
-        buildState = !buildState;
-        //if (InfrastructureState)
-        //{
-        //    gameUiMenuController.MenuInformationAble(null); // set all other states false?
-        //}
+
+
 
     }
 
-    public void PauseStateAble()
-    {
-        pauseState = !pauseState;
-        gameUiMenuController.PauseStateMenusAble(); 
-
-    }
-
-    public void InfrastructureStateAble()
-    {
-        Debug.Log("infrastructure state change");
-
-        infrastructureState = !infrastructureState;
-    }
 
 }
