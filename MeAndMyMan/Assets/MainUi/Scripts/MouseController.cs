@@ -27,6 +27,7 @@ public class MouseController : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
+                gameUiMenuController.ChangeMenuUiState(MenuUiStates.infrastructureBuildState);
                 infrastructureController.BuildNewInfrastructure(worldPosition);
             }
         }

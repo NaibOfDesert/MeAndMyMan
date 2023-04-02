@@ -25,7 +25,7 @@ public class InfrastructureUiController : MonoBehaviour
     {
         if (infrastructure.IsPlaced)
         {
-            gameUiMenuController.MenuInformationAble(infrastructure);
+            gameUiMenuController.MenuInformationSet(infrastructure);
         }
 
     }

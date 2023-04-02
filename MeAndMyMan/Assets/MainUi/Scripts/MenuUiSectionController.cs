@@ -43,7 +43,7 @@ public class MenuUiSectionController : MonoBehaviour, IMenuUiController
     }
 
 
-    void MenuInformationEnable()
+    void MenuInformationAble()
     {
         informationDescriptionSection.SetSectionAble();
         informationValueSection.SetSectionAble();
@@ -80,6 +80,7 @@ public class MenuUiSectionController : MonoBehaviour, IMenuUiController
                 {
                     InfrastructureSectionAble();
                     InfrastructureManageSectionAble();
+                    MenuInformationAble();
                     break;
                 }
             case MenuUiStates.infrastructureBuildState:

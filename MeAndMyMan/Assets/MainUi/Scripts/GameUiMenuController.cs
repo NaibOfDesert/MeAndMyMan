@@ -64,7 +64,7 @@ public class GameUiMenuController : MonoBehaviour
 
         if(infrastructureMenu != null) 
         {
-
+            MenuInfrastructureSetValues(infrastructureMenu);
         }
     }
 
@@ -113,14 +113,21 @@ public class GameUiMenuController : MonoBehaviour
 
     public void ChangeMenuUiState(MenuUiStates menuUiState)
     {
+        if (this.menuUiState == menuUiState)
+        {
+            this.menuUiState = MenuUiStates.infrastructureState;
+            menuUiSectionController.MenuInfrastructureStateManage(menuUiState);
+            return; 
+        }
         this.menuUiState = menuUiState;
-        menuUiSectionController.MenuInfrastructureStateManage(menuUiState);
+
     }
 
-    public void MenuInformationAble(Infrastructure infrastructure)
+    public void MenuInformationSet(Infrastructure infrastructure)
     {
-        if (menuUiState != MenuUiStates.infrastructureState) ChangeMenuUiState(MenuUiStates.infrastructureState);
-        if (infrastructureMenu != infrastructure) SetBoardDefault(infrastructureMenu);
+        // TODO: to update
+        if (menuUiState != MenuUiStates.infrastructureManageState) ChangeMenuUiState(MenuUiStates.infrastructureManageState);
+        if (infrastructureMenu != infrastructure && infrastructureMenu != null) SetBoardDefault(infrastructureMenu);
 
         infrastructureMenu = infrastructure;
         MenuInfrastructureSetValues(infrastructure);
@@ -128,16 +135,8 @@ public class GameUiMenuController : MonoBehaviour
 
     public void SetBoardDefault(Infrastructure infrastructure)
     {
-        try
-        {
-            boardController.SetMaterialForListDefault(infrastructure.InfrastructureArea.BoardAreaBlockedList);
-            boardController.AbleInfrastructurePlane(infrastructure);
-        }
-        catch (Exception e)
-        {
-            throw new ArgumentNullException("{0} Exception caught.", e);
-        }
-
+        boardController.SetMaterialForListDefault(infrastructure.InfrastructureArea.BoardAreaBlockedList);
+        boardController.AbleInfrastructurePlane(infrastructure);
     }
 
     public void MenuInfrastructureSetValues(Infrastructure infrastructure)
@@ -171,7 +170,7 @@ public class GameUiMenuController : MonoBehaviour
     }
 
 
-    public void PauseStateMenusAble()
+    public void PauseStateMSet()
     {
         // PauseAllCoroutines(); 
         // PauseAllAnimations(); 
