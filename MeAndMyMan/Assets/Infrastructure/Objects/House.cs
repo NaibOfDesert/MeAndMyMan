@@ -6,11 +6,21 @@ using System.Threading.Tasks;
 
 public class House: Object
 {
-    int resident;
 
-    public House(ObjectType objectType, int areaSize, ObjectLevel objectLevel) : base(objectType, areaSize, objectLevel)
+
+
+    public House() : base()
     {
-        resident = 1; 
+        objectType = ObjectType.House;
+        size = 1;
+        areaSize = 0;
+        improvementTime = 1;
+        users = 1;
+        usersMax = 8;
+        usersMaxBacic = 8;
+        health = 10;
+        healthMax = 10;
+
     }
 
 

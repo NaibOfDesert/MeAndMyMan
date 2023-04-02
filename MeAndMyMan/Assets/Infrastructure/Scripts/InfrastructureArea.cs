@@ -12,12 +12,24 @@ public class InfrastructureArea : MonoBehaviour
 
     GameController gameController; // shoud be taken from Infrastructure or GetFind in here??
 
+    List<Tile> boardList; 
+    public List<Tile> BoardList { get { return boardList; } set { boardList = value; } } 
+
+    [SerializeField] List<Tile> boardAreaList; 
+    public List<Tile> BoardAreaList { get { return boardAreaList; } set { boardAreaList = value; } } 
+
+    [SerializeField] List<Tile> boardAreaBlockedList; //++to implement 
+    public List<Tile> BoardAreaBlockedList { get { return boardAreaBlockedList; } set { boardAreaBlockedList = value; } }
     void Awake()
     {
         gameController = FindObjectOfType<GameController>();
         infrastructure = GetComponentInParent<Infrastructure>();
         textCount = GetComponentInChildren<TextMeshPro>();
 
+
+        boardList = new List<Tile>();
+        boardAreaList = new List<Tile>();
+        boardAreaBlockedList = new List<Tile>();
     }
 
     public void SetTextRotation()
@@ -25,9 +37,16 @@ public class InfrastructureArea : MonoBehaviour
         textCount.transform.LookAt(gameController.GameCamera.transform); // to fix
     }
 
-    public void SetAreaValue(List <Tile> boardAreaList) 
+    public void SetAreaLists() /// rebuild
     {
-        boardAreaList.RemoveAll(n => n.IsUsedByInfrastructureArea == true);
+        boardAreaBlockedList = boardAreaList.FindAll(n => n.IsUsedByInfrastructure == true || n.IsUsedByInfrastructureArea == true); //??? is ONLY used by instrastrucutre
+        infrastructure.InfrastructureObject.AreaDisactiveCount = boardAreaBlockedList.Count();
+        boardAreaList.RemoveAll(n => n.IsUsedByInfrastructure == true || n.IsUsedByInfrastructureArea == true); //??? is ONLY used by instrastrucutre
+        SetAreaValue(); 
+    }
+
+    public void SetAreaValue() /// rebuild
+    {
         infrastructure.InfrastructureObject.AreaActiveCount = boardAreaList.Count();
         textCount.text = $"{boardAreaList.Count() }";
     }
@@ -35,6 +54,18 @@ public class InfrastructureArea : MonoBehaviour
     public void TextAreaValueAble() 
     {
         textCount.enabled = !textCount.enabled;
+    }
+
+    public void SetAreaAsBlocked(Tile tile)
+    {
+        boardAreaList.Remove(tile);
+        boardAreaBlockedList.Add(tile);
+        SetAreaValue();
+    }
+
+    public void SetAreaAsActive()
+    {
+
     }
 
 }

@@ -2,24 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System.Threading.Tasks;
 
 public class InfrastructureController : MonoBehaviour
 {
     [Header("Prefabs")]
     [SerializeField] GameObject housePrefab;
-    public GameObject HousePrefab { get { return housePrefab; } }
-    int houseSize = 1;
-    int houseAreaSize = 0;
+    public GameObject HousePrefab { get { return housePrefab; } } // TODO: check is needed? 
+
     List<Infrastructure> houseList;
+
     public List<Infrastructure> HouseList { get { return houseList; } }
 
-
     [SerializeField] GameObject farmPrefab;
-    public GameObject FarmPrefab { get { return farmPrefab; } }
-    int farmSize = 2;
-    int farmAreaSize = 1;
-    List<Infrastructure> farmList;
-    public List<Infrastructure> FarmList { get { return farmList; } }
+    public GameObject FarmPrefab { get { return farmPrefab; } } // TODO: check is needed? 
+
+    [SerializeField] List<Infrastructure> farmList;
+    public List<Infrastructure> FarmList { get { return farmList; } } 
 
 
     [Header("Infrastructure")]
@@ -42,14 +41,18 @@ public class InfrastructureController : MonoBehaviour
     public Infrastructure NewInfrastructure { get { return newInfrastructure; } set { newInfrastructure = value; } }
 
     GameController gameController;
+    GameManager gameManager;
+    MouseController mouseController;
+    GameUiMenuController gameUiMenuController;
     BoardController boardController;
-    MouseController mouseController; 
 
     void Awake()
     {
         gameController = FindObjectOfType<GameController>();
-        boardController = gameController.BoardController;
+        gameManager = gameController.GameManager;
         mouseController = gameController.MouseController;
+        gameUiMenuController = gameController.GameUiMenuController;
+        boardController = gameController.BoardController;
 
         houseList = new List<Infrastructure>();
         farmList = new List<Infrastructure>();
@@ -58,28 +61,32 @@ public class InfrastructureController : MonoBehaviour
 
     public void CreateInfrastructure(ObjectType objectType)
     {
-        Object infrastructureObject;
-        gameController.BuildStateAble();
+        if(!gameManager.CheckBuildInfrastructure(objectType, ObjectLevel.Level1))
+        {
+            // throw new System.ArgumentOutOfRangeException(); // check
+            return; 
+        }
 
+        Object infrastructureObject;
+        // gameController.BuildStateAble();
 
         switch (objectType)
         {
             
             case ObjectType.House:
-                infrastructureObject = new House(objectType, houseAreaSize, ObjectLevel.Level1);
-                InstantiateInfrastructure(housePrefab, infrastructureObject, houseSize);
+                infrastructureObject = new House();
+                InstantiateInfrastructure(housePrefab, infrastructureObject, infrastructureObject.Size);
 
                 break;
             case ObjectType.Farm:
-                infrastructureObject = new Farm(objectType, farmAreaSize, ObjectLevel.Level1);
-                InstantiateInfrastructure(farmPrefab, infrastructureObject, farmSize);
+                infrastructureObject = new Farm();
+                InstantiateInfrastructure(farmPrefab, infrastructureObject, infrastructureObject.Size);
 
                 break;
             default:
                 Debug.Log("CreateInfrastructure error");
                 break;
         }
-
     }
 
     Infrastructure InstantiateInfrastructure(GameObject prefabObject, Object infrastructureObject, int infrastructureSize)
@@ -93,28 +100,27 @@ public class InfrastructureController : MonoBehaviour
         return newInfrastructure; 
     }
 
-    public void BuildInfrastructure(Vector3 worldPosition)
+    public void DestroyInstantiateInfrastructure()
     {
-        if (!newInfrastructure.BoardList.Any(n => n.IsUsedByInfrastructure == true) && newInfrastructure.BoardList.Count() == Mathf.Pow(newInfrastructure.InfrastructureSize, 2)) /// implemented as square objects
+
+        // gameController.BuildStateAble();
+        boardController.QuitBuildState();
+        newInfrastructure.DestroyInfrastructure();
+        newInfrastructure = null;
+    }
+
+    public void BuildNewInfrastructure(Vector3 worldPosition)
+    {
+        if (!newInfrastructure.InfrastructureArea.BoardList.Any(n => n.IsUsedByInfrastructure == true) && newInfrastructure.InfrastructureArea.BoardList.Count() == Mathf.Pow(newInfrastructure.InfrastructureSize, 2)) /// implemented as square objects
         {
-
-
-            gameController.BuildStateAble();
-
+            gameManager.CalculateBuildInfrastructure(newInfrastructure.InfrastructureObject.ObjectType, newInfrastructure.InfrastructureObject.ObjectLevel);
             newInfrastructure.SetInfrastructure();
-            boardController.BoardAreaSetAsUsedByInfrastructure(newInfrastructure.BoardList, newInfrastructure);
-            boardController.BoardAreaSetAsUsedByInfrastructureArea(newInfrastructure.BoardAreaList, newInfrastructure);
-
-            // Debug.Log("Build board area list" + newInfrastructure.BoardAreaList.Count());
-            // Debug.Log("Build board list" + newInfrastructure.BoardList.Count());
+            StartCoroutine(ImproveInfrastructure(newInfrastructure));
+            boardController.BoardAreaSetAsUsedByInfrastructure(newInfrastructure.InfrastructureArea.BoardList, newInfrastructure);
+            boardController.BoardAreaSetAsUsedByInfrastructureArea(newInfrastructure.InfrastructureArea.BoardAreaList, newInfrastructure);
             boardController.EndBuildState();
-
-
-            newInfrastructure = null;
-
             AddNewInfrastructureToList();
-
-            // gameController.BuildState = false;
+            newInfrastructure = null;
         }
     }
 
@@ -125,7 +131,7 @@ public class InfrastructureController : MonoBehaviour
             switch (newInfrastructure.InfrastructureObject.ObjectType)
             {
                 case ObjectType.House:
-                    houseList.Add(newInfrastructure); 
+                    houseList.Add(newInfrastructure);
                     break;
 
                 case ObjectType.Farm:
@@ -145,7 +151,7 @@ public class InfrastructureController : MonoBehaviour
         {
             switch (infrastructure.InfrastructureObject.ObjectType)
             {
-                case ObjectType.House:
+                case ObjectType.House:  
                     houseList.Remove(infrastructure);
                     break;
 
@@ -160,34 +166,75 @@ public class InfrastructureController : MonoBehaviour
         }
     }
 
-    public void DestroyNewInfrastructure()
+    public void UpgradeInfrastructure(Infrastructure infrastructure)
     {
-
-        gameController.BuildStateAble();
-        boardController.QuitBuildState();
-        newInfrastructure.DestroyInfrastructure(); 
-        //  Destroy(newInfrastructure.gameObject);
-        newInfrastructure = null;
+        infrastructure.InfrastructureObject.UpgradeObject();
+        gameManager.CalculateBuildInfrastructure(infrastructure.InfrastructureObject.ObjectType, infrastructure.InfrastructureObject.ObjectLevel);
+        StartCoroutine(ImproveInfrastructure(infrastructure)); // stop all coroutine
     }
 
-    public void UpgradeInfrastructure()
+    public void RebuildInfrastructure(Infrastructure infrastructure)
     {
+        //++
+        // to add in infArea change Lists
+
+        // callout board change
+        
+
+
 
     }
 
+    public List<Tile> CheckAreaToRebuildInfrastructure(Infrastructure infrastructure)
+    {
+        List<Tile> areaListToRebuild = infrastructure.InfrastructureArea.BoardAreaBlockedList;
+        areaListToRebuild.RemoveAll(n => n.IsUsedByInfrastructure == true); 
+        return areaListToRebuild; 
+    }
 
     public void DestroyInfrastructure(Infrastructure infrastructure)
     {
-        // RemoveInfrastructureFromList(infrastructure);
-        Debug.Log("destroy board area list" + infrastructure.BoardAreaList.Count());
-        Debug.Log("destroy board list" + infrastructure.BoardList.Count());
-        boardController.SetDefaultInfrastructure(infrastructure.BoardList);
-        boardController.SetDefaultInfrastructureArea(infrastructure.BoardAreaList);
-        infrastructure.DestroyInfrastructure();
+        try
+        {
+            StopCoroutine(ImproveInfrastructure(infrastructure));
+        }
+        catch 
+        {
+            //TODO: event system
+        }
 
+        gameManager.CalculateDeleteInfrastructure(infrastructure);
+        boardController.SetDefaultInfrastructure(infrastructure.InfrastructureArea.BoardList);
+        boardController.SetDefaultInfrastructureArea(infrastructure.InfrastructureArea.BoardAreaList);
+        RemoveInfrastructureFromList(infrastructure);
+        infrastructure.DestroyInfrastructure();
     }
 
+    public IEnumerator ImproveInfrastructure(Infrastructure infrastructure) // create switch
+    {   
+        if (infrastructure != null)
+        {
+            
+            if (!infrastructure.InfrastructureObject.DevelopeObjectIsAble()) 
+            {
+                StopCoroutine(ImproveInfrastructure(infrastructure));             
+            }
+            else 
+            {
+                WaitUnitlEndOfApuse();  //TODO: implemet async
+                infrastructure.InfrastructureObject.DevelopeObject();
+                gameManager.AddUsers(infrastructure); 
 
+                yield return new WaitForSecondsRealtime(infrastructure.InfrastructureObject.ImprovementTime);
+                StartCoroutine(ImproveInfrastructure(infrastructure));
+            }
+        }
+    }
 
+    private async Task WaitUnitlEndOfApuse()
+    {
+       // to add await or wait until?????????????
+
+    }
 }
 

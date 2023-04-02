@@ -6,12 +6,23 @@ using System.Threading.Tasks;
 
 public class Farm : Object
 {
-
-    public Farm(ObjectType objectType, int areaSize, ObjectLevel objectLevel) : base(objectType, areaSize, objectLevel)
+    public Farm() : base()
     {
+        objectType = ObjectType.Farm;
+        size = 2;
+        areaSize = 1;
+        improvementTime = 2; 
+        users = 1;
+        usersMax = 12;
+        usersMaxBacic = 12;
+        health = 20;
+        healthMax = 20;
 
+    }
 
-
+    public override void UpgradeObject()
+    {
+        base.UpgradeObject();
     }
 
 }

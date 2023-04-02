@@ -2,28 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// TODO:
+
+// NOTE: 
 public class GameController : MonoBehaviour
 {
     [SerializeField] int gameSize;
     public int GameSize { get { return gameSize; } }
 
-    [SerializeField] bool buildState;
-    public bool BuildState { get { return buildState; } set { buildState = value; } } //-- ??
-
-    [SerializeField] bool infrastructureState;
-    public bool InfrastructureState { get { return infrastructureState; } set { infrastructureState = value; } }
-
     GameManager gameManager;
     public GameManager GameManager { get { return gameManager; } }
+
+    GameTimeController gameTimeController;
+    public GameTimeController GameTimeController { get { return gameTimeController; } }
 
     InfrastructureController infrastructureController;
     public InfrastructureController InfrastructureController { get { return infrastructureController; } }
 
-    [SerializeField] BoardController boardController;
+    BoardController boardController;
     public BoardController BoardController { get { return boardController; } }
 
     GameCameraController gameCameraController;
-
     public GameCameraController GameCameraController { get { return gameCameraController; } }
 
     GameObject gameCamera;
@@ -31,44 +31,43 @@ public class GameController : MonoBehaviour
 
     MouseController mouseController;
     public MouseController MouseController { get { return mouseController; } }
+    
+    GameUiController gameUiController;
+    public GameUiController GameUiController { get { return gameUiController; } }
 
     GameUiMenuController gameUiMenuController;
     public GameUiMenuController GameUiMenuController { get { return gameUiMenuController; } }
 
+    [SerializeField] MenuUiSectionController menuUiSectionController;
+    public MenuUiSectionController MenuUiSectionController { get { return menuUiSectionController; } }
+
+    MenuUiTabController menuUiTabController;
+    public MenuUiTabController MenuUiTabController { get { return menuUiTabController; } }
 
 
     void Awake()
     {
-        gameManager = new GameManager(this);
-        infrastructureController = FindObjectOfType<InfrastructureController>();
-        boardController = FindObjectOfType<BoardController>();
+        gameTimeController = FindObjectOfType<GameTimeController>();
         mouseController = FindObjectOfType<MouseController>();
         gameCameraController = FindObjectOfType<GameCameraController>();
+        gameCamera = gameCameraController.gameObject;
+        gameUiController = FindObjectOfType<GameUiController>();
         gameUiMenuController = FindObjectOfType<GameUiMenuController>();
-
-        gameCamera = gameCameraController.gameObject; 
+        menuUiSectionController = FindObjectOfType<MenuUiSectionController>();
+        menuUiTabController = FindObjectOfType<MenuUiTabController>();
+        boardController = FindObjectOfType<BoardController>();
+        infrastructureController = FindObjectOfType<InfrastructureController>();
+        gameManager = new GameManager(this, infrastructureController, BoardController);
+        gameManager.SetCosts();
     }
 
     void Start()
     {
-        buildState = false;
-        infrastructureState = false;
-    }
 
-    public void BuildStateAble()
-    {
-        buildState = !buildState;
-        if (InfrastructureState)
-        {
-            InfrastructureStateAble();
-            gameUiMenuController.MenuInfrastructureAble(null); // set all other states false?
-        }
+
+
 
     }
 
-    public void InfrastructureStateAble()
-    {
-        infrastructureState = !infrastructureState;
-    }
 
 }
