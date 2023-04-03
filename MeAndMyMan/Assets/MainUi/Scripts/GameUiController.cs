@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class GameUiController : MonoBehaviour
 {
-
-
     float cameraRotationSpeed = 0.5f;
     float cameraZoomSpeed = 0.5f;
 
@@ -13,7 +11,6 @@ public class GameUiController : MonoBehaviour
     MouseController mouseController;
     InfrastructureController infrastructureController;
     BoardController boardController;
-    
     Camera mainCamera;
     GameObject gameCamera;
     GameCameraController gameCameraController;
@@ -41,7 +38,8 @@ public class GameUiController : MonoBehaviour
 
     void Start()
     {
-        gameUiMenuController.ChangeMenuUiState(MenuUiStates.infrastructureState);
+       
+
 
     }
 
@@ -54,9 +52,9 @@ public class GameUiController : MonoBehaviour
                 infrastructureController.DestroyInstantiateInfrastructure();
                 gameUiMenuController.ChangeMenuUiState(MenuUiStates.infrastructureBuildState);
             }
-            else if(gameUiMenuController.MenuUiState == MenuUiStates.infrastructureManageState)
+            if(gameUiMenuController.MenuUiState == MenuUiStates.infrastructureAboutState)
             {
-                gameUiMenuController.ChangeMenuUiState(MenuUiStates.infrastructureManageState);
+                gameUiMenuController.ChangeMenuUiState(MenuUiStates.infrastructureAboutState);
             }
         }
 

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -413,7 +413,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 539442260291146370, guid: f4d341a25a192654fa50ff7c753645b3, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 539442260291146370, guid: f4d341a25a192654fa50ff7c753645b3, type: 3}
       propertyPath: m_AnchorMax.x
@@ -7509,7 +7509,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 539442260291146370, guid: f4d341a25a192654fa50ff7c753645b3, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 539442260291146370, guid: f4d341a25a192654fa50ff7c753645b3, type: 3}
       propertyPath: m_AnchorMax.x
@@ -9903,6 +9903,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameUiInfrastructures
       objectReference: {fileID: 0}
+    - target: {fileID: 1966150085457862040, guid: f4d341a25a192654fa50ff7c753645b3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6218966140134609381, guid: f4d341a25a192654fa50ff7c753645b3, type: 3}
       propertyPath: m_CellSize.x
       value: 40
@@ -10038,8 +10042,8 @@ MonoBehaviour:
   gameSection: {fileID: 275040054}
   informationDescriptionSection: {fileID: 1542670146}
   informationValueSection: {fileID: 1437995718}
-  infrastructureSection: {fileID: 975495156}
   infrastructureManageSection: {fileID: 1454312644}
+  infrastructureAboutSection: {fileID: 975495156}
   infrastructureBuildSection: {fileID: 1683175527}
 --- !u!114 &1850989139
 MonoBehaviour:

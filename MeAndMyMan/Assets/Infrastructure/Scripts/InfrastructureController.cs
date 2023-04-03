@@ -28,15 +28,13 @@ public class InfrastructureController : MonoBehaviour
     [Header("Infrastructure")]
     [SerializeField] Material redMaterial;
     public Material RedMaterial { get { return redMaterial; } }
-
     [SerializeField] Material greenMaterial;
     public Material GreenMaterial { get { return greenMaterial; } }
-
     [SerializeField] Material greyMaterial;
     public Material GreyMaterial { get { return greyMaterial; } }
 
     List<float> infrastructureRotationsList;
-    
+
     Infrastructure newInfrastructure;
     public Infrastructure NewInfrastructure { get { return newInfrastructure; } set { newInfrastructure = value; } }
 
@@ -72,7 +70,6 @@ public class InfrastructureController : MonoBehaviour
 
         switch (objectType)
         {
-            
             case ObjectType.House:
                 infrastructureObject = new House();
                 InstantiateInfrastructure(housePrefab, infrastructureObject, infrastructureObject.Size);
@@ -102,8 +99,6 @@ public class InfrastructureController : MonoBehaviour
 
     public void DestroyInstantiateInfrastructure()
     {
-
-        // gameController.BuildStateAble();
         boardController.QuitBuildState();
         newInfrastructure.DestroyInfrastructure();
         newInfrastructure = null;

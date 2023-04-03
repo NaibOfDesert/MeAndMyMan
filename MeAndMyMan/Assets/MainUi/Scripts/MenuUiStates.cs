@@ -1,6 +1,6 @@
 ﻿public enum MenuUiStates
 {
-    infrastructureState,
+    infrastructureAboutState,
     infrastructureManageState,
     infrastructureBuildState
 

@@ -55,7 +55,9 @@ public class GameUiMenuController : MonoBehaviour
     void Start()
     {
         infrastructureMenu = null;
-        ChangeMenuUiState(MenuUiStates.infrastructureState);
+        menuUiState = MenuUiStates.infrastructureManageState;
+
+
     }
 
     void Update()
@@ -86,7 +88,7 @@ public class GameUiMenuController : MonoBehaviour
     }
     public void DeteleInfrastructure()
     {
-        ChangeMenuUiState(MenuUiStates.infrastructureManageState);
+        ChangeMenuUiState(MenuUiStates.infrastructureAboutState);
         infrastructureController.DestroyInfrastructure(infrastructureMenu);
     }
 
@@ -96,6 +98,7 @@ public class GameUiMenuController : MonoBehaviour
 
         if (gameManager.CheckRebuildInfrastructure(infrastructureController.CheckAreaToRebuildInfrastructure(infrastructureMenu).Count()))
         {
+            ChangeMenuUiState(MenuUiStates.infrastructureAboutState);
             infrastructureController.UpgradeInfrastructure(infrastructureMenu);
             // gameManager. to implement
         }
@@ -113,10 +116,11 @@ public class GameUiMenuController : MonoBehaviour
 
     public void ChangeMenuUiState(MenuUiStates menuUiState)
     {
+        menuUiSectionController.MenuInfrastructureStateManage(menuUiState);
+
         if (this.menuUiState == menuUiState)
         {
-            this.menuUiState = MenuUiStates.infrastructureState;
-            menuUiSectionController.MenuInfrastructureStateManage(menuUiState);
+            this.menuUiState = MenuUiStates.infrastructureManageState; /// INFO: infrastructureManageState is basic state
             return; 
         }
         this.menuUiState = menuUiState;
@@ -125,7 +129,7 @@ public class GameUiMenuController : MonoBehaviour
 
     public void MenuInformationSet(Infrastructure infrastructure)
     {
-        // TODO: to update
+        // TODO: to update !!!!!
         if (menuUiState != MenuUiStates.infrastructureManageState) ChangeMenuUiState(MenuUiStates.infrastructureManageState);
         if (infrastructureMenu != infrastructure && infrastructureMenu != null) SetBoardDefault(infrastructureMenu);
 

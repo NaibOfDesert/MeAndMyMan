@@ -11,8 +11,8 @@ public class MenuUiSectionController : MonoBehaviour, IMenuUiController
     [SerializeField] MenuUiSection gameSection;
     [SerializeField] MenuUiSection informationDescriptionSection;
     [SerializeField] MenuUiSection informationValueSection;
-    [SerializeField] MenuUiSection infrastructureSection;
     [SerializeField] MenuUiSection infrastructureManageSection;
+    [SerializeField] MenuUiSection infrastructureAboutSection;
     [SerializeField] MenuUiSection infrastructureBuildSection;
 
     [SerializeField] List<IMenuUi> menuUiSectionList;
@@ -23,7 +23,7 @@ public class MenuUiSectionController : MonoBehaviour, IMenuUiController
     {
         menuUiSectionList = new List<IMenuUi>();
 
-        infrastructureSection.SetSectionAble();
+        infrastructureAboutSection.SetSectionAble();
         infrastructureBuildSection.SetSectionAble();
         informationDescriptionSection.SetSectionAble();
         informationValueSection.SetSectionAble();
@@ -49,9 +49,9 @@ public class MenuUiSectionController : MonoBehaviour, IMenuUiController
         informationValueSection.SetSectionAble();
     }
 
-    void InfrastructureSectionAble()
+    void InfrastructureAboutSectionAble()
     {
-        infrastructureSection.SetSectionAble();
+        infrastructureAboutSection.SetSectionAble();
     }
 
     void InfrastructureManageSectionAble()
@@ -68,24 +68,22 @@ public class MenuUiSectionController : MonoBehaviour, IMenuUiController
     {
         switch (menuUiState)
         {
-
-            case MenuUiStates.infrastructureState:
+            case MenuUiStates.infrastructureManageState:
                 {
                     InfrastructureManageSectionAble();
                     break;
-
                 }
-
-            case MenuUiStates.infrastructureManageState:
+            case MenuUiStates.infrastructureAboutState:
                 {
-                    InfrastructureSectionAble();
+                    InfrastructureAboutSectionAble();
                     InfrastructureManageSectionAble();
                     MenuInformationAble();
                     break;
+
                 }
             case MenuUiStates.infrastructureBuildState:
                 {
-                    InfrastructureSectionAble();
+                    InfrastructureManageSectionAble();
                     InfrastructureBuildSectionAble();
                     break;
 
