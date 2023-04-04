@@ -14,7 +14,6 @@ public class MenuUiSectionController : MonoBehaviour, IMenuUiController
     [SerializeField] MenuUiSection infrastructureManageSection;
     [SerializeField] MenuUiSection infrastructureAboutSection;
     [SerializeField] MenuUiSection infrastructureBuildSection;
-
     [SerializeField] List<IMenuUi> menuUiSectionList;
 
 
@@ -68,7 +67,7 @@ public class MenuUiSectionController : MonoBehaviour, IMenuUiController
     {
         switch (menuUiState)
         {
-            case MenuUiStates.infrastructureManageState:
+            case MenuUiStates.infrastructureManageState: 
                 {
                     InfrastructureManageSectionAble();
                     break;
@@ -92,9 +91,6 @@ public class MenuUiSectionController : MonoBehaviour, IMenuUiController
                 {
                     break;
                 }
-
-
-
         }
     }
 

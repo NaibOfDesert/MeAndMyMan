@@ -5,7 +5,6 @@ using UnityEngine;
 public class InfrastructureUiController : MonoBehaviour
 {
     Infrastructure infrastructure;
-
     GameController gameController;
     GameUiMenuController gameUiMenuController;
 
@@ -14,11 +13,6 @@ public class InfrastructureUiController : MonoBehaviour
         infrastructure = GetComponent<Infrastructure>();
         gameController = FindObjectOfType<GameController>();
         gameUiMenuController = gameController.GameUiMenuController;
-    }
-
-    void Update()
-    {
-        
     }
 
     private void OnMouseDown()

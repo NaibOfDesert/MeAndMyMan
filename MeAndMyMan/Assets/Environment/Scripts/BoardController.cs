@@ -207,6 +207,7 @@ public class BoardController : MonoBehaviour
         lastBoardAreaList = boardAreaList;
     }
 
+
     public void StartBuildState()
     {
         AbleBoardPlane();
@@ -229,6 +230,7 @@ public class BoardController : MonoBehaviour
         // lastBoardList.Clear(); //-- no needed?
         // lastBoardAreaList.Clear(); //-- no needed?
     }
+
 
     public void SetMaterialForListDefault(List<Tile> boardArea)
     {
@@ -291,6 +293,11 @@ public class BoardController : MonoBehaviour
         }
     }
 
+    public void SetBoardDefault(Infrastructure infrastructure)
+    {
+        SetMaterialForListDefault(infrastructure.InfrastructureArea.BoardAreaBlockedList);
+        AbleInfrastructurePlane(infrastructure);
+    }
     public void SetDefaultInfrastructure(List<Tile> infrastructureList)
     {
         Debug.Log("count " + infrastructureList.Count());

@@ -131,16 +131,10 @@ public class GameUiMenuController : MonoBehaviour
     {
         // TODO: to update !!!!!
         if (menuUiState != MenuUiStates.infrastructureManageState) ChangeMenuUiState(MenuUiStates.infrastructureManageState);
-        if (infrastructureMenu != infrastructure && infrastructureMenu != null) SetBoardDefault(infrastructureMenu);
+        if (infrastructureMenu != infrastructure && infrastructureMenu != null) boardController.SetBoardDefault(infrastructureMenu);
 
         infrastructureMenu = infrastructure;
         MenuInfrastructureSetValues(infrastructure);
-    }
-
-    public void SetBoardDefault(Infrastructure infrastructure)
-    {
-        boardController.SetMaterialForListDefault(infrastructure.InfrastructureArea.BoardAreaBlockedList);
-        boardController.AbleInfrastructurePlane(infrastructure);
     }
 
     public void MenuInfrastructureSetValues(Infrastructure infrastructure)
@@ -157,7 +151,7 @@ public class GameUiMenuController : MonoBehaviour
     public void MenuInfrastructureUpdateLevel(Infrastructure infrastructure)
     {
         int infrastructureLevel = 0;
-
+        
         infrastructureLevel = (int)infrastructure.InfrastructureObject.ObjectLevel;
         textInfrastructureLevel.text = $"{infrastructureLevel}/3";
     }
