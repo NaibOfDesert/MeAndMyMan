@@ -1,9 +1,10 @@
-    using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
+using System;
 
 [RequireComponent(typeof(Image))]   
 public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler, IMenuUi
@@ -18,6 +19,8 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
     public UnityEvent onTabSelected;
     public UnityEvent onTabDeselected;
 
+    bool isAble; 
+
     GameController gameController; 
     MenuUiTabController menuUiTabController;
 
@@ -28,18 +31,20 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
         tabBackgroundImage = GetComponent<Image>();
     }
 
+
     void Update()
     {
-        
+        // to check is able to click
     }
     void Start()
     {
+        isAble = true;
         menuUiTabController.AddToUiList(this);
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        menuUiTabController.OnTabSelected(this); 
+        if(isAble) menuUiTabController.OnTabSelected(this); 
 
     }
 
@@ -54,6 +59,10 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
         menuUiTabController.OnTabExit(this);
     }
 
+    private void IsAbleCheck()
+    {
+        // if(isAble) ? isAble == true : isAble == false;
+    }
     public void SetTabIdleSprite()
     {
         tabBackgroundImage.sprite = tabIdleSprite; 

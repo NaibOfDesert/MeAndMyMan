@@ -84,12 +84,16 @@ public class GameUiMenuController : MonoBehaviour
     {
         ChangeMenuUiState(MenuUiStates.infrastructureBuildState);
         infrastructureController.CreateInfrastructure(objectType);
+        // gameManager. to implement
+
 
     }
     public void DeteleInfrastructure()
     {
         ChangeMenuUiState(MenuUiStates.infrastructureAboutState);
         infrastructureController.DestroyInfrastructure(infrastructureMenu);
+        // gameManager. to implement
+
     }
 
 
@@ -129,12 +133,31 @@ public class GameUiMenuController : MonoBehaviour
 
     public void MenuInformationSet(Infrastructure infrastructure)
     {
-        // TODO: to update !!!!!
-        if (menuUiState != MenuUiStates.infrastructureManageState) ChangeMenuUiState(MenuUiStates.infrastructureManageState);
-        if (infrastructureMenu != infrastructure && infrastructureMenu != null) boardController.SetBoardDefault(infrastructureMenu);
+        if (menuUiState != MenuUiStates.infrastructureAboutState) ChangeMenuUiState(MenuUiStates.infrastructureAboutState);
+        if(infrastructure == null)
+        {
+            infrastructureMenu = infrastructure; 
+            return;
+        }
+        if (infrastructure != infrastructureMenu)
+        {   
+            if (infrastructureMenu != null)
+            {
+                boardController.SetMaterialForListDefault(infrastructureMenu.InfrastructureArea.BoardAreaBlockedList);
+                boardController.AbleInfrastructurePlane(infrastructureMenu); 
+            }
+            infrastructureMenu = infrastructure;
 
+            boardController.SetMaterialForListBlocked(infrastructure.InfrastructureArea.BoardAreaBlockedList);
+            boardController.AbleInfrastructurePlane(infrastructure);
+        }
         infrastructureMenu = infrastructure;
         MenuInfrastructureSetValues(infrastructure);
+    }
+
+    public void MenuInformationSetDefault() // to call
+    {
+        infrastructureMenu = null;
     }
 
     public void MenuInfrastructureSetValues(Infrastructure infrastructure)

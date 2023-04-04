@@ -7,17 +7,12 @@ public class BoardController : MonoBehaviour
 {
     [SerializeField] GameObject forestPrefab;
     [SerializeField] GameObject rockPrefab;
-
-
     [SerializeField] Material redMaterial;
     public Material RedMaterial { get { return redMaterial; } } //-- 
-
     [SerializeField] Material greenMaterial;
     public Material GreenMaterial { get { return greenMaterial; } } //--
-
     [SerializeField] Material blueMaterial;
     public Material BlueMaterial { get { return blueMaterial; } } //--
-
     [SerializeField] Material greyMaterial;
     public Material GreyMaterial { get { return greyMaterial; } } //--
 
@@ -89,9 +84,7 @@ public class BoardController : MonoBehaviour
     void GenerateEnvironmentObject(Vector3 position, GameObject environmentPrefab) //++ random location of environment elements
     {
         int environmentRotation = Random.Range(0, environmentRotationsList.Count() - 1);
-
         Quaternion environmentQuaterion = Quaternion.Euler(Quaternion.identity.x, environmentRotation, Quaternion.identity.z);
-
         Instantiate(environmentPrefab, position, environmentQuaterion);
     }
 
@@ -241,7 +234,6 @@ public class BoardController : MonoBehaviour
                 if (tile.IsUsedByInfrastructureArea)
                 {
                     tile.TilePlane.TileMesh.material = blueMaterial;
-                    Debug.Log("blue");
                 }
                 else
                 {
@@ -292,12 +284,7 @@ public class BoardController : MonoBehaviour
             tile.TilePlane.TileMesh.material = greyMaterial;
         }
     }
-
-    public void SetBoardDefault(Infrastructure infrastructure)
-    {
-        SetMaterialForListDefault(infrastructure.InfrastructureArea.BoardAreaBlockedList);
-        AbleInfrastructurePlane(infrastructure);
-    }
+    
     public void SetDefaultInfrastructure(List<Tile> infrastructureList)
     {
         Debug.Log("count " + infrastructureList.Count());

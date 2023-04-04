@@ -55,6 +55,7 @@ public class GameUiController : MonoBehaviour
             if(gameUiMenuController.MenuUiState == MenuUiStates.infrastructureAboutState)
             {
                 gameUiMenuController.ChangeMenuUiState(MenuUiStates.infrastructureAboutState);
+                gameUiMenuController.MenuInformationSet(null); 
             }
         }
 

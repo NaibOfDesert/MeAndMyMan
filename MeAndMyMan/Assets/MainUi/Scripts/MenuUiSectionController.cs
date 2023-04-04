@@ -67,11 +67,12 @@ public class MenuUiSectionController : MonoBehaviour, IMenuUiController
     {
         switch (menuUiState)
         {
+            // case MenuUiStates.infrastructureManageState: 
+            //     {
+            //         InfrastructureManageSectionAble();
+            //         break;
+            //     }
             case MenuUiStates.infrastructureManageState: 
-                {
-                    InfrastructureManageSectionAble();
-                    break;
-                }
             case MenuUiStates.infrastructureAboutState:
                 {
                     InfrastructureAboutSectionAble();
