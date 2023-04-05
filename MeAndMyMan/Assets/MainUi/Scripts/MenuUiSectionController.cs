@@ -75,8 +75,9 @@ public class MenuUiSectionController : MonoBehaviour, IMenuUiController
             case MenuUiStates.infrastructureManageState: 
             case MenuUiStates.infrastructureAboutState:
                 {
-                    InfrastructureAboutSectionAble();
+                    Debug.Log("Manga i about state change");
                     InfrastructureManageSectionAble();
+                    InfrastructureAboutSectionAble();
                     MenuInformationAble();
                     break;
 

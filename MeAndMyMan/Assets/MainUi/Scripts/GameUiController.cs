@@ -49,8 +49,8 @@ public class GameUiController : MonoBehaviour
         {
             if (gameUiMenuController.MenuUiState == MenuUiStates.infrastructureBuildState)
             {
-                infrastructureController.DestroyInstantiateInfrastructure();
                 gameUiMenuController.ChangeMenuUiState(MenuUiStates.infrastructureBuildState);
+                infrastructureController.DestroyInstantiateInfrastructure();
             }
             if(gameUiMenuController.MenuUiState == MenuUiStates.infrastructureAboutState)
             {
@@ -107,7 +107,10 @@ public class GameUiController : MonoBehaviour
 
     }
 
-  
+    void SetInfrastructureInformation()
+    {
+        
+    }
 
 
 

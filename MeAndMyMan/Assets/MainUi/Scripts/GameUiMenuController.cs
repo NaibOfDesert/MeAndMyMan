@@ -26,11 +26,9 @@ public class GameUiMenuController : MonoBehaviour
     [SerializeField] TextMeshProUGUI textIronAmount;
 
     [SerializeField] MenuUiStates menuUiState;
-    public MenuUiStates MenuUiState { get { return menuUiState; } set { menuUiState = value; } } //-- ??
-
+    public MenuUiStates MenuUiState { get { return menuUiState; } } //-- ??
     [SerializeField] bool pauseState;
     public bool PauseState { get { return pauseState; } set { pauseState = value; } }
-
 
     Infrastructure infrastructureMenu;
     GameController gameController;
@@ -128,19 +126,25 @@ public class GameUiMenuController : MonoBehaviour
             return; 
         }
         this.menuUiState = menuUiState;
-
     }
 
     public void MenuInformationSet(Infrastructure infrastructure)
     {
-        if (menuUiState != MenuUiStates.infrastructureAboutState) ChangeMenuUiState(MenuUiStates.infrastructureAboutState);
         if(infrastructure == null)
         {
-            infrastructureMenu = infrastructure; 
+            infrastructureMenu = null;
+            MenuInformationSetDefault();
             return;
         }
+
         if (infrastructure != infrastructureMenu)
         {   
+            if (menuUiState == MenuUiStates.infrastructureManageState) 
+            {
+                ChangeMenuUiState(MenuUiStates.infrastructureAboutState);
+            }        
+            else return; 
+
             if (infrastructureMenu != null)
             {
                 boardController.SetMaterialForListDefault(infrastructureMenu.InfrastructureArea.BoardAreaBlockedList);
@@ -150,14 +154,20 @@ public class GameUiMenuController : MonoBehaviour
 
             boardController.SetMaterialForListBlocked(infrastructure.InfrastructureArea.BoardAreaBlockedList);
             boardController.AbleInfrastructurePlane(infrastructure);
-        }
-        infrastructureMenu = infrastructure;
-        MenuInfrastructureSetValues(infrastructure);
+            
+            MenuInfrastructureSetValues(infrastructure);
+        } 
     }
 
-    public void MenuInformationSetDefault() // to call
+    public void MenuInformationSetDefault()
     {
-        infrastructureMenu = null;
+        textInfrastructureName.text = $"0";
+        textInfrastructureArea.text = $"0/0";
+        textInfrastructureUsers.text = $"0/0";
+        textInfrastructureHealth.text = $"0/0";
+        textInfrastructureProduction.text = $"0";
+        textInfrastructureEnergy.text = $"0/1";
+        textInfrastructureLevel.text = $"0/3";
     }
 
     public void MenuInfrastructureSetValues(Infrastructure infrastructure)

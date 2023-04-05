@@ -104,7 +104,7 @@ public class InfrastructureController : MonoBehaviour
         newInfrastructure = null;
     }
 
-    public void BuildNewInfrastructure(Vector3 worldPosition)
+    public bool BuildNewInfrastructure(Vector3 worldPosition)
     {
         if (!newInfrastructure.InfrastructureArea.BoardList.Any(n => n.IsUsedByInfrastructure == true) && newInfrastructure.InfrastructureArea.BoardList.Count() == Mathf.Pow(newInfrastructure.InfrastructureSize, 2)) /// implemented as square objects
         {
@@ -116,7 +116,10 @@ public class InfrastructureController : MonoBehaviour
             boardController.EndBuildState();
             AddNewInfrastructureToList();
             newInfrastructure = null;
-        }
+            
+            return true; 
+        } 
+        return false;
     }
 
     void AddNewInfrastructureToList()

@@ -23,12 +23,12 @@ public class MouseController : MonoBehaviour
     {
         worldPosition = GetWorldPositionInt(infrastructureController.InfrastructureLayersToHit);
 
-        if (gameUiMenuController.MenuUiState == MenuUiStates.infrastructureBuildState) // as second?
+        if (Input.GetMouseButtonDown(0))
         {
-            if (Input.GetMouseButtonDown(0))
+            if (gameUiMenuController.MenuUiState == MenuUiStates.infrastructureBuildState)
             {
+                if(infrastructureController.BuildNewInfrastructure(worldPosition))
                 gameUiMenuController.ChangeMenuUiState(MenuUiStates.infrastructureBuildState);
-                infrastructureController.BuildNewInfrastructure(worldPosition);
             }
         }
     }
