@@ -31,9 +31,6 @@ public class GameUiController : MonoBehaviour
         menuUiSectionController = gameController.MenuUiSectionController;
         menuUiTabController = gameController.MenuUiTabController;
         boardController = gameController.BoardController;
-
-
-
     }
 
     void Start()
@@ -47,14 +44,14 @@ public class GameUiController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (gameUiMenuController.MenuUiState == MenuUiStates.infrastructureBuildState)
+            if (gameUiMenuController.MenuUiState == MenuUiState.infrastructureBuildState)
             {
-                gameUiMenuController.ChangeMenuUiState(MenuUiStates.infrastructureBuildState);
+                gameUiMenuController.ChangeMenuUiState(MenuUiState.infrastructureBuildState);
                 infrastructureController.DestroyInstantiateInfrastructure();
             }
-            if(gameUiMenuController.MenuUiState == MenuUiStates.infrastructureAboutState)
+            if (gameUiMenuController.MenuUiState == MenuUiState.infrastructureAboutState)
             {
-                gameUiMenuController.ChangeMenuUiState(MenuUiStates.infrastructureAboutState);
+                gameUiMenuController.ChangeMenuUiState(MenuUiState.infrastructureAboutState);
                 gameUiMenuController.MenuInformationSet(null); 
             }
         }

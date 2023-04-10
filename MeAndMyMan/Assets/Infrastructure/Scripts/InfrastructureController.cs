@@ -44,14 +44,18 @@ public class InfrastructureController : MonoBehaviour
     GameUiMenuController gameUiMenuController;
     BoardController boardController;
 
+    // TODO: move board control to UI Controll
+
     void Awake()
     {
+        /// REFERENCES to main game controllers
         gameController = FindObjectOfType<GameController>();
         gameManager = gameController.GameManager;
         mouseController = gameController.MouseController;
         gameUiMenuController = gameController.GameUiMenuController;
         boardController = gameController.BoardController;
 
+        /// VALUES to manage object
         houseList = new List<Infrastructure>();
         farmList = new List<Infrastructure>();
         infrastructureRotationsList = new List<float>() { 0f, 90f, 180f, 270f}; 
@@ -59,14 +63,7 @@ public class InfrastructureController : MonoBehaviour
 
     public void CreateInfrastructure(ObjectType objectType)
     {
-        if(!gameManager.CheckBuildInfrastructure(objectType, ObjectLevel.Level1))
-        {
-            // throw new System.ArgumentOutOfRangeException(); // check
-            return; 
-        }
-
         Object infrastructureObject;
-        // gameController.BuildStateAble();
 
         switch (objectType)
         {

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MenuUiTabController : MonoBehaviour, IMenuUiController
+public class MenuUiTabController : MonoBehaviour
 {
-    [SerializeField] List<IMenuUi> tabList;
+    [SerializeField] List<MenuUiTab> tabList;
 
     GameController gameController; 
     GameUiMenuController gameUiMenuController;
@@ -15,7 +15,7 @@ public class MenuUiTabController : MonoBehaviour, IMenuUiController
         gameController = FindObjectOfType<GameController>();
         gameUiMenuController = gameController.GameUiMenuController; 
         
-        tabList = new List<IMenuUi>();
+        tabList = new List<MenuUiTab>();
     }
 
     void Update()
@@ -24,7 +24,7 @@ public class MenuUiTabController : MonoBehaviour, IMenuUiController
     }
 
 
-    public void AddToUiList(IMenuUi menuUiTab)
+    public void AddToUiList(MenuUiTab menuUiTab)
     {
         tabList.Add(menuUiTab); 
     }

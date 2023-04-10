@@ -25,12 +25,13 @@ public class GameUiMenuController : MonoBehaviour
     [SerializeField] TextMeshProUGUI textStoneAmount;
     [SerializeField] TextMeshProUGUI textIronAmount;
 
-    [SerializeField] MenuUiStates menuUiState;
-    public MenuUiStates MenuUiState { get { return menuUiState; } } //-- ??
+    [SerializeField] MenuUiState menuUiState;
+    public MenuUiState MenuUiState { get { return menuUiState; } } //-- ??
     [SerializeField] bool pauseState;
     public bool PauseState { get { return pauseState; } set { pauseState = value; } }
 
-    Infrastructure infrastructureMenu;
+    private Infrastructure infrastructureInControl;
+    public Infrastructure InfrastructureInControl { get { return infrastructureInControl; } }
     GameController gameController;
     GameManager gameManager;
     BoardController boardController;
@@ -52,8 +53,8 @@ public class GameUiMenuController : MonoBehaviour
 
     void Start()
     {
-        infrastructureMenu = null;
-        menuUiState = MenuUiStates.infrastructureManageState;
+        infrastructureInControl = null;
+        menuUiState = MenuUiState.infrastructureManageState;
 
 
     }
@@ -62,9 +63,9 @@ public class GameUiMenuController : MonoBehaviour
     {
         MenuResourcesUpdate(); 
 
-        if(infrastructureMenu != null) 
+        if(infrastructureInControl != null) 
         {
-            MenuInfrastructureSetValues(infrastructureMenu);
+            MenuInfrastructureSetValues(infrastructureInControl);
         }
     }
 
@@ -80,7 +81,7 @@ public class GameUiMenuController : MonoBehaviour
 
     public void BuildInfrastructure(ObjectType objectType)
     {
-        ChangeMenuUiState(MenuUiStates.infrastructureBuildState);
+        ChangeMenuUiState(MenuUiState.infrastructureBuildState);
         infrastructureController.CreateInfrastructure(objectType);
         // gameManager. to implement
 
@@ -88,20 +89,19 @@ public class GameUiMenuController : MonoBehaviour
     }
     public void DeteleInfrastructure()
     {
-        ChangeMenuUiState(MenuUiStates.infrastructureAboutState);
-        infrastructureController.DestroyInfrastructure(infrastructureMenu);
+        ChangeMenuUiState(MenuUiState.infrastructureAboutState);
+        infrastructureController.DestroyInfrastructure(infrastructureInControl);
         // gameManager. to implement
 
     }
 
 
-    public void RebuildInfrastructure()
+    public void RebuildInfrastructure() 
     {
-
-        if (gameManager.CheckRebuildInfrastructure(infrastructureController.CheckAreaToRebuildInfrastructure(infrastructureMenu).Count()))
+        if (gameManager.CheckRebuildInfrastructure(infrastructureController.CheckAreaToRebuildInfrastructure(infrastructureInControl).Count()))
         {
-            ChangeMenuUiState(MenuUiStates.infrastructureAboutState);
-            infrastructureController.UpgradeInfrastructure(infrastructureMenu);
+            ChangeMenuUiState(MenuUiState.infrastructureAboutState);
+            infrastructureController.UpgradeInfrastructure(infrastructureInControl);
             // gameManager. to implement
         }
         
@@ -109,48 +109,51 @@ public class GameUiMenuController : MonoBehaviour
 
     public void UpgradeInfrastructure()
     {   
-        if (infrastructureMenu != null)
+        if (infrastructureInControl != null)
         {
-            infrastructureController.UpgradeInfrastructure(infrastructureMenu);
-            MenuInfrastructureUpdateLevel(infrastructureMenu); 
+            infrastructureController.UpgradeInfrastructure(infrastructureInControl);
+            MenuInfrastructureUpdateLevel(infrastructureInControl); 
         }
     }
 
-    public void ChangeMenuUiState(MenuUiStates menuUiState)
+    public void ChangeMenuUiState(MenuUiState menuUiState)
     {
         menuUiSectionController.MenuInfrastructureStateManage(menuUiState);
-
-        if (this.menuUiState == menuUiState)
+        if(menuUiState == MenuUiState.infrastructureState)
         {
-            this.menuUiState = MenuUiStates.infrastructureManageState; /// INFO: infrastructureManageState is basic state
-            return; 
+            if (this.menuUiState == menuUiState)
+            {
+                this.menuUiState = MenuUiState.infrastructureManageState; /// INFO: infrastructureManageState is basic state
+                return; 
+            }
+            this.menuUiState = menuUiState;
         }
-        this.menuUiState = menuUiState;
+
     }
 
     public void MenuInformationSet(Infrastructure infrastructure)
     {
         if(infrastructure == null)
         {
-            infrastructureMenu = null;
+            infrastructureInControl = null;
             MenuInformationSetDefault();
             return;
         }
 
-        if (infrastructure != infrastructureMenu)
+        if (infrastructure != infrastructureInControl)
         {   
-            if (menuUiState == MenuUiStates.infrastructureManageState) 
+            if (menuUiState == MenuUiState.infrastructureManageState) 
             {
-                ChangeMenuUiState(MenuUiStates.infrastructureAboutState);
+                ChangeMenuUiState(MenuUiState.infrastructureAboutState);
             }        
             else return; 
 
-            if (infrastructureMenu != null)
+            if (infrastructureInControl != null)
             {
-                boardController.SetMaterialForListDefault(infrastructureMenu.InfrastructureArea.BoardAreaBlockedList);
-                boardController.AbleInfrastructurePlane(infrastructureMenu); 
+                boardController.SetMaterialForListDefault(infrastructureInControl.InfrastructureArea.BoardAreaBlockedList);
+                boardController.AbleInfrastructurePlane(infrastructureInControl); 
             }
-            infrastructureMenu = infrastructure;
+            infrastructureInControl = infrastructure;
 
             boardController.SetMaterialForListBlocked(infrastructure.InfrastructureArea.BoardAreaBlockedList);
             boardController.AbleInfrastructurePlane(infrastructure);

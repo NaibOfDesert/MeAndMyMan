@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class MenuUiSection : MonoBehaviour, IMenuUi
+public class MenuUiSection : MonoBehaviour
 {
     GameController gameController;
     MenuUiSectionController menuUiSectionController;
@@ -17,24 +17,10 @@ public class MenuUiSection : MonoBehaviour, IMenuUi
 
     public void Start()
     {
-        Debug.Log(menuUiSectionController == null);
-
         menuUiSectionController.AddToUiList(this);
 
     }
 
-    public void OnPointerClick(PointerEventData eventData)
-    {
-
-    }
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-
-    }
-    public void OnPointerExit(PointerEventData eventData)
-    {
-
-    }
     public void SetSectionAble()
     {
         this.gameObject.SetActive(!this.gameObject.activeSelf);

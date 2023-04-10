@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class MenuUiSectionController : MonoBehaviour, IMenuUiController
+public class MenuUiSectionController : MonoBehaviour
 {
     [Header("MenuSectionObjects")]
     [SerializeField] MenuUiSection optionsSection;
@@ -14,13 +14,13 @@ public class MenuUiSectionController : MonoBehaviour, IMenuUiController
     [SerializeField] MenuUiSection infrastructureManageSection;
     [SerializeField] MenuUiSection infrastructureAboutSection;
     [SerializeField] MenuUiSection infrastructureBuildSection;
-    [SerializeField] List<IMenuUi> menuUiSectionList;
+    [SerializeField] List<MenuUiSection> menuUiSectionList;
 
 
 
     void Start()
     {
-        menuUiSectionList = new List<IMenuUi>();
+        menuUiSectionList = new List<MenuUiSection>();
 
         infrastructureAboutSection.SetSectionAble();
         infrastructureBuildSection.SetSectionAble();
@@ -36,7 +36,7 @@ public class MenuUiSectionController : MonoBehaviour, IMenuUiController
 
   
 
-    public void AddToUiList(IMenuUi menuUiSection)
+    public void AddToUiList(MenuUiSection menuUiSection)
     {
         menuUiSectionList.Add(menuUiSection);
     }
@@ -63,7 +63,7 @@ public class MenuUiSectionController : MonoBehaviour, IMenuUiController
         infrastructureBuildSection.SetSectionAble();
     }
 
-    public void MenuInfrastructureStateManage(MenuUiStates menuUiState)
+    public void MenuInfrastructureStateManage(MenuUiState menuUiState)
     {
         switch (menuUiState)
         {
@@ -72,17 +72,16 @@ public class MenuUiSectionController : MonoBehaviour, IMenuUiController
             //         InfrastructureManageSectionAble();
             //         break;
             //     }
-            case MenuUiStates.infrastructureManageState: 
-            case MenuUiStates.infrastructureAboutState:
+            case MenuUiState.infrastructureManageState: 
+            case MenuUiState.infrastructureAboutState:
                 {
-                    Debug.Log("Manga i about state change");
                     InfrastructureManageSectionAble();
                     InfrastructureAboutSectionAble();
                     MenuInformationAble();
                     break;
 
                 }
-            case MenuUiStates.infrastructureBuildState:
+            case MenuUiState.infrastructureBuildState:
                 {
                     InfrastructureManageSectionAble();
                     InfrastructureBuildSectionAble();

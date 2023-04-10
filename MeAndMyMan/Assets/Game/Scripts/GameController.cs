@@ -2,10 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/**
+* Normal info
+* * Important information
+* ! Deprecated method, don't use
+* ? Should this method be exposed in the Public API?
+* TODO: refactor this method so that it coforms to the API
+* @param myParam The parameter for this merhod
+**/
 
-// TODO:
-
-// NOTE: 
 public class GameController : MonoBehaviour
 {
     [SerializeField] int gameSize;

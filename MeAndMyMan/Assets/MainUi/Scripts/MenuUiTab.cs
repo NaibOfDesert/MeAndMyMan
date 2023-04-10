@@ -7,12 +7,16 @@ using UnityEngine.Events;
 using System;
 
 [RequireComponent(typeof(Image))]   
-public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler, IMenuUi
+public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler
 {
+    [Header("Sprites")]
     [SerializeField] private Sprite tabBlockSprite;
     [SerializeField] private Sprite tabIdleSprite;
     [SerializeField] private Sprite tabHoverSprite;
     [SerializeField] private Sprite tabActiveSprite;
+
+    [Header("Values")]
+    [SerializeField] private MenuUiState tabState;
 
     private Image tabBackgroundImage;
 
@@ -22,19 +26,38 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
     bool isAble; 
 
     GameController gameController; 
+    GameManager gameManager; 
+    GameUiController gameUiController; 
+    GameUiMenuController gameUiMenuController; 
     MenuUiTabController menuUiTabController;
 
     void Awake()
     {
+        /// REFERENCES to main game controllers
         gameController = FindObjectOfType<GameController>();
+        gameManager  = gameController.GameManager; 
+        gameUiController = gameController.GameUiController; 
+        gameUiMenuController = gameController.GameUiMenuController; 
         menuUiTabController = gameController.MenuUiTabController; 
+        
+        /// VALUES to manage object
         tabBackgroundImage = GetComponent<Image>();
     }
 
 
     void Update()
     {
-        // to check is able to click
+        if(tabState == MenuUiState.infrastructureManageState)
+        {
+            if(!gameManager.CheckBuildInfrastructure(
+                gameUiMenuController.InfrastructureInControl.InfrastructureObject.ObjectType, 
+                gameUiMenuController.InfrastructureInControl.InfrastructureObject.ObjectLevel))
+            {
+                // is able true or false
+                // throw new System.ArgumentOutOfRangeException(); // check
+                return; 
+            }
+        }
     }
     void Start()
     {

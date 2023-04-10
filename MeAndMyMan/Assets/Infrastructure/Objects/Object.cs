@@ -6,42 +6,30 @@ using System.Threading.Tasks;
 public abstract class Object    
 {
     protected int Value;
-
     protected ObjectType objectType;
     public ObjectType ObjectType { get { return objectType;  } }
-
     protected int size;
     public int Size { get { return size; } }
-
     protected int areaSize;
     public int AreaSize { get { return areaSize; } }
-
     protected int areaActiveCount; 
     public int AreaActiveCount { get { return areaActiveCount; } set { areaActiveCount = value; } }
-
     protected int areaDisactiveCount;
     public int AreaDisactiveCount { get { return areaDisactiveCount; } set { areaDisactiveCount = value; } }
-
     protected ObjectLevel objectLevel;
     public ObjectLevel ObjectLevel { get { return objectLevel; } set { objectLevel = value; } }
-
     protected int improvementTime;
     public int ImprovementTime { get { return improvementTime; } }
-
     protected int users;
     public int Users { get { return users; } }
-
     protected int usersMaxBacic;
-
+    public int UsersMaxBacic { get { return usersMaxBacic; } }
     protected int usersMax;
     public int UsersMax { get { return usersMax; } }
-
     protected int energy;
     public int Energy { get { return energy; } }
-
     protected int health;
     public int Health { get { return health; } }
-
     protected int healthMax;
     public int HealthMax { get { return healthMax; } }
 
@@ -73,8 +61,6 @@ public abstract class Object
             return;
         }
     }
-    // public abstract int GetUsers();
-    // public abstract int GetUsersMax();
     public virtual void DevelopeObject()
     {
         users++; 

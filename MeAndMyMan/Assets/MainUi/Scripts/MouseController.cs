@@ -25,10 +25,10 @@ public class MouseController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            if (gameUiMenuController.MenuUiState == MenuUiStates.infrastructureBuildState)
+            if (gameUiMenuController.MenuUiState == MenuUiState.infrastructureBuildState)
             {
                 if(infrastructureController.BuildNewInfrastructure(worldPosition))
-                gameUiMenuController.ChangeMenuUiState(MenuUiStates.infrastructureBuildState);
+                gameUiMenuController.ChangeMenuUiState(MenuUiState.infrastructureBuildState);
             }
         }
     }
