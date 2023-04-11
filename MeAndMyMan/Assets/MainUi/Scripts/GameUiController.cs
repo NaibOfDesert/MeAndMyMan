@@ -1,3 +1,5 @@
+using System; 
+using System.IO; 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,6 +23,8 @@ public class GameUiController : MonoBehaviour
 
     void Awake()
     {
+        try
+        {
         gameController = FindObjectOfType<GameController>();
         mouseController = gameController.MouseController;
         gameCameraController = gameController.GameCameraController;
@@ -31,6 +35,12 @@ public class GameUiController : MonoBehaviour
         menuUiSectionController = gameController.MenuUiSectionController;
         menuUiTabController = gameController.MenuUiTabController;
         boardController = gameController.BoardController;
+        }
+        catch(Exception e)
+        {
+            Debug.Log(e.Message);
+        }
+
     }
 
     void Start()
@@ -44,16 +54,19 @@ public class GameUiController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+
             if (gameUiMenuController.MenuUiState == MenuUiState.infrastructureBuildState)
             {
-                gameUiMenuController.ChangeMenuUiState(MenuUiState.infrastructureBuildState);
+                // gameUiMenuController.MenuUiStateChange(MenuUiState.infrastructureBuildState);
                 infrastructureController.DestroyInstantiateInfrastructure();
             }
-            if (gameUiMenuController.MenuUiState == MenuUiState.infrastructureAboutState)
-            {
-                gameUiMenuController.ChangeMenuUiState(MenuUiState.infrastructureAboutState);
-                gameUiMenuController.MenuInformationSet(null); 
-            }
+            
+            gameUiMenuController.MenuUiStateChange(MenuUiState.infrastructureManageState);
+
+            // if (gameUiMenuController.MenuUiState == MenuUiState.infrastructureAboutState)
+            // {
+            //     gameUiMenuController.MenuUiStateChange(MenuUiState.infrastructureAboutState);
+            // }
         }
 
         if (Input.GetKeyDown(KeyCode.C))

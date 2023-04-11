@@ -1,31 +1,24 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq; 
 using UnityEngine;
-
 
 public class MenuUiSectionController : MonoBehaviour
 {
     [Header("MenuSectionObjects")]
-    [SerializeField] MenuUiSection optionsSection;
-    [SerializeField] MenuUiSection gameSection;
-    [SerializeField] MenuUiSection informationDescriptionSection;
-    [SerializeField] MenuUiSection informationValueSection;
-    [SerializeField] MenuUiSection infrastructureManageSection;
-    [SerializeField] MenuUiSection infrastructureAboutSection;
-    [SerializeField] MenuUiSection infrastructureBuildSection;
     [SerializeField] List<MenuUiSection> menuUiSectionList;
 
-
+    void Awake()
+    {
+        menuUiSectionList = new List<MenuUiSection>();
+    }
 
     void Start()
     {
-        menuUiSectionList = new List<MenuUiSection>();
-
-        infrastructureAboutSection.SetSectionAble();
-        infrastructureBuildSection.SetSectionAble();
-        informationDescriptionSection.SetSectionAble();
-        informationValueSection.SetSectionAble();
+        MenuListAble(MenuUiState.infrastructureState);
+        MenuListAble(MenuUiState.informationState);
+        MenuListAble(MenuUiState.infrastructureManageState);
     }
 
 
@@ -38,64 +31,28 @@ public class MenuUiSectionController : MonoBehaviour
 
     public void AddToUiList(MenuUiSection menuUiSection)
     {
+        if(menuUiSection.MenuUiState != MenuUiState.noneState)
         menuUiSectionList.Add(menuUiSection);
     }
 
-
-    void MenuInformationAble()
+    public void MenuInfrastructureStateManage(MenuUiState menuUiStateCurrent, MenuUiState menuUiStateNew)
     {
-        informationDescriptionSection.SetSectionAble();
-        informationValueSection.SetSectionAble();
+       MenuListAble(menuUiStateCurrent); 
+       MenuListAble(menuUiStateNew); 
     }
 
-    void InfrastructureAboutSectionAble()
+    private void MenuListAble(MenuUiState menuUiState)
     {
-        infrastructureAboutSection.SetSectionAble();
+        foreach(var s in menuUiSectionList){
+            var menuUiStateString = s.MenuUiState.ToString(); 
+            var menuUiStateList= String.Concat(menuUiStateString.Where(l => !char.IsWhiteSpace(l))).Split(",").ToList(); 
+            
+            if(menuUiStateList.Any(m => m == menuUiState.ToString()))
+            {
+                s.SetSectionAble();
+            }
+        }  
     }
-
-    void InfrastructureManageSectionAble()
-    {
-        infrastructureManageSection.SetSectionAble();
-    }
-
-    void InfrastructureBuildSectionAble()
-    {
-        infrastructureBuildSection.SetSectionAble();
-    }
-
-    public void MenuInfrastructureStateManage(MenuUiState menuUiState)
-    {
-        switch (menuUiState)
-        {
-            // case MenuUiStates.infrastructureManageState: 
-            //     {
-            //         InfrastructureManageSectionAble();
-            //         break;
-            //     }
-            case MenuUiState.infrastructureManageState: 
-            case MenuUiState.infrastructureAboutState:
-                {
-                    InfrastructureManageSectionAble();
-                    InfrastructureAboutSectionAble();
-                    MenuInformationAble();
-                    break;
-
-                }
-            case MenuUiState.infrastructureBuildState:
-                {
-                    InfrastructureManageSectionAble();
-                    InfrastructureBuildSectionAble();
-                    break;
-
-                }
-            default:
-                {
-                    break;
-                }
-        }
-    }
-
-
 
 
 }

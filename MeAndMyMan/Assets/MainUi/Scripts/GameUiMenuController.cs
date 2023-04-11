@@ -30,8 +30,8 @@ public class GameUiMenuController : MonoBehaviour
     [SerializeField] bool pauseState;
     public bool PauseState { get { return pauseState; } set { pauseState = value; } }
 
-    private Infrastructure infrastructureInControl;
-    public Infrastructure InfrastructureInControl { get { return infrastructureInControl; } }
+    private Infrastructure infrastructureInAboutState;
+    public Infrastructure InfrastructureInControl { get { return infrastructureInAboutState; } }
     GameController gameController;
     GameManager gameManager;
     BoardController boardController;
@@ -40,8 +40,10 @@ public class GameUiMenuController : MonoBehaviour
     MenuUiSectionController menuUiSectionController;
     MenuUiTabController menuUiTabController;
 
-    void Awake()
+    private void Awake()
     {
+        try
+        {
         gameController = FindObjectOfType<GameController>();
         gameManager = gameController.GameManager; 
         boardController = gameController.BoardController;
@@ -49,23 +51,26 @@ public class GameUiMenuController : MonoBehaviour
         gameUiController = gameController.GameUiController;
         menuUiSectionController = gameController.MenuUiSectionController;
         menuUiTabController = gameController.MenuUiTabController;
+        }
+        catch(Exception e)
+        {
+            Debug.Log(e.Message);
+        }
     }
 
-    void Start()
+    private void Start()
     {
-        infrastructureInControl = null;
+        infrastructureInAboutState = null;
         menuUiState = MenuUiState.infrastructureManageState;
-
-
     }
 
-    void Update()
+    private void Update()
     {
         MenuResourcesUpdate(); 
 
-        if(infrastructureInControl != null) 
+        if(infrastructureInAboutState != null) 
         {
-            MenuInfrastructureSetValues(infrastructureInControl);
+            MenuInfrastructureSetValues(infrastructureInAboutState);
         }
     }
 
@@ -81,99 +86,73 @@ public class GameUiMenuController : MonoBehaviour
 
     public void BuildInfrastructure(ObjectType objectType)
     {
-        ChangeMenuUiState(MenuUiState.infrastructureBuildState);
-        infrastructureController.CreateInfrastructure(objectType);
+        infrastructureController.CreateInfrastructure(objectType); // TODO: return bool, is bool call gameManager
+        MenuUiStateChange(MenuUiState.infrastructureBuildState);
+
         // gameManager. to implement
 
 
     }
     public void DeteleInfrastructure()
     {
-        ChangeMenuUiState(MenuUiState.infrastructureAboutState);
-        infrastructureController.DestroyInfrastructure(infrastructureInControl);
-        // gameManager. to implement
+        infrastructureController.DestroyInfrastructure(infrastructureInAboutState); 
+        MenuUiStateChange(MenuUiState.infrastructureManageState);
 
+        // TODO: gameManager. to implement
     }
 
 
     public void RebuildInfrastructure() 
     {
-        if (gameManager.CheckRebuildInfrastructure(infrastructureController.CheckAreaToRebuildInfrastructure(infrastructureInControl).Count()))
+        if (gameManager.CheckRebuildInfrastructure(infrastructureController.CheckAreaToRebuildInfrastructure(infrastructureInAboutState).Count()))
         {
-            ChangeMenuUiState(MenuUiState.infrastructureAboutState);
-            infrastructureController.UpgradeInfrastructure(infrastructureInControl);
-            // gameManager. to implement
+            infrastructureController.RebuildInfrastructure(infrastructureInAboutState); 
+        // TODO: gameManager. to implement
         }
         
     }
 
     public void UpgradeInfrastructure()
     {   
-        if (infrastructureInControl != null)
+        if (gameManager.CheckRebuildInfrastructure(infrastructureController.CheckAreaToRebuildInfrastructure(infrastructureInAboutState).Count()))
         {
-            infrastructureController.UpgradeInfrastructure(infrastructureInControl);
-            MenuInfrastructureUpdateLevel(infrastructureInControl); 
+            infrastructureController.UpgradeInfrastructure(infrastructureInAboutState);
+        // TODO: gameManager. to implement
         }
     }
 
-    public void ChangeMenuUiState(MenuUiState menuUiState)
+    public void MenuUiStateChange(MenuUiState menuUiState, Infrastructure infrastructure = null)
     {
-        menuUiSectionController.MenuInfrastructureStateManage(menuUiState);
-        if(menuUiState == MenuUiState.infrastructureState)
+        MenuUiStateInfrastructureCheck(infrastructure); 
+
+        if(this.menuUiState != menuUiState)
         {
-            if (this.menuUiState == menuUiState)
-            {
-                this.menuUiState = MenuUiState.infrastructureManageState; /// INFO: infrastructureManageState is basic state
-                return; 
-            }
+            menuUiSectionController.MenuInfrastructureStateManage(this.menuUiState, menuUiState);
             this.menuUiState = menuUiState;
         }
-
     }
 
-    public void MenuInformationSet(Infrastructure infrastructure)
+    private void MenuUiStateInfrastructureCheck(Infrastructure infrastructure) // ?: move call board Methods to BoardController in update
     {
-        if(infrastructure == null)
-        {
-            infrastructureInControl = null;
-            MenuInformationSetDefault();
-            return;
-        }
-
-        if (infrastructure != infrastructureInControl)
+        if (infrastructureInAboutState != infrastructure)
         {   
-            if (menuUiState == MenuUiState.infrastructureManageState) 
+            if (infrastructureInAboutState != null)
             {
-                ChangeMenuUiState(MenuUiState.infrastructureAboutState);
-            }        
-            else return; 
-
-            if (infrastructureInControl != null)
-            {
-                boardController.SetMaterialForListDefault(infrastructureInControl.InfrastructureArea.BoardAreaBlockedList);
-                boardController.AbleInfrastructurePlane(infrastructureInControl); 
+                boardController.SetMaterialForListDefault(infrastructureInAboutState.InfrastructureArea.BoardAreaBlockedList);
+                boardController.AbleInfrastructurePlane(infrastructureInAboutState); 
             }
-            infrastructureInControl = infrastructure;
 
-            boardController.SetMaterialForListBlocked(infrastructure.InfrastructureArea.BoardAreaBlockedList);
-            boardController.AbleInfrastructurePlane(infrastructure);
-            
-            MenuInfrastructureSetValues(infrastructure);
+            if(infrastructure != null)
+            {
+                boardController.SetMaterialForListBlocked(infrastructure.InfrastructureArea.BoardAreaBlockedList);
+                boardController.AbleInfrastructurePlane(infrastructure);
+            }
+
+            infrastructureInAboutState = infrastructure;
         } 
     }
 
-    public void MenuInformationSetDefault()
-    {
-        textInfrastructureName.text = $"0";
-        textInfrastructureArea.text = $"0/0";
-        textInfrastructureUsers.text = $"0/0";
-        textInfrastructureHealth.text = $"0/0";
-        textInfrastructureProduction.text = $"0";
-        textInfrastructureEnergy.text = $"0/1";
-        textInfrastructureLevel.text = $"0/3";
-    }
-
-    public void MenuInfrastructureSetValues(Infrastructure infrastructure)
+    private void MenuInfrastructureSetValues(Infrastructure infrastructure) 
     {
         textInfrastructureName.text = $"{infrastructure.InfrastructureObject.ObjectType}";
         textInfrastructureArea.text = $"{infrastructure.InfrastructureObject.AreaActiveCount}/{infrastructure.InfrastructureObject.AreaSize}";
@@ -184,7 +163,7 @@ public class GameUiMenuController : MonoBehaviour
         MenuInfrastructureUpdateLevel(infrastructure);
     }
 
-    public void MenuInfrastructureUpdateLevel(Infrastructure infrastructure)
+    private void MenuInfrastructureUpdateLevel(Infrastructure infrastructure)
     {
         int infrastructureLevel = 0;
         
@@ -192,7 +171,7 @@ public class GameUiMenuController : MonoBehaviour
         textInfrastructureLevel.text = $"{infrastructureLevel}/3";
     }
 
-    void MenuResourcesUpdate()
+    private void MenuResourcesUpdate()
     {
         textCitizensAmount.text = gameManager.CitizensAmount.ToString();
         textWorkersAmount.text = gameManager.WorkersAmount.ToString();
@@ -204,7 +183,7 @@ public class GameUiMenuController : MonoBehaviour
     }
 
 
-    public void PauseStateMSet()
+    private void PauseStateMSet()
     {
         // PauseAllCoroutines(); 
         // PauseAllAnimations(); 

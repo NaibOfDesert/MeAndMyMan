@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System; 
 using UnityEngine;
 
 /**
@@ -52,6 +53,8 @@ public class GameController : MonoBehaviour
 
     void Awake()
     {
+        try
+        {
         gameTimeController = FindObjectOfType<GameTimeController>();
         mouseController = FindObjectOfType<MouseController>();
         gameCameraController = FindObjectOfType<GameCameraController>();
@@ -62,6 +65,16 @@ public class GameController : MonoBehaviour
         menuUiTabController = FindObjectOfType<MenuUiTabController>();
         boardController = FindObjectOfType<BoardController>();
         infrastructureController = FindObjectOfType<InfrastructureController>();
+        }
+        catch(Exception e)
+        {
+            Debug.Log(e.Message);
+        }
+        finally
+        {
+            // *: Debug.Log("GameController: Awake basic values launched correctly"); 
+        }
+
         gameManager = new GameManager(this, infrastructureController, BoardController);
         gameManager.SetCosts();
     }

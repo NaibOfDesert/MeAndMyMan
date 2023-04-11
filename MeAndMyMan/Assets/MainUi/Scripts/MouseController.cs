@@ -18,7 +18,7 @@ public class MouseController : MonoBehaviour
         infrastructureController = gameController.InfrastructureController;
         gameUiMenuController = gameController.GameUiMenuController;
     }
-
+    
     void Update()
     {
         worldPosition = GetWorldPositionInt(infrastructureController.InfrastructureLayersToHit);
@@ -27,8 +27,8 @@ public class MouseController : MonoBehaviour
         {
             if (gameUiMenuController.MenuUiState == MenuUiState.infrastructureBuildState)
             {
-                if(infrastructureController.BuildNewInfrastructure(worldPosition))
-                gameUiMenuController.ChangeMenuUiState(MenuUiState.infrastructureBuildState);
+                if(infrastructureController.BuildNewInfrastructure(worldPosition)); // TODO: to remove
+                // gameUiMenuController.MenuUiStateChange(MenuUiState.infrastructureBuildState);
             }
         }
     }

@@ -33,14 +33,23 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
 
     void Awake()
     {
-        /// REFERENCES to main game controllers
+        try
+        {
         gameController = FindObjectOfType<GameController>();
         gameManager  = gameController.GameManager; 
         gameUiController = gameController.GameUiController; 
         gameUiMenuController = gameController.GameUiMenuController; 
         menuUiTabController = gameController.MenuUiTabController; 
-        
-        /// VALUES to manage object
+        }
+        catch(Exception e)
+        {
+            Debug.Log(e.Message);
+        }
+        finally
+        {
+            // *: Debug.Log("MenuUiTab: Awake basic values launched correctly"); 
+        }
+
         tabBackgroundImage = GetComponent<Image>();
     }
 
@@ -49,14 +58,15 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
     {
         if(tabState == MenuUiState.infrastructureManageState)
         {
-            if(!gameManager.CheckBuildInfrastructure(
-                gameUiMenuController.InfrastructureInControl.InfrastructureObject.ObjectType, 
-                gameUiMenuController.InfrastructureInControl.InfrastructureObject.ObjectLevel))
-            {
-                // is able true or false
-                // throw new System.ArgumentOutOfRangeException(); // check
-                return; 
-            }
+            // TODO: implement albe check
+            // if(!gameManager.CheckBuildInfrastructure(
+            //     gameUiMenuController.InfrastructureInControl.InfrastructureObject.ObjectType, 
+            //     gameUiMenuController.InfrastructureInControl.InfrastructureObject.ObjectLevel))
+            // {
+            //     // is able true or false
+            //     // throw new System.ArgumentOutOfRangeException(); // check
+            //     return; 
+            // }
         }
     }
     void Start()
@@ -74,12 +84,14 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
     public void OnPointerEnter(PointerEventData eventData)
     {
         menuUiTabController.OnTabEnter(this);
-        
+        // TODO: implement view of resorces to get
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         menuUiTabController.OnTabExit(this);
+        // TODO: implement view of resorces to set as default
+
     }
 
     private void IsAbleCheck()
@@ -93,7 +105,6 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
     public void SetTabHoverSprite()
     {
         tabBackgroundImage.sprite = tabHoverSprite;
-
     }
     public void SetTabActiveSprite()
     {

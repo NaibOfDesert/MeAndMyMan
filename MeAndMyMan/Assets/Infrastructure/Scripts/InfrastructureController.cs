@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -48,14 +48,14 @@ public class InfrastructureController : MonoBehaviour
 
     void Awake()
     {
-        /// REFERENCES to main game controllers
+        // REFERENCES to main game controllers
         gameController = FindObjectOfType<GameController>();
         gameManager = gameController.GameManager;
         mouseController = gameController.MouseController;
         gameUiMenuController = gameController.GameUiMenuController;
         boardController = gameController.BoardController;
 
-        /// VALUES to manage object
+        // VALUES to manage object
         houseList = new List<Infrastructure>();
         farmList = new List<Infrastructure>();
         infrastructureRotationsList = new List<float>() { 0f, 90f, 180f, 270f}; 
@@ -216,7 +216,7 @@ public class InfrastructureController : MonoBehaviour
             }
             else 
             {
-                WaitUnitlEndOfApuse();  //TODO: implemet async
+                WaitUnitlEndOfPause();  //TODO: implemet async
                 infrastructure.InfrastructureObject.DevelopeObject();
                 gameManager.AddUsers(infrastructure); 
 
@@ -226,7 +226,7 @@ public class InfrastructureController : MonoBehaviour
         }
     }
 
-    private async Task WaitUnitlEndOfApuse()
+    private async Task WaitUnitlEndOfPause()
     {
        // to add await or wait until?????????????
 

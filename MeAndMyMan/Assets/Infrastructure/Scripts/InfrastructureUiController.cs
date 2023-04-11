@@ -15,12 +15,16 @@ public class InfrastructureUiController : MonoBehaviour
         gameUiMenuController = gameController.GameUiMenuController;
     }
 
+    public void SetInfrastructure()
+    {
+        gameUiMenuController.MenuUiStateChange(MenuUiState.infrastructureManageState);
+    }
+
     private void OnMouseDown()
     {
         if (infrastructure.IsPlaced)
         {
-            gameUiMenuController.MenuInformationSet(infrastructure);
+            gameUiMenuController.MenuUiStateChange(MenuUiState.infrastructureInformationState, infrastructure);
         }
-
     }
 }
