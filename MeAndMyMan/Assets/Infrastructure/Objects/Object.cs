@@ -22,10 +22,9 @@ public abstract class Object
     public int ImprovementTime { get { return improvementTime; } }
     protected int users;
     public int Users { get { return users; } }
-    protected int usersMaxBacic;
-    public int UsersMaxBacic { get { return usersMaxBacic; } }
     protected int usersMax;
     public int UsersMax { get { return usersMax; } }
+    protected int usersMaxBacic;
     protected int energy;
     public int Energy { get { return energy; } }
     protected int health;
@@ -39,6 +38,7 @@ public abstract class Object
         areaActiveCount = 0;
         areaDisactiveCount = 0;
         energy = 0;
+        usersMaxBacic = usersMax;
     }
  
     public virtual void UpgradeObject()

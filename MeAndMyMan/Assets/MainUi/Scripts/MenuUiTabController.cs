@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class MenuUiTabController : MonoBehaviour
@@ -8,14 +9,24 @@ public class MenuUiTabController : MonoBehaviour
     GameController gameController; 
     GameUiMenuController gameUiMenuController;
     MenuUiTab activeTab;
-    // [SerializeField] Transform[] tabTransformtList; // TODO: to add objects to  active
 
     void Awake()
     {
+        try
+        {
         gameController = FindObjectOfType<GameController>();
         gameUiMenuController = gameController.GameUiMenuController; 
-        
+        }
+        catch(Exception e)
+        {
+            Debug.Log(e.Message);
+        }
+    }
+
+    private void Start()
+    {
         tabList = new List<MenuUiTab>();
+
     }
 
     void Update()

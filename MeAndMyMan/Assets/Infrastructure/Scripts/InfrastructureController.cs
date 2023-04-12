@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 public class InfrastructureController : MonoBehaviour
 {
     [Header("Prefabs")]
+    [SerializeField] Dictionary<ObjectType, GameObject> prefabDictionary; 
     [SerializeField] GameObject housePrefab;
     public GameObject HousePrefab { get { return housePrefab; } } // TODO: check is needed? 
 
@@ -46,33 +48,42 @@ public class InfrastructureController : MonoBehaviour
 
     // TODO: move board control to UI Controll
 
-    void Awake()
+    private void Awake()
     {
-        // REFERENCES to main game controllers
+        try
+        {
         gameController = FindObjectOfType<GameController>();
         gameManager = gameController.GameManager;
         mouseController = gameController.MouseController;
         gameUiMenuController = gameController.GameUiMenuController;
         boardController = gameController.BoardController;
+        }
+        catch(Exception e)
+        {
+            Debug.Log(e.Message);
+        }
 
-        // VALUES to manage object
         houseList = new List<Infrastructure>();
         farmList = new List<Infrastructure>();
         infrastructureRotationsList = new List<float>() { 0f, 90f, 180f, 270f}; 
     }
 
+    private void Start()
+    {
+
+    }
     public void CreateInfrastructure(ObjectType objectType)
     {
         Object infrastructureObject;
 
         switch (objectType)
         {
-            case ObjectType.House:
+            case ObjectType.house:
                 infrastructureObject = new House();
                 InstantiateInfrastructure(housePrefab, infrastructureObject, infrastructureObject.Size);
 
                 break;
-            case ObjectType.Farm:
+            case ObjectType.farm:
                 infrastructureObject = new Farm();
                 InstantiateInfrastructure(farmPrefab, infrastructureObject, infrastructureObject.Size);
 
@@ -85,7 +96,7 @@ public class InfrastructureController : MonoBehaviour
 
     Infrastructure InstantiateInfrastructure(GameObject prefabObject, Object infrastructureObject, int infrastructureSize)
     {
-        int infrastructureRotation = Random.Range(0, infrastructureRotationsList.Count() - 1);
+        int infrastructureRotation = UnityEngine.Random.Range(0, infrastructureRotationsList.Count() - 1);
         GameObject newInfrastructureObject = Instantiate(prefabObject, mouseController.WorldPosition, Quaternion.identity); // is newInfrastructure needed?? use infrastructureRotation ???
         newInfrastructure = newInfrastructureObject.GetComponent<Infrastructure>();
         newInfrastructure.InitiateInfrastructure(infrastructureObject, infrastructureSize, infrastructureRotationsList[infrastructureRotation]);
@@ -103,9 +114,11 @@ public class InfrastructureController : MonoBehaviour
 
     public bool BuildNewInfrastructure(Vector3 worldPosition)
     {
-        if (!newInfrastructure.InfrastructureArea.BoardList.Any(n => n.IsUsedByInfrastructure == true) && newInfrastructure.InfrastructureArea.BoardList.Count() == Mathf.Pow(newInfrastructure.InfrastructureSize, 2)) /// implemented as square objects
+        if (!newInfrastructure.InfrastructureArea.BoardList.Any(n => n.IsUsedByInfrastructure == true) && newInfrastructure.InfrastructureArea.BoardList.Count() == Mathf.Pow(newInfrastructure.InfrastructureObject.Size, 2)) /// implemented as square objects
         {
             gameManager.CalculateBuildInfrastructure(newInfrastructure.InfrastructureObject.ObjectType, newInfrastructure.InfrastructureObject.ObjectLevel);
+
+            
             newInfrastructure.SetInfrastructure();
             StartCoroutine(ImproveInfrastructure(newInfrastructure));
             boardController.BoardAreaSetAsUsedByInfrastructure(newInfrastructure.InfrastructureArea.BoardList, newInfrastructure);
@@ -125,11 +138,11 @@ public class InfrastructureController : MonoBehaviour
         {
             switch (newInfrastructure.InfrastructureObject.ObjectType)
             {
-                case ObjectType.House:
+                case ObjectType.house:
                     houseList.Add(newInfrastructure);
                     break;
 
-                case ObjectType.Farm:
+                case ObjectType.farm:
                     farmList.Add(newInfrastructure);
                     break;
 
@@ -146,11 +159,11 @@ public class InfrastructureController : MonoBehaviour
         {
             switch (infrastructure.InfrastructureObject.ObjectType)
             {
-                case ObjectType.House:  
+                case ObjectType.house:  
                     houseList.Remove(infrastructure);
                     break;
 
-                case ObjectType.Farm:
+                case ObjectType.farm:
                     farmList.Remove(infrastructure);
                     break;
 

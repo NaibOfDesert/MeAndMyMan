@@ -12,56 +12,53 @@ public class GameManager
 
     int experienceAmount = 0;
     public int ExperienceAmount { get { return experienceAmount; } }
-
-    int citizensAmount = 25;
-    public int CitizensAmount { get { return citizensAmount; } }
-
-    int workersAmount = 50;
-    public int WorkersAmount { get { return workersAmount; } }
-
-    int goldAmount = 100;
-    public int GoldAmount { get { return goldAmount; } }
-
-    int foodAmount = 150;
-    public int FoodAmount { get { return foodAmount; } }
-
-    int woodAmount =75;
-    public int WoodAmount { get { return woodAmount; } }
-
-    int stoneAmount = 25;
-    public int StoneAmount { get { return stoneAmount; } }
-
-    int ironAmount = 25;
-    public int IronAmount { get { return ironAmount; } }
-
+    Dictionary<ResourceType, int> resourcesDictionary;
+    public Dictionary<ResourceType, int> ResourcesDictionary { get { return resourcesDictionary; } }
+    List<Dictionary<string, int>> objectCostListDictionary; 
     int goldValueToRebuildSingle = 25;
 
-    ObjectCost houseCost;
-    ObjectCost farmCost;
-
-
-    public bool Test; 
-
-
+    public string testValue; 
 
     public GameManager(GameController gameController, InfrastructureController infrastructureController, BoardController boardController)
     {
         this.gameController = gameController;
-        this. boardController = boardController;
+        this.boardController = boardController;
         this.infrastructureController = infrastructureController;
+        
+        resourcesDictionary = new Dictionary<ResourceType, int>();
+        resourcesDictionary.Add(ResourceType.user, 25);
+        resourcesDictionary.Add(ResourceType.gold, 100);
+        resourcesDictionary.Add(ResourceType.food, 200);
+        resourcesDictionary.Add(ResourceType.wood, 150);
+        resourcesDictionary.Add(ResourceType.stone, 100);
+        resourcesDictionary.Add(ResourceType.iron, 10);
+
+        objectCostListDictionary = new List<Dictionary<string, int>>(); 
+        objectCostListDictionary.Add(SetCostsByDictionary(ObjectType.house, 0, 5, 10, 25, 0, 0));
+        objectCostListDictionary.Add(SetCostsByDictionary(ObjectType.farm, 12, 5, 10, 25, 0, 0));
     }
 
-    public void SetCosts()
+    public Dictionary<string, int> SetCostsByDictionary(ObjectType objectType, int userCost, int goldCost, int foodCost, int woodCost, int stoneCost, int ironCost)
     {
-        houseCost = new ObjectCost(0, 5, 10, 25, 0, 0);
-        farmCost = new ObjectCost(12, 5, 10, 25, 0, 0);
+        Dictionary<string, int> newCostDictionary = new Dictionary<string, int>();
+        newCostDictionary.Add("objectType", (int)objectType);
+        newCostDictionary.Add("user", userCost);
+        newCostDictionary.Add("gold", goldCost);
+        newCostDictionary.Add("food", foodCost);
+        newCostDictionary.Add("wood", woodCost);
+        newCostDictionary.Add("stone", stoneCost);
+        newCostDictionary.Add("iron", ironCost);
 
-
+        return newCostDictionary;
     }
+
     public void CountExpValue()
     {
         foreach(var house in infrastructureController.HouseList)
         {
+            // object list
+            // dictionary to get exp value for each object * level
+
           //  experience += house.gameObject.ObjectLevel; 
         }
 
@@ -71,11 +68,10 @@ public class GameManager
     {
         switch (infrastructure.InfrastructureObject.ObjectType)
         {
-            case ObjectType.House:
-                citizensAmount++;
+            case ObjectType.house:
+                // citizensAmount++;
                 break;
             default:
-                workersAmount++;
                 break;
         }
 
@@ -83,41 +79,23 @@ public class GameManager
 
 
 
-    public bool CheckBuildInfrastructure(ObjectType objectType, ObjectLevel objectLevel) /// TOCHECK: with upgrade?  
+    public bool CheckBuildInfrastructure(ObjectType objectType, ObjectLevel objectLevel)  
     {
-        // TODO: add if value < 0
-        bool isAbletoBuild = false;
-        int infrastructureLevel = (int) objectLevel;
+        var objectCost = objectCostListDictionary.Where(d => d["objectType"].Equals((int)objectType)).SingleOrDefault();
 
-        switch (objectType)
+        for(int i = 0; i < resourcesDictionary.Count(); i++)
         {
-            // if (!(citizensAmount < houseCost.UserCost || goldAmount < houseCost.GoldCost || foodAmount < houseCost.FoodCost || woodAmount < houseCost.WoodCost || stoneAmount < houseCost.StoneCost || ironAmount < houseCost.IronCost))
-            case ObjectType.House:
-                if (!(goldAmount < houseCost.GoldCost * infrastructureLevel || foodAmount < houseCost.FoodCost * infrastructureLevel || woodAmount < houseCost.WoodCost * infrastructureLevel))
-                {
-                    isAbletoBuild = true; 
-                }
-                break;
-            case ObjectType.Farm:
-                if (!(citizensAmount < farmCost.UserCost * infrastructureLevel || goldAmount < farmCost.GoldCost * infrastructureLevel || foodAmount < farmCost.FoodCost * infrastructureLevel || woodAmount < farmCost.WoodCost * infrastructureLevel))
-                {
-                    isAbletoBuild = true;
-                }
-                break;
-            default:
-                isAbletoBuild = false;
-                break;
+            var valueKey = resourcesDictionary.ElementAt(i).Key;
+            var valueToCheck = objectCost[valueKey.ToString()];  
+            if(!(resourcesDictionary[valueKey] >= valueToCheck * (int) objectLevel)) return false;
+
         }
-        return isAbletoBuild;
+        return true;
     }
-
-
-
-
 
     public bool CheckRebuildInfrastructure(int fieldsToRebuild)
     {
-        return (fieldsToRebuild * goldValueToRebuildSingle <= goldAmount) ? true : false;
+        return (fieldsToRebuild * goldValueToRebuildSingle <= resourcesDictionary[ResourceType.gold]) ? true : false;
     }
 
     public void CalculateInfrastructureIncom(InfrastructureController infrastructureController)
@@ -133,58 +111,34 @@ public class GameManager
     {
         foreach (var infrastructure in infrastructureList)
         {
-            foodAmount += infrastructure.InfrastructureObject.AreaActiveCount;
+            resourcesDictionary[ResourceType.food] += infrastructure.InfrastructureObject.AreaActiveCount;
         }
     }
 
 
     public void CalculateBuildInfrastructure(ObjectType objectType, ObjectLevel objectLevel)
     {
-        int infrastructureLevel = (int)objectLevel;
+        var objectCost = objectCostListDictionary.Where(d => d["objectType"].Equals((int)objectType)).SingleOrDefault();
 
-        switch (objectType)
+        for(int i = 0; i < resourcesDictionary.Count(); i++)
         {
-            case ObjectType.House:
-                goldAmount -= houseCost.GoldCost * infrastructureLevel;
-                foodAmount -= houseCost.FoodCost * infrastructureLevel;
-                woodAmount -= houseCost.WoodCost * infrastructureLevel;
-
-                break;
-            case ObjectType.Farm:
-                citizensAmount -= farmCost.UserCost * infrastructureLevel;
-                goldAmount -= farmCost.GoldCost * infrastructureLevel;
-                foodAmount -= farmCost.FoodCost * infrastructureLevel;
-                woodAmount -= farmCost.WoodCost * infrastructureLevel;
-                break;
-            default:
-                break;
+            var valueKey = resourcesDictionary.ElementAt(i).Key;
+            var valueToCheck = objectCost[valueKey.ToString()];  
+            resourcesDictionary[valueKey] -= valueToCheck * (int) objectLevel;
         }
     }
 
     public void CalculateRebuildInfrastructure(int fieldsToRebuild)
     {
-        goldAmount -= fieldsToRebuild * goldValueToRebuildSingle;
+        resourcesDictionary[ResourceType.gold] -= fieldsToRebuild * goldValueToRebuildSingle;
     }
     public void CalculateDeleteInfrastructure(Infrastructure infrastructure)
     {
-        switch (infrastructure.InfrastructureObject.ObjectType)
-        {
-            case ObjectType.House:
-                citizensAmount -= infrastructure.InfrastructureObject.Users;
-                break;
-            default:
-                citizensAmount += infrastructure.InfrastructureObject.UsersMax;
-                workersAmount -= infrastructure.InfrastructureObject.Users; // TO DO: fix removing 1 user less
+      // TODO: to implement
 
-                /*if (infrastructure.InfrastructureObject.Users < infrastructure.InfrastructureObject.UsersMax)
-                {
-                }
-                else
-                {
-                    workersAmount -= infrastructure.InfrastructureObject.UsersMax;
-                }*/
-                break;
-        }
+
+
+
     }
 
 

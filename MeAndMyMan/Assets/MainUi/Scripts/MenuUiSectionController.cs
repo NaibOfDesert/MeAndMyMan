@@ -16,9 +16,9 @@ public class MenuUiSectionController : MonoBehaviour
 
     void Start()
     {
-        MenuListAble(MenuUiState.infrastructureState);
-        MenuListAble(MenuUiState.informationState);
-        MenuListAble(MenuUiState.infrastructureManageState);
+        MenuListAble(MenuUiSectionState.infrastructureState);
+        MenuListAble(MenuUiSectionState.informationState);
+        MenuListAble(MenuUiSectionState.infrastructureCreateState);
     }
 
 
@@ -31,23 +31,21 @@ public class MenuUiSectionController : MonoBehaviour
 
     public void AddToUiList(MenuUiSection menuUiSection)
     {
-        if(menuUiSection.MenuUiState != MenuUiState.noneState)
+        if(menuUiSection.MenuUiSectionState != MenuUiSectionState.noneState)
         menuUiSectionList.Add(menuUiSection);
     }
 
-    public void MenuInfrastructureStateManage(MenuUiState menuUiStateCurrent, MenuUiState menuUiStateNew)
+    public void MenuInfrastructureStateManage(MenuUiSectionState menuUiStateCurrent, MenuUiSectionState menuUiStateNew)
     {
        MenuListAble(menuUiStateCurrent); 
        MenuListAble(menuUiStateNew); 
     }
 
-    private void MenuListAble(MenuUiState menuUiState)
+    private void MenuListAble(MenuUiSectionState menuUiState)
     {
-        foreach(var s in menuUiSectionList){
-            var menuUiStateString = s.MenuUiState.ToString(); 
-            var menuUiStateList= String.Concat(menuUiStateString.Where(l => !char.IsWhiteSpace(l))).Split(",").ToList(); 
-            
-            if(menuUiStateList.Any(m => m == menuUiState.ToString()))
+        foreach(var s in menuUiSectionList)
+        {
+            if(s.MenuUiStatesList.Any(m => m == menuUiState.ToString()))
             {
                 s.SetSectionAble();
             }

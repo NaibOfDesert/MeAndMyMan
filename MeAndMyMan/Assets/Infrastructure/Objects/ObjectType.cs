@@ -1,8 +1,10 @@
 ﻿public enum ObjectType
 {
-    Castle,
-    House,
-    Warehouse, 
-    Farm, 
-    Armoury
+    non,
+    castle,
+    house,
+    warehouse, 
+    farm, 
+    armoury,
+    tower
 }

@@ -11,13 +11,12 @@ public class House: Object
 
     public House() : base()
     {
-        objectType = ObjectType.House;
+        objectType = ObjectType.house;
         size = 1;
         areaSize = 0;
         improvementTime = 1;
         users = 1;
         usersMax = 8;
-        usersMaxBacic = 8;
         health = 10;
         healthMax = 10;
 

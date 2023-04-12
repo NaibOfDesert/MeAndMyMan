@@ -1,13 +1,13 @@
 ﻿using System;
 
 [Flags]
-public enum MenuUiState : int
+public enum MenuUiSectionState : Int32
 {
     noneState = 0, 
     informationState = 1, 
     infrastructureInformationState = 2,
     infrastructureState = 4,
-    infrastructureManageState = 8,
+    infrastructureCreateState = 8,
     infrastructureAboutState = 16,
     infrastructureBuildState = 32,
     advisorState = 64,

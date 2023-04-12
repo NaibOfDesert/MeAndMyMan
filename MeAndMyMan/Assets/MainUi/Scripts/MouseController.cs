@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class MouseController : MonoBehaviour
@@ -14,9 +15,18 @@ public class MouseController : MonoBehaviour
     GameUiMenuController gameUiMenuController; 
     void Awake()
     {
+        try
+        {
         gameController = FindObjectOfType<GameController>();
         infrastructureController = gameController.InfrastructureController;
-        gameUiMenuController = gameController.GameUiMenuController;
+        gameUiMenuController = gameController.GameUiMenuController; 
+        }
+        catch(Exception e)
+        {
+            Debug.Log(e.Message);
+        }
+        
+
     }
     
     void Update()
@@ -25,7 +35,7 @@ public class MouseController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            if (gameUiMenuController.MenuUiState == MenuUiState.infrastructureBuildState)
+            if (gameUiMenuController.MenuUiState == MenuUiSectionState.infrastructureBuildState)
             {
                 if(infrastructureController.BuildNewInfrastructure(worldPosition)); // TODO: to remove
                 // gameUiMenuController.MenuUiStateChange(MenuUiState.infrastructureBuildState);
@@ -58,7 +68,6 @@ public class MouseController : MonoBehaviour
         Vector3 worldPositionConvert = worldPosition;
         float convertValue = ((infrastructureSize + 1) % 2f) / 2f;
         worldPositionConvert += new Vector3(convertValue, 0, convertValue);
-        Debug.Log(convertValue);
         return worldPositionConvert;
     }
 

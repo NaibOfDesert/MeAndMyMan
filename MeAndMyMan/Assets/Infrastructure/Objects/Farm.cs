@@ -8,13 +8,12 @@ public class Farm : Object
 {
     public Farm() : base()
     {
-        objectType = ObjectType.Farm;
+        objectType = ObjectType.farm;
         size = 2;
         areaSize = 1;
         improvementTime = 2; 
         users = 1;
         usersMax = 12;
-        usersMaxBacic = 12;
         health = 20;
         healthMax = 20;
 

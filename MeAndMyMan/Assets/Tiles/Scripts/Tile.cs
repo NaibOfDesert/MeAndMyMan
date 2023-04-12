@@ -52,7 +52,6 @@ public class Tile : MonoBehaviour
 
     public void SetUsedByDefault()
     {
-        Debug.Log("SetUsedByDefault");
         isUsedByInfrastructure = false;
         usedByInfrastructure = null;
 

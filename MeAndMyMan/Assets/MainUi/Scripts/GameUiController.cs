@@ -55,13 +55,13 @@ public class GameUiController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
 
-            if (gameUiMenuController.MenuUiState == MenuUiState.infrastructureBuildState)
+            if (gameUiMenuController.MenuUiState == MenuUiSectionState.infrastructureBuildState)
             {
                 // gameUiMenuController.MenuUiStateChange(MenuUiState.infrastructureBuildState);
                 infrastructureController.DestroyInstantiateInfrastructure();
             }
             
-            gameUiMenuController.MenuUiStateChange(MenuUiState.infrastructureManageState);
+            gameUiMenuController.MenuUiStateChange(MenuUiSectionState.infrastructureCreateState);
 
             // if (gameUiMenuController.MenuUiState == MenuUiState.infrastructureAboutState)
             // {

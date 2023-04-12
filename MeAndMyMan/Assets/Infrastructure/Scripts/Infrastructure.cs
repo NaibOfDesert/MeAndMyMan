@@ -8,28 +8,22 @@ public class Infrastructure : MonoBehaviour
 {
     [SerializeField] Sprite infrastructureImage;
     public Sprite InfrastructureImage { get { return infrastructureImage; } }
-
     bool isPlaced;
     public bool IsPlaced { get { return isPlaced; }  set { isPlaced = value; } }
-
-    int infrastructureSize = 0;
-    public int InfrastructureSize { get { return infrastructureSize; } }
-
+    //int infrastructureSize = 0;
+   //public int InfrastructureSize { get { return infrastructureSize; } }
     Object infrastructureObject;
     public Object InfrastructureObject { get { return infrastructureObject; } }
-
     InfrastructureArea infrastructureArea;
     public InfrastructureArea InfrastructureArea { get { return infrastructureArea; } }
-
     InfrastructureAudio infrastructureAudio;
     public InfrastructureAudio InfrastructureAudio { get { return infrastructureAudio; } }
-
     InfrastructureUiController infrastructureUiController;
     public InfrastructureUiController InfrastructureUiController { get { return infrastructureUiController; } }
 
     MeshRenderer meshRenderer;
     Material infrastructureMaterial;
-
+    
     GameController gameController;
     BoardController boardController; 
     MouseController mouseController;
@@ -58,15 +52,15 @@ public class Infrastructure : MonoBehaviour
         if (!isPlaced) // TODO: to fix, area position should set objectposition, not world posiiton
         {
             Vector3 worldPosition = mouseController.WorldPosition;
-            infrastructureArea.BoardList = boardController.BoardCheck(worldPosition, infrastructureSize); // TODO: move saving value to infArea
+            infrastructureArea.BoardList = boardController.BoardCheck(worldPosition, infrastructureObject.Size); // TODO: move saving value to infArea
 
-            if (infrastructureArea.BoardList.Count() == Mathf.Pow(infrastructureSize, 2))
+            if (infrastructureArea.BoardList.Count() == Mathf.Pow(infrastructureObject.Size, 2))
             {
-                infrastructureArea.BoardAreaList = boardController.BoardAreaCheck(worldPosition, infrastructureSize, infrastructureObject.AreaSize); // move saving value to infArea
+                infrastructureArea.BoardAreaList = boardController.BoardAreaCheck(worldPosition, infrastructureObject.Size, infrastructureObject.AreaSize); // move saving value to infArea
                 infrastructureArea.SetAreaLists();
                 boardController.BoardClear(infrastructureArea.BoardList);
                 boardController.BoardAreaClear(infrastructureArea.BoardAreaList);
-                transform.position = mouseController.WorldPositionConvert(infrastructureSize, worldPosition);   
+                transform.position = mouseController.WorldPositionConvert(infrastructureObject.Size, worldPosition);   
 
                 if (infrastructureArea.BoardList.Any(n => n.IsUsedByInfrastructure == true)) // TODO: implemented as square objects
                 {
@@ -83,7 +77,6 @@ public class Infrastructure : MonoBehaviour
     public void InitiateInfrastructure(Object infrastructureObject, int infrastructureSize, float rotationAxisY)
     {
         this.infrastructureObject = infrastructureObject;
-        this.infrastructureSize = infrastructureSize;
         transform.rotation = Quaternion.Euler(transform.rotation.x, rotationAxisY, transform.rotation.z);
     }
 

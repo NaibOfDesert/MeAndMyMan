@@ -76,7 +76,7 @@ public class GameController : MonoBehaviour
         }
 
         gameManager = new GameManager(this, infrastructureController, BoardController);
-        gameManager.SetCosts();
+        
     }
 
     void Start()

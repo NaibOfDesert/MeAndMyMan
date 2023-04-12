@@ -91,7 +91,6 @@ public class BoardController : MonoBehaviour
     public Tile GetBoardTile(Vector3 worldPositon)
     {
         Tile fieldCheck = tilesList.SingleOrDefault(n => n.gameObject.transform.position == worldPositon);
-        Debug.Log(tilesList.Count()); 
         return (fieldCheck);
     }
 

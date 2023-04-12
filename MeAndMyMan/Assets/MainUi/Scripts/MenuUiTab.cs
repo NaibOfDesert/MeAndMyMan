@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using System;
+using System.Linq;
 
 [RequireComponent(typeof(Image))]   
 public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler
@@ -16,13 +17,13 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
     [SerializeField] private Sprite tabActiveSprite;
 
     [Header("Values")]
-    [SerializeField] private MenuUiState tabState;
-
+    [SerializeField] private MenuUiTabState menuUiTabState;
+    [SerializeField] private MenuUiSectionState menuUiSectionState;
+    [SerializeField] private List<string> menuUiStatesList; 
+    public List<string> MenuUiStatesList { get {return menuUiStatesList;} }
     private Image tabBackgroundImage;
-
     public UnityEvent onTabSelected;
     public UnityEvent onTabDeselected;
-
     bool isAble; 
 
     GameController gameController; 
@@ -45,29 +46,41 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
         {
             Debug.Log(e.Message);
         }
-        finally
-        {
-            // *: Debug.Log("MenuUiTab: Awake basic values launched correctly"); 
-        }
 
         tabBackgroundImage = GetComponent<Image>();
+        menuUiStatesList = new List<string>();
+
+        GetStatesList(menuUiTabState);
+        GetStatesList(menuUiSectionState);
     }
 
-
+    
     void Update()
     {
-        if(tabState == MenuUiState.infrastructureManageState)
-        {
-            // TODO: implement albe check
-            // if(!gameManager.CheckBuildInfrastructure(
-            //     gameUiMenuController.InfrastructureInControl.InfrastructureObject.ObjectType, 
-            //     gameUiMenuController.InfrastructureInControl.InfrastructureObject.ObjectLevel))
-            // {
-            //     // is able true or false
-            //     // throw new System.ArgumentOutOfRangeException(); // check
-            //     return; 
-            // }
-        }
+
+        // switch(menuUiTabState)
+        // {
+        //     case MenuUiTabState.infrastructureCreateFarmState:
+        //         if(menuUiState == MenuUiSectionState.infrastructureManageState)
+
+        //         break;
+
+
+        //     default:
+        //         break;
+        // }
+        // if(menuUiState == MenuUiSectionState.infrastructureManageState)
+        // {
+        //     // TODO: implement albe check
+        //     // if(!gameManager.CheckBuildInfrastructure(
+        //     //     gameUiMenuController.InfrastructureInControl.InfrastructureObject.ObjectType, 
+        //     //     gameUiMenuController.InfrastructureInControl.InfrastructureObject.ObjectLevel))
+        //     // {
+        //     //     // is able true or false
+        //     //     // throw new System.ArgumentOutOfRangeException(); // check
+        //     //     return; 
+        //     // }
+        // }
     }
     void Start()
     {
@@ -125,5 +138,18 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
         {
             onTabDeselected.Invoke();
         }
+    }
+
+    private void GetStatesList <T>(T menuUiState)
+    {
+        var menuUiStateString = menuUiState.ToString(); 
+        var menuUiStateList = String.Concat(menuUiStateString.Where(l => !char.IsWhiteSpace(l))).Split(",").ToList();
+        
+        foreach(var s in menuUiStateList)
+        {
+            menuUiStatesList.Add(s);
+        }
+
+        menuUiStatesList.RemoveAll(s => s == MenuUiSectionState.noneState.ToString() || s == MenuUiTabState.noneState.ToString()); // ?: to monit, can be unusefull
     }
 }
