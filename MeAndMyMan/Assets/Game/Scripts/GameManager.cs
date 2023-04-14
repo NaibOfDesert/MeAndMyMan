@@ -14,10 +14,13 @@ public class GameManager
     public int ExperienceAmount { get { return experienceAmount; } }
     Dictionary<ResourceType, int> resourcesDictionary;
     public Dictionary<ResourceType, int> ResourcesDictionary { get { return resourcesDictionary; } }
-    List<Dictionary<string, int>> objectCostListDictionary; 
+    List<Dictionary<string, int>> objectCostListDictionary; // TODO: dictionary of dictionary
+    Dictionary<ObjectType, Dictionary<ResourceType, int>> objectCostDictionary; 
     int goldValueToRebuildSingle = 25;
 
     public string testValue; 
+        public string testValue1; 
+
 
     public GameManager(GameController gameController, InfrastructureController infrastructureController, BoardController boardController)
     {
@@ -40,16 +43,33 @@ public class GameManager
 
     }
 
+    public void SetCostDictionary()
+    {
+        objectCostDictionary = new Dictionary<ObjectType, Dictionary<ResourceType, int>>(); 
+        objectCostDictionary.Add(ObjectType.house, SetCosts(0, 5, 10, 25, 0, 0));
+        objectCostDictionary.Add(ObjectType.farm, SetCosts(12, 5, 10, 25, 0, 0));
+        objectCostDictionary.Add(ObjectType.tower, SetCosts(25, 20, 100, 25, 60, 70));    
+    }
+    public Dictionary<ResourceType, int> SetCosts(int userCost, int goldCost, int foodCost, int woodCost, int stoneCost, int ironCost){
+        Dictionary<ResourceType, int> newCostDictionary = new Dictionary<ResourceType, int>();
+        newCostDictionary.Add(ResourceType.user, userCost);
+        newCostDictionary.Add(ResourceType.gold, goldCost);
+        newCostDictionary.Add(ResourceType.food, foodCost);
+        newCostDictionary.Add(ResourceType.wood, woodCost);
+        newCostDictionary.Add(ResourceType.stone, stoneCost);
+        newCostDictionary.Add(ResourceType.iron, ironCost);
+        return newCostDictionary;
+    }
     public Dictionary<string, int> SetCostsByDictionary(ObjectType objectType, int userCost, int goldCost, int foodCost, int woodCost, int stoneCost, int ironCost)
     {
         Dictionary<string, int> newCostDictionary = new Dictionary<string, int>();
         newCostDictionary.Add("objectType", (int)objectType);
-        newCostDictionary.Add("user", userCost);
-        newCostDictionary.Add("gold", goldCost);
-        newCostDictionary.Add("food", foodCost);
-        newCostDictionary.Add("wood", woodCost);
-        newCostDictionary.Add("stone", stoneCost);
-        newCostDictionary.Add("iron", ironCost);
+        newCostDictionary.Add(ResourceType.user.ToString(), userCost);
+        newCostDictionary.Add(ResourceType.gold.ToString(), goldCost);
+        newCostDictionary.Add(ResourceType.food.ToString(), foodCost);
+        newCostDictionary.Add(ResourceType.wood.ToString(), woodCost);
+        newCostDictionary.Add(ResourceType.stone.ToString(), stoneCost);
+        newCostDictionary.Add(ResourceType.iron.ToString(), ironCost);
 
         return newCostDictionary;
     }
@@ -86,12 +106,16 @@ public class GameManager
         if(objectType == null) return false;
 
         var objectCost = objectCostListDictionary.Where(d => d["objectType"].Equals((int)objectType)).SingleOrDefault();
+            // testValue = objectCost["wood"].ToString();   
 
         for(int i = 0; i < resourcesDictionary.Count(); i++)
         {
             var valueKey = resourcesDictionary.ElementAt(i).Key;
-            var valueToCheck = objectCost[valueKey.ToString()];  
-            if(!(resourcesDictionary[valueKey] <= valueToCheck * (int) objectLevel)) return false; 
+            var valueToCheck = objectCost[valueKey.ToString()];
+            // testValue = valueToCheck.ToString();   
+            testValue1 = resourcesDictionary[valueKey].ToString();   
+            testValue = "value " + objectCost["objectType"].ToString();
+            if((resourcesDictionary[valueKey] < (objectCost[valueKey.ToString()] * (int) objectLevel))) return false; 
 
         }
         return true;

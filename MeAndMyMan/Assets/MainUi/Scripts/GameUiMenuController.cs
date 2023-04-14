@@ -32,8 +32,12 @@ public class GameUiMenuController : MonoBehaviour
     public bool PauseState { get { return pauseState; } set { pauseState = value; } }
     private Infrastructure infrastructureInAboutState;
     public Infrastructure InfrastructureInControl { get { return infrastructureInAboutState; } }
-    private Dictionary<MenuUiTabState, ObjectType> menuUiObjectTypeDictionary; 
-    [SerializeField] public Dictionary<MenuUiTabState, ObjectType> MenuUiObjectTypeDictionary { get { return menuUiObjectTypeDictionary; } } 
+    private Dictionary<MenuUiTabState, ObjectType> tabObjectDictionary; // TODO implement genertor
+    public Dictionary<MenuUiTabState, ObjectType> TabObjectDictionary { get { return tabObjectDictionary; } } 
+    private Dictionary<MenuUiSectionState, List<MenuUiTabState>> tabSectionDictionary; // TODO implement genertor
+    public Dictionary<MenuUiSectionState, List<MenuUiTabState>> TabSectionDictionary { get { return tabSectionDictionary; } } 
+    
+    
     GameController gameController;
     GameManager gameManager;
     BoardController boardController;
@@ -65,12 +69,15 @@ public class GameUiMenuController : MonoBehaviour
         infrastructureInAboutState = null;
         menuUiState = MenuUiSectionState.infrastructureCreateState;
 
-        menuUiObjectTypeDictionary = new Dictionary<MenuUiTabState, ObjectType>();
+        tabObjectDictionary = new Dictionary<MenuUiTabState, ObjectType>();
         GenereteUiObjectRelation();
     }
 
     private void Update()
     {
+        Debug.Log("value to compare" + gameManager.testValue1);
+        Debug.Log("value to check" + gameManager.testValue);
+
         MenuResourcesUpdate(); 
 
         if(infrastructureInAboutState != null) 
@@ -81,10 +88,11 @@ public class GameUiMenuController : MonoBehaviour
 
     public void GenereteUiObjectRelation()
     {
-        // *: need to add nect add afert added new ObjectType 
-        menuUiObjectTypeDictionary.Add(MenuUiTabState.infrastructureCreateFarmState, ObjectType.farm); 
-        menuUiObjectTypeDictionary.Add(MenuUiTabState.infrastructureCreateHouseState, ObjectType.house);
-        menuUiObjectTypeDictionary.Add(MenuUiTabState.infrastructureCreateTowerState, ObjectType.tower); 
+        // TODO: autoadd with find all components
+        // *: need to add afert added new ObjectType 
+        tabObjectDictionary.Add(MenuUiTabState.infrastructureCreateFarmState, ObjectType.farm); 
+        tabObjectDictionary.Add(MenuUiTabState.infrastructureCreateHouseState, ObjectType.house);
+        tabObjectDictionary.Add(MenuUiTabState.infrastructureCreateTowerState, ObjectType.tower); 
     }
 
     public void BuildHouse()

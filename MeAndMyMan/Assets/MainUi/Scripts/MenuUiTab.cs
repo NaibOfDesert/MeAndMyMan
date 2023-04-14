@@ -21,7 +21,7 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
     [SerializeField] private MenuUiSectionState menuUiSectionState;
     [SerializeField] private List<string> menuUiStatesList; 
     public List<string> MenuUiStatesList { get {return menuUiStatesList;} }
-    private ObjectType? dependenceObjectType; 
+    [SerializeField] private ObjectType dependenceObjectType; 
     [SerializeField] bool isAble; 
     private Image tabBackgroundImage;
     public UnityEvent onTabSelected;
@@ -89,15 +89,15 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
     #endregion
     private void IsAbleCheck()
     {
-        if(!gameManager.CheckBuildInfrastructure(dependenceObjectType, ObjectLevel.Level1))
-        {
-            isAble = false;
-            SetTabBlockSprite();
-        }
-        else             
-        {
-            isAble = true; 
-        }
+        // if(!gameManager.CheckBuildInfrastructure(dependenceObjectType, ObjectLevel.Level1))
+        // {
+        //     isAble = false;
+        //     SetTabBlockSprite();
+        // }
+        // else             
+        // {
+        //     isAble = true; 
+        // }
     }
 
     #region SpriteControl
@@ -152,9 +152,11 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
 
     private void GetDependenceObjectType()
     {
-        foreach(var p in gameUiMenuController.MenuUiObjectTypeDictionary)
+        foreach(var p in gameUiMenuController.TabObjectDictionary)
         {
-            dependenceObjectType = (menuUiStatesList.Any(s => s == p.Key.ToString()) ? p.Value : null); 
+            Debug.Log(p.Key.ToString());
+            
+            dependenceObjectType = menuUiStatesList.Any(s => s == p.Key.ToString()) ? p.Value : ObjectType.non; 
         }
     }
 }
