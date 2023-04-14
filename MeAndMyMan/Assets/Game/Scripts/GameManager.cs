@@ -36,6 +36,8 @@ public class GameManager
         objectCostListDictionary = new List<Dictionary<string, int>>(); 
         objectCostListDictionary.Add(SetCostsByDictionary(ObjectType.house, 0, 5, 10, 25, 0, 0));
         objectCostListDictionary.Add(SetCostsByDictionary(ObjectType.farm, 12, 5, 10, 25, 0, 0));
+        objectCostListDictionary.Add(SetCostsByDictionary(ObjectType.tower, 25, 20, 100, 25, 60, 70));
+
     }
 
     public Dictionary<string, int> SetCostsByDictionary(ObjectType objectType, int userCost, int goldCost, int foodCost, int woodCost, int stoneCost, int ironCost)
@@ -79,15 +81,17 @@ public class GameManager
 
 
 
-    public bool CheckBuildInfrastructure(ObjectType objectType, ObjectLevel objectLevel)  
+    public bool CheckBuildInfrastructure(ObjectType? objectType, ObjectLevel objectLevel)  //TODO: to check i fix
     {
+        if(objectType == null) return false;
+
         var objectCost = objectCostListDictionary.Where(d => d["objectType"].Equals((int)objectType)).SingleOrDefault();
 
         for(int i = 0; i < resourcesDictionary.Count(); i++)
         {
             var valueKey = resourcesDictionary.ElementAt(i).Key;
             var valueToCheck = objectCost[valueKey.ToString()];  
-            if(!(resourcesDictionary[valueKey] >= valueToCheck * (int) objectLevel)) return false;
+            if(!(resourcesDictionary[valueKey] <= valueToCheck * (int) objectLevel)) return false; 
 
         }
         return true;

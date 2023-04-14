@@ -33,7 +33,7 @@ public class GameUiMenuController : MonoBehaviour
     private Infrastructure infrastructureInAboutState;
     public Infrastructure InfrastructureInControl { get { return infrastructureInAboutState; } }
     private Dictionary<MenuUiTabState, ObjectType> menuUiObjectTypeDictionary; 
-    public Dictionary<MenuUiTabState, ObjectType> MenuUiObjectTypeDictionary { get { return menuUiObjectTypeDictionary; } } 
+    [SerializeField] public Dictionary<MenuUiTabState, ObjectType> MenuUiObjectTypeDictionary { get { return menuUiObjectTypeDictionary; } } 
     GameController gameController;
     GameManager gameManager;
     BoardController boardController;
@@ -66,7 +66,7 @@ public class GameUiMenuController : MonoBehaviour
         menuUiState = MenuUiSectionState.infrastructureCreateState;
 
         menuUiObjectTypeDictionary = new Dictionary<MenuUiTabState, ObjectType>();
-
+        GenereteUiObjectRelation();
     }
 
     private void Update()

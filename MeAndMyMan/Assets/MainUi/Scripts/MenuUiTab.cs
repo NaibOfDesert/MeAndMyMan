@@ -21,10 +21,11 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
     [SerializeField] private MenuUiSectionState menuUiSectionState;
     [SerializeField] private List<string> menuUiStatesList; 
     public List<string> MenuUiStatesList { get {return menuUiStatesList;} }
+    private ObjectType? dependenceObjectType; 
+    [SerializeField] bool isAble; 
     private Image tabBackgroundImage;
     public UnityEvent onTabSelected;
     public UnityEvent onTabDeselected;
-    bool isAble; 
 
     GameController gameController; 
     GameManager gameManager; 
@@ -48,50 +49,30 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
         }
 
         tabBackgroundImage = GetComponent<Image>();
+
+    }
+    void Start()
+    {
+        menuUiTabController.AddToUiList(this);
+
+        isAble = true;
         menuUiStatesList = new List<string>();
 
         GetStatesList(menuUiTabState);
         GetStatesList(menuUiSectionState);
+        GetDependenceObjectType(); 
     }
-
     
     void Update()
     {
+        IsAbleCheck();
 
-        // switch(menuUiTabState)
-        // {
-        //     case MenuUiTabState.infrastructureCreateFarmState:
-        //         if(menuUiState == MenuUiSectionState.infrastructureManageState)
-
-        //         break;
-
-
-        //     default:
-        //         break;
-        // }
-        // if(menuUiState == MenuUiSectionState.infrastructureManageState)
-        // {
-        //     // TODO: implement albe check
-        //     // if(!gameManager.CheckBuildInfrastructure(
-        //     //     gameUiMenuController.InfrastructureInControl.InfrastructureObject.ObjectType, 
-        //     //     gameUiMenuController.InfrastructureInControl.InfrastructureObject.ObjectLevel))
-        //     // {
-        //     //     // is able true or false
-        //     //     // throw new System.ArgumentOutOfRangeException(); // check
-        //     //     return; 
-        //     // }
-        // }
-    }
-    void Start()
-    {
-        isAble = true;
-        menuUiTabController.AddToUiList(this);
     }
 
+    #region Pointers
     public void OnPointerClick(PointerEventData eventData)
     {
         if(isAble) menuUiTabController.OnTabSelected(this); 
-
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -104,13 +85,22 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
     {
         menuUiTabController.OnTabExit(this);
         // TODO: implement view of resorces to set as default
-
     }
-
+    #endregion
     private void IsAbleCheck()
     {
-        // if(isAble) ? isAble == true : isAble == false;
+        if(!gameManager.CheckBuildInfrastructure(dependenceObjectType, ObjectLevel.Level1))
+        {
+            isAble = false;
+            SetTabBlockSprite();
+        }
+        else             
+        {
+            isAble = true; 
+        }
     }
+
+    #region SpriteControl
     public void SetTabIdleSprite()
     {
         tabBackgroundImage.sprite = tabIdleSprite; 
@@ -123,7 +113,13 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
     {
         tabBackgroundImage.sprite = tabActiveSprite;
     }
+        public void SetTabBlockSprite()
+    {
+        tabBackgroundImage.sprite = tabBlockSprite;
+    }
+    #endregion
 
+    #region Selection
     public void Select()
     {
         if(onTabSelected != null)
@@ -139,6 +135,7 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
             onTabDeselected.Invoke();
         }
     }
+    #endregion
 
     private void GetStatesList <T>(T menuUiState)
     {
@@ -151,5 +148,13 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
         }
 
         menuUiStatesList.RemoveAll(s => s == MenuUiSectionState.noneState.ToString() || s == MenuUiTabState.noneState.ToString()); // ?: to monit, can be unusefull
+    }
+
+    private void GetDependenceObjectType()
+    {
+        foreach(var p in gameUiMenuController.MenuUiObjectTypeDictionary)
+        {
+            dependenceObjectType = (menuUiStatesList.Any(s => s == p.Key.ToString()) ? p.Value : null); 
+        }
     }
 }
