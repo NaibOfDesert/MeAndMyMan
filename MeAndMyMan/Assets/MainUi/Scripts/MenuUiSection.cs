@@ -11,7 +11,6 @@ public class MenuUiSection : MonoBehaviour
     public MenuUiSectionState MenuUiSectionState { get {return menuUiSectionState;} }
     [SerializeField] private List<string> menuUiStatesList; 
     public List<string> MenuUiStatesList { get {return menuUiStatesList;} }
-
     GameController gameController;
     MenuUiSectionController menuUiSectionController;
     
@@ -28,10 +27,10 @@ public class MenuUiSection : MonoBehaviour
             Debug.Log(e.Message);
         }
         
-        menuUiSectionController.AddToUiList(this);
-        menuUiStatesList = new List<string>();
+        // menuUiSectionController.AddToUiList(this);
+        // menuUiStatesList = new List<string>();
 
-        GetStatesList(menuUiSectionState);
+        // GetStatesList(menuUiSectionState);
     }
 
     public void Start()
@@ -45,17 +44,17 @@ public class MenuUiSection : MonoBehaviour
         this.gameObject.SetActive(!this.gameObject.activeSelf);
     }
 
-    private void GetStatesList <T>(T menuUiState)
-    {
-        var menuUiStateString = menuUiState.ToString(); 
-        var menuUiStateList = String.Concat(menuUiStateString.Where(l => !char.IsWhiteSpace(l))).Split(",").ToList();
+    // private void GetStatesList <T>(T menuUiState)
+    // {
+    //     var menuUiStateString = menuUiState.ToString(); 
+    //     var menuUiStateList = String.Concat(menuUiStateString.Where(l => !char.IsWhiteSpace(l))).Split(",").ToList();
         
-        foreach(var s in menuUiStateList)
-        {
-            menuUiStatesList.Add(s);
-        }
+    //     foreach(var s in menuUiStateList)
+    //     {
+    //         menuUiStatesList.Add(s);
+    //     }
 
-        menuUiStatesList.RemoveAll(s => s == MenuUiSectionState.noneState.ToString() || s == MenuUiTabState.noneState.ToString()); // ?: to monit, can be unusefull
-    }
+    //     menuUiStatesList.RemoveAll(s => s == MenuUiSectionState.noneState.ToString() || s == MenuUiTabState.noneState.ToString()); // ?: to monit, can be unusefull
+    // }
 
 }

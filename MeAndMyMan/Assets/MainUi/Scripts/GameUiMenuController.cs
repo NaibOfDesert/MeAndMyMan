@@ -32,8 +32,8 @@ public class GameUiMenuController : MonoBehaviour
     public bool PauseState { get { return pauseState; } set { pauseState = value; } }
     private Infrastructure infrastructureInAboutState;
     public Infrastructure InfrastructureInControl { get { return infrastructureInAboutState; } }
-    private Dictionary<MenuUiTabState, ObjectType> menuUiObjectTypeDictionary; 
-    [SerializeField] public Dictionary<MenuUiTabState, ObjectType> MenuUiObjectTypeDictionary { get { return menuUiObjectTypeDictionary; } } 
+    // private Dictionary<MenuUiTabState, ObjectType> menuUiObjectTypeDictionary; 
+    // [SerializeField] public Dictionary<MenuUiTabState, ObjectType> MenuUiObjectTypeDictionary { get { return menuUiObjectTypeDictionary; } } 
     GameController gameController;
     GameManager gameManager;
     BoardController boardController;
@@ -63,10 +63,10 @@ public class GameUiMenuController : MonoBehaviour
     private void Start()
     {
         infrastructureInAboutState = null;
-        menuUiState = MenuUiSectionState.infrastructureCreateState;
+        // menuUiState = MenuUiSectionState.infrastructureCreateState;
 
-        menuUiObjectTypeDictionary = new Dictionary<MenuUiTabState, ObjectType>();
-        GenereteUiObjectRelation();
+        // menuUiObjectTypeDictionary = new Dictionary<MenuUiTabState, ObjectType>();
+        // GenereteUiObjectRelation();
     }
 
     private void Update()
@@ -79,13 +79,13 @@ public class GameUiMenuController : MonoBehaviour
         }
     }
 
-    public void GenereteUiObjectRelation()
-    {
-        // *: need to add nect add afert added new ObjectType 
-        menuUiObjectTypeDictionary.Add(MenuUiTabState.infrastructureCreateFarmState, ObjectType.farm); 
-        menuUiObjectTypeDictionary.Add(MenuUiTabState.infrastructureCreateHouseState, ObjectType.house);
-        menuUiObjectTypeDictionary.Add(MenuUiTabState.infrastructureCreateTowerState, ObjectType.tower); 
-    }
+    // public void GenereteUiObjectRelation()
+    // {
+    //     // *: need to add nect add afert added new ObjectType 
+    //     menuUiObjectTypeDictionary.Add(MenuUiTabState.infrastructureCreateFarmState, ObjectType.farm); 
+    //     menuUiObjectTypeDictionary.Add(MenuUiTabState.infrastructureCreateHouseState, ObjectType.house);
+    //     menuUiObjectTypeDictionary.Add(MenuUiTabState.infrastructureCreateTowerState, ObjectType.tower); 
+    // }
 
     public void BuildHouse()
     {
@@ -100,7 +100,7 @@ public class GameUiMenuController : MonoBehaviour
     public void BuildInfrastructure(ObjectType objectType)
     {
         infrastructureController.CreateInfrastructure(objectType); // TODO: return bool, is bool call gameManager
-        MenuUiStateChange(MenuUiSectionState.infrastructureBuildState);
+        // MenuUiStateChange(MenuUiSectionState.infrastructureBuildState);
 
         // gameManager. to implement
 
@@ -110,7 +110,7 @@ public class GameUiMenuController : MonoBehaviour
     {
         // TODO: get bool to call gameManager
         infrastructureController.DestroyInfrastructure(infrastructureInAboutState); 
-        MenuUiStateChange(MenuUiSectionState.infrastructureCreateState);
+        // MenuUiStateChange(MenuUiSectionState.infrastructureCreateState);
 
         // TODO: gameManager. to implement
     }

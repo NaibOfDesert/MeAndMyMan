@@ -9,7 +9,6 @@ public class GameManager
     GameController gameController;
     BoardController boardController;
     InfrastructureController infrastructureController;
-
     int experienceAmount = 0;
     public int ExperienceAmount { get { return experienceAmount; } }
     Dictionary<ResourceType, int> resourcesDictionary;
@@ -25,6 +24,14 @@ public class GameManager
         this.boardController = boardController;
         this.infrastructureController = infrastructureController;
         
+
+        SetResourcesDictionary();
+        SetObjectCostListDictionary();
+    }
+
+    #region SetBasicValues
+    public void SetResourcesDictionary()
+    {
         resourcesDictionary = new Dictionary<ResourceType, int>();
         resourcesDictionary.Add(ResourceType.user, 25);
         resourcesDictionary.Add(ResourceType.gold, 100);
@@ -32,12 +39,14 @@ public class GameManager
         resourcesDictionary.Add(ResourceType.wood, 150);
         resourcesDictionary.Add(ResourceType.stone, 100);
         resourcesDictionary.Add(ResourceType.iron, 10);
+    }
 
+    public void SetObjectCostListDictionary()
+    {
         objectCostListDictionary = new List<Dictionary<string, int>>(); 
         objectCostListDictionary.Add(SetCostsByDictionary(ObjectType.house, 0, 5, 10, 25, 0, 0));
         objectCostListDictionary.Add(SetCostsByDictionary(ObjectType.farm, 12, 5, 10, 25, 0, 0));
-        objectCostListDictionary.Add(SetCostsByDictionary(ObjectType.tower, 25, 20, 100, 25, 60, 70));
-
+        objectCostListDictionary.Add(SetCostsByDictionary(ObjectType.tower, 5, 2, 1, 5, 0, 0));
     }
 
     public Dictionary<string, int> SetCostsByDictionary(ObjectType objectType, int userCost, int goldCost, int foodCost, int woodCost, int stoneCost, int ironCost)
@@ -53,6 +62,7 @@ public class GameManager
 
         return newCostDictionary;
     }
+    #endregion
 
     public void CountExpValue()
     {
@@ -79,13 +89,12 @@ public class GameManager
 
     }
 
-
-
+    #region Check
     public bool CheckBuildInfrastructure(ObjectType? objectType, ObjectLevel objectLevel)  //TODO: to check i fix
     {
         if(objectType == null) return false;
 
-        var objectCost = objectCostListDictionary.Where(d => d["objectType"].Equals((int)objectType)).SingleOrDefault();
+        var objectCost = objectCostListDictionary.Where(d => d["objectType"] == (int)objectType).SingleOrDefault();
 
         for(int i = 0; i < resourcesDictionary.Count(); i++)
         {
@@ -107,10 +116,10 @@ public class GameManager
         CalculateIncom(infrastructureController.FarmList);
 
     }
+    #endregion
 
 
-
-
+    #region Calculate
     public void CalculateIncom(List<Infrastructure> infrastructureList)
     {
         foreach (var infrastructure in infrastructureList)
@@ -152,6 +161,6 @@ public class GameManager
     {
 
     }
-
+    #endregion
 }
 

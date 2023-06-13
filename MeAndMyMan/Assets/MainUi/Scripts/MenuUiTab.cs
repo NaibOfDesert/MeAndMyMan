@@ -17,12 +17,13 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
     [SerializeField] private Sprite tabActiveSprite;
 
     [Header("Values")]
-    [SerializeField] private MenuUiTabState menuUiTabState;
-    [SerializeField] private MenuUiSectionState menuUiSectionState;
-    [SerializeField] private List<string> menuUiStatesList; 
-    public List<string> MenuUiStatesList { get {return menuUiStatesList;} }
-    private ObjectType? dependenceObjectType; 
+    // [SerializeField] private MenuUiTabState menuUiTabState;
+    // [SerializeField] private MenuUiSectionState menuUiSectionState;
+    // [SerializeField] private List<string> menuUiStatesList; 
+    // public List<string> MenuUiStatesList { get {return menuUiStatesList;} }
+    // private ObjectType? dependenceObjectType; 
     [SerializeField] bool isAble; 
+    // [SerializeField] bool isMouseOver;
     private Image tabBackgroundImage;
     public UnityEvent onTabSelected;
     public UnityEvent onTabDeselected;
@@ -55,50 +56,62 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
     {
         menuUiTabController.AddToUiList(this);
 
-        isAble = true;
-        menuUiStatesList = new List<string>();
+        isAble = false;
+        // menuUiStatesList = new List<string>();
 
-        GetStatesList(menuUiTabState);
-        GetStatesList(menuUiSectionState);
-        GetDependenceObjectType(); 
+        // GetStatesList(menuUiTabState);
+        // GetStatesList(menuUiSectionState);
+        // GetDependenceObjectType(); 
     }
     
     void Update()
     {
-        IsAbleCheck();
+        // if(dependenceObjectType != null) IsAbleCheck();
+        // Debug.Log(gameObject.name + isAble + " " + dependenceObjectType);
 
     }
 
     #region Pointers
     public void OnPointerClick(PointerEventData eventData)
     {
-        if(isAble) menuUiTabController.OnTabSelected(this); 
+        if(isAble) {
+            // isMouseOver = false;
+            menuUiTabController.OnTabSelected(this); 
+        }
     }
-
+    private void IsAbleCheck()
+    {
+        // if(gameManager.CheckBuildInfrastructure(dependenceObjectType, ObjectLevel.Level1))
+        // {
+        //     isAble = false;
+        //     SetTabBlockSprite();
+        // }
+        // else             
+        // {
+        //     if(isMouseOver) SetTabHoverSprite(); else SetTabIdleSprite();
+        //     isAble = true; 
+        // }
+    }
     public void OnPointerEnter(PointerEventData eventData)
     {
-        menuUiTabController.OnTabEnter(this);
+        if(isAble) {
+            // isMouseOver = true;
+            menuUiTabController.OnTabEnter(this);
+        }
         // TODO: implement view of resorces to get
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        menuUiTabController.OnTabExit(this);
+        if(isAble) {
+            // isMouseOver = false;
+            menuUiTabController.OnTabExit(this);
+
+        }
         // TODO: implement view of resorces to set as default
     }
     #endregion
-    private void IsAbleCheck()
-    {
-        if(!gameManager.CheckBuildInfrastructure(dependenceObjectType, ObjectLevel.Level1))
-        {
-            isAble = false;
-            SetTabBlockSprite();
-        }
-        else             
-        {
-            isAble = true; 
-        }
-    }
+
 
     #region SpriteControl
     public void SetTabIdleSprite()
@@ -137,24 +150,26 @@ public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
     }
     #endregion
 
-    private void GetStatesList <T>(T menuUiState)
-    {
-        var menuUiStateString = menuUiState.ToString(); 
-        var menuUiStateList = String.Concat(menuUiStateString.Where(l => !char.IsWhiteSpace(l))).Split(",").ToList();
+    // #region TabStateType
+    // private void GetStatesList <T>(T menuUiState)
+    // {
+    //     var menuUiStateString = menuUiState.ToString(); 
+    //     var menuUiStateList = String.Concat(menuUiStateString.Where(l => !char.IsWhiteSpace(l))).Split(",").ToList();
         
-        foreach(var s in menuUiStateList)
-        {
-            menuUiStatesList.Add(s);
-        }
+    //     foreach(var s in menuUiStateList)
+    //     {
+    //         menuUiStatesList.Add(s);
+    //     }
 
-        menuUiStatesList.RemoveAll(s => s == MenuUiSectionState.noneState.ToString() || s == MenuUiTabState.noneState.ToString()); // ?: to monit, can be unusefull
-    }
+    //     menuUiStatesList.RemoveAll(s => s == MenuUiSectionState.noneState.ToString() || s == MenuUiTabState.noneState.ToString()); // ?: to monit, can be unusefull
+    // }
 
-    private void GetDependenceObjectType()
-    {
-        foreach(var p in gameUiMenuController.MenuUiObjectTypeDictionary)
-        {
-            dependenceObjectType = (menuUiStatesList.Any(s => s == p.Key.ToString()) ? p.Value : null); 
-        }
-    }
+    // private void GetDependenceObjectType()
+    // {
+    //     foreach(var p in gameUiMenuController.MenuUiObjectTypeDictionary)
+    //     {
+    //         dependenceObjectType = menuUiStatesList.Any(s => s == p.Key.ToString()) ? p.Value : null; 
+    //     }
+    // }
+    // #endregion
 }

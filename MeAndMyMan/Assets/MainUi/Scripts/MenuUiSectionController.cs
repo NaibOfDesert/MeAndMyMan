@@ -16,9 +16,9 @@ public class MenuUiSectionController : MonoBehaviour
 
     void Start()
     {
-        MenuListAble(MenuUiSectionState.infrastructureState);
-        MenuListAble(MenuUiSectionState.informationState);
-        MenuListAble(MenuUiSectionState.infrastructureCreateState);
+        // MenuListAble(MenuUiSectionState.infrastructureState);
+        // MenuListAble(MenuUiSectionState.informationState);
+        // MenuListAble(MenuUiSectionState.infrastructureCreateState);
     }
 
 
@@ -29,11 +29,11 @@ public class MenuUiSectionController : MonoBehaviour
 
   
 
-    public void AddToUiList(MenuUiSection menuUiSection)
-    {
-        if(menuUiSection.MenuUiSectionState != MenuUiSectionState.noneState)
-        menuUiSectionList.Add(menuUiSection);
-    }
+    // public void AddToUiList(MenuUiSection menuUiSection)
+    // {
+    //     if(menuUiSection.MenuUiSectionState != MenuUiSectionState.noneState)
+    //     menuUiSectionList.Add(menuUiSection);
+    // }
 
     public void MenuInfrastructureStateManage(MenuUiSectionState menuUiStateCurrent, MenuUiSectionState menuUiStateNew)
     {
