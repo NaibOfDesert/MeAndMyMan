@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Linq;
 
-public class MenuUiSection : MonoBehaviour
+public class MenuUiSectionActive : MonoBehaviour
 {
     [SerializeField] private MenuUiSectionState menuUiSectionState;
     public MenuUiSectionState MenuUiSectionState { get {return menuUiSectionState;} }

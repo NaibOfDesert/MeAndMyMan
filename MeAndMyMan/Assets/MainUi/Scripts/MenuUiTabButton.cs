@@ -8,7 +8,7 @@ using System;
 using System.Linq;
 
 [RequireComponent(typeof(Image))]   
-public class MenuUiTab : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler
+public class MenuUiTabButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler
 {
     [Header("Sprites")]
     [SerializeField] private Sprite tabBlockSprite;

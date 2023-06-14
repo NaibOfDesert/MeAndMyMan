@@ -15,7 +15,7 @@ public class GameUiController : MonoBehaviour
     BoardController boardController;
     Camera mainCamera;
     GameObject gameCamera;
-    GameCameraController gameCameraController;
+    GameUiCameraController gameCameraController;
     GameUiMenuController gameUiMenuController;
     MenuUiSectionController menuUiSectionController;
     MenuUiTabController menuUiTabController;

@@ -29,8 +29,8 @@ public class GameController : MonoBehaviour
     BoardController boardController;
     public BoardController BoardController { get { return boardController; } }
 
-    GameCameraController gameCameraController;
-    public GameCameraController GameCameraController { get { return gameCameraController; } }
+    GameUiCameraController gameCameraController;
+    public GameUiCameraController GameCameraController { get { return gameCameraController; } }
 
     GameObject gameCamera;
     public GameObject GameCamera { get { return gameCamera; } }
@@ -57,7 +57,7 @@ public class GameController : MonoBehaviour
         {
         gameTimeController = FindObjectOfType<GameTimeController>();
         mouseController = FindObjectOfType<MouseController>();
-        gameCameraController = FindObjectOfType<GameCameraController>();
+        gameCameraController = FindObjectOfType<GameUiCameraController>();
         gameCamera = gameCameraController.gameObject;
         gameUiController = FindObjectOfType<GameUiController>();
         gameUiMenuController = FindObjectOfType<GameUiMenuController>();

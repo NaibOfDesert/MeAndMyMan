@@ -7,11 +7,11 @@ using UnityEngine;
 public class MenuUiSectionController : MonoBehaviour
 {
     [Header("MenuSectionObjects")]
-    [SerializeField] List<MenuUiSection> menuUiSectionList;
+    [SerializeField] List<MenuUiSectionActive> menuUiSectionList;
 
     void Awake()
     {
-        menuUiSectionList = new List<MenuUiSection>();
+        menuUiSectionList = new List<MenuUiSectionActive>();
     }
 
     void Start()
