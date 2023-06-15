@@ -54,7 +54,7 @@ public class MenuUiTabButton : MonoBehaviour, IPointerEnterHandler, IPointerClic
     }
     void Start()
     {
-        menuUiTabController.AddToUiList(this);
+        // menuUiTabController.AddToUiList(this);
 
         isAble = false;
         // menuUiStatesList = new List<string>();

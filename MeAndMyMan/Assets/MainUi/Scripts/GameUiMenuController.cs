@@ -18,7 +18,6 @@ public class GameUiMenuController : MonoBehaviour
 
     [Header("ResourcesMenu")]
     [SerializeField] TextMeshProUGUI textCitizensAmount;
-    [SerializeField] TextMeshProUGUI textWorkersAmount;
     [SerializeField] TextMeshProUGUI textGoldAmount;
     [SerializeField] TextMeshProUGUI textFoodAmount;
     [SerializeField] TextMeshProUGUI textWoodAmount;
@@ -79,14 +78,6 @@ public class GameUiMenuController : MonoBehaviour
         }
     }
 
-    // public void GenereteUiObjectRelation()
-    // {
-    //     // *: need to add nect add afert added new ObjectType 
-    //     menuUiObjectTypeDictionary.Add(MenuUiTabState.infrastructureCreateFarmState, ObjectType.farm); 
-    //     menuUiObjectTypeDictionary.Add(MenuUiTabState.infrastructureCreateHouseState, ObjectType.house);
-    //     menuUiObjectTypeDictionary.Add(MenuUiTabState.infrastructureCreateTowerState, ObjectType.tower); 
-    // }
-
     public void BuildHouse()
     {
         BuildInfrastructure(ObjectType.house);
@@ -100,7 +91,6 @@ public class GameUiMenuController : MonoBehaviour
     public void BuildInfrastructure(ObjectType objectType)
     {
         infrastructureController.CreateInfrastructure(objectType); // TODO: return bool, is bool call gameManager
-        // MenuUiStateChange(MenuUiSectionState.infrastructureBuildState);
 
         // gameManager. to implement
 
@@ -110,7 +100,6 @@ public class GameUiMenuController : MonoBehaviour
     {
         // TODO: get bool to call gameManager
         infrastructureController.DestroyInfrastructure(infrastructureInAboutState); 
-        // MenuUiStateChange(MenuUiSectionState.infrastructureCreateState);
 
         // TODO: gameManager. to implement
     }
