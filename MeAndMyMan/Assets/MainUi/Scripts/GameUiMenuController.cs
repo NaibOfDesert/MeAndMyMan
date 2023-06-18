@@ -7,8 +7,9 @@ using System;
 
 public class GameUiMenuController : MonoBehaviour
 {
-    [Header("InfrastructureStateMenu")]
-    [SerializeField] TextMeshProUGUI textInfrastructureName;
+    [Header("InfrastructureMenu")]
+    [SerializeField] TextMeshProUGUI textAlert;
+    [SerializeField] TextMeshProUGUI textInfrastructureDescription;
     [SerializeField] TextMeshProUGUI textInfrastructureArea;
     [SerializeField] TextMeshProUGUI textInfrastructureLevel;
     [SerializeField] TextMeshProUGUI textInfrastructureHealth;
@@ -25,12 +26,12 @@ public class GameUiMenuController : MonoBehaviour
     [SerializeField] TextMeshProUGUI textIronAmount;
 
     [Header("Values")]
-    [SerializeField] MenuUiSectionState menuUiState;
-    public MenuUiSectionState MenuUiState { get { return menuUiState; } } //-- ??
+    [SerializeField] MenuUiState menuUiState;
+    public MenuUiState MenuUiState { get { return menuUiState; } } //-- ??
     [SerializeField] bool pauseState;
     public bool PauseState { get { return pauseState; } set { pauseState = value; } }
-    private Infrastructure infrastructureInAboutState;
-    public Infrastructure InfrastructureInControl { get { return infrastructureInAboutState; } }
+    private Infrastructure infrastructureCurrent;
+    public Infrastructure InfrastructureInControl { get { return infrastructureCurrent; } }
     // private Dictionary<MenuUiTabState, ObjectType> menuUiObjectTypeDictionary; 
     // [SerializeField] public Dictionary<MenuUiTabState, ObjectType> MenuUiObjectTypeDictionary { get { return menuUiObjectTypeDictionary; } } 
     GameController gameController;
@@ -61,27 +62,30 @@ public class GameUiMenuController : MonoBehaviour
 
     private void Start()
     {
-        infrastructureInAboutState = null;
-        // menuUiState = MenuUiSectionState.infrastructureCreateState;
+        menuUiState = MenuUiState.UiStateManage; 
+        infrastructureCurrent = null;
 
-        // menuUiObjectTypeDictionary = new Dictionary<MenuUiTabState, ObjectType>();
-        // GenereteUiObjectRelation();
+
+
     }
 
     private void Update()
     {
-        Debug.Log("value to compare" + gameManager.testValue1);
-        Debug.Log("value to check" + gameManager.testValue);
 
         MenuResourcesUpdate(); 
 
-        if(infrastructureInAboutState != null) 
+        if(infrastructureCurrent != null) 
         {
-            MenuInfrastructureSetValues(infrastructureInAboutState);
+            MenuInfrastructureSetValues(infrastructureCurrent);
         }
     }
 
-    public void BuildHouse()
+    public void Manage()
+    {
+        MenuUiStateChange(MenuUiState.UiStateManage); 
+    }
+
+    public void BuildHouse(GameObject gameObject) // ?: maybe somehow to use
     {
         BuildInfrastructure(ObjectType.house);
     }
@@ -93,16 +97,27 @@ public class GameUiMenuController : MonoBehaviour
 
     public void BuildInfrastructure(ObjectType objectType)
     {
-        infrastructureController.CreateInfrastructure(objectType); // TODO: return bool, is bool call gameManager
-
-        // gameManager. to implement
-
-
+        if(gameManager.CheckBuildInfrastructure(objectType, ObjectLevel.Level1))
+        {
+            infrastructureController.CreateInfrastructure(objectType);
+            MenuUiStateChange(MenuUiState.UiStateBuild);
+        } 
+        else 
+        {
+            textAlert.text = "Impossible to build " + objectType.ToString() + ". You have not enought resources!"; // TODO: add time
+        }
+ 
     }
+
+    public void About(Infrastructure infrastructure)
+    {
+        MenuUiStateChange(MenuUiState.UiStateAbout, infrastructure); 
+    }
+
     public void DeteleInfrastructure()
     {
         // TODO: get bool to call gameManager
-        infrastructureController.DestroyInfrastructure(infrastructureInAboutState); 
+        infrastructureController.DestroyInfrastructure(infrastructureCurrent); 
 
         // TODO: gameManager. to implement
     }
@@ -110,9 +125,9 @@ public class GameUiMenuController : MonoBehaviour
 
     public void RebuildInfrastructure() 
     {
-        if (gameManager.CheckRebuildInfrastructure(infrastructureController.CheckAreaToRebuildInfrastructure(infrastructureInAboutState).Count()))
+        if (gameManager.CheckRebuildInfrastructure(infrastructureController.CheckAreaToRebuildInfrastructure(infrastructureCurrent).Count()))
         {
-            infrastructureController.RebuildInfrastructure(infrastructureInAboutState); 
+            infrastructureController.RebuildInfrastructure(infrastructureCurrent); 
         // TODO: gameManager. to implement
         }
         
@@ -120,32 +135,43 @@ public class GameUiMenuController : MonoBehaviour
 
     public void UpgradeInfrastructure()
     {   
-        if (gameManager.CheckRebuildInfrastructure(infrastructureController.CheckAreaToRebuildInfrastructure(infrastructureInAboutState).Count()))
+        if (gameManager.CheckRebuildInfrastructure(infrastructureController.CheckAreaToRebuildInfrastructure(infrastructureCurrent).Count()))
         {
-            infrastructureController.UpgradeInfrastructure(infrastructureInAboutState);
+            // gameManager.CalculateBuildInfrastructure(infrastructure.InfrastructureObject.ObjectType, infrastructure.InfrastructureObject.ObjectLevel);
+
+            infrastructureController.UpgradeInfrastructure(infrastructureCurrent);
         // TODO: gameManager. to implement
         }
     }
 
-    public void MenuUiStateChange(MenuUiSectionState menuUiState, Infrastructure infrastructure = null)
+    public void ExitBuild(bool isBuilded = false, Infrastructure infrastructureNew = null)
+    {
+        if(!isBuilded) infrastructureController.DestroyInstantiateInfrastructure();
+        gameManager.CalculateBuildInfrastructure(infrastructureNew.InfrastructureObject.ObjectType, infrastructureNew.InfrastructureObject.ObjectLevel);
+        MenuUiStateChange(MenuUiState.UiStateManage); 
+    }
+
+
+
+    private void MenuUiStateChange(MenuUiState menuUiStateNew, Infrastructure infrastructure = null)
     {
         MenuUiStateInfrastructureCheck(infrastructure); 
 
-        if(this.menuUiState != menuUiState)
+        if(menuUiState != menuUiStateNew)
         {
-            menuUiSectionController.MenuInfrastructureStateManage(this.menuUiState, menuUiState);
-            this.menuUiState = menuUiState;
+            menuUiSectionController.MenuInfrastructureStateManage(menuUiState, menuUiStateNew);
+            menuUiState = menuUiStateNew;
         }
     }
 
     private void MenuUiStateInfrastructureCheck(Infrastructure infrastructure) // ?: move call board Methods to BoardController in update
     {
-        if (infrastructureInAboutState != infrastructure)
+        if (infrastructureCurrent != infrastructure)
         {   
-            if (infrastructureInAboutState != null)
+            if (infrastructureCurrent != null)
             {
-                boardController.SetMaterialForListDefault(infrastructureInAboutState.InfrastructureArea.BoardAreaBlockedList);
-                boardController.AbleInfrastructurePlane(infrastructureInAboutState); 
+                boardController.SetMaterialForListDefault(infrastructureCurrent.InfrastructureArea.BoardAreaBlockedList);
+                boardController.AbleInfrastructurePlane(infrastructureCurrent); 
             }
 
             if(infrastructure != null)
@@ -154,13 +180,13 @@ public class GameUiMenuController : MonoBehaviour
                 boardController.AbleInfrastructurePlane(infrastructure);
             }
 
-            infrastructureInAboutState = infrastructure;
+            infrastructureCurrent = infrastructure;
         } 
     }
 
     private void MenuInfrastructureSetValues(Infrastructure infrastructure) 
     {
-        textInfrastructureName.text = $"{infrastructure.InfrastructureObject.ObjectType}";
+        textInfrastructureDescription.text = $"{infrastructure.InfrastructureObject.ObjectType}";
         textInfrastructureArea.text = $"{infrastructure.InfrastructureObject.AreaActiveCount}/{infrastructure.InfrastructureObject.AreaSize}";
         textInfrastructureUsers.text = $"{infrastructure.InfrastructureObject.Users}/{infrastructure.InfrastructureObject.UsersMax}";
         textInfrastructureHealth.text = $"{infrastructure.InfrastructureObject.Health}/{infrastructure.InfrastructureObject.HealthMax}";

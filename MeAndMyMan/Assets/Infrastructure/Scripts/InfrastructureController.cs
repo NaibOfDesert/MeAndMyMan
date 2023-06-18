@@ -37,12 +37,12 @@ public class InfrastructureController : MonoBehaviour
 
     List<float> infrastructureRotationsList;
 
-    Infrastructure newInfrastructure;
-    public Infrastructure NewInfrastructure { get { return newInfrastructure; } set { newInfrastructure = value; } }
+    Infrastructure infrastructureNew;
+    public Infrastructure InfrastructureNew { get { return infrastructureNew; } }
 
     GameController gameController;
     GameManager gameManager;
-    MouseController mouseController;
+    GameUiMouseController mouseController;
     GameUiMenuController gameUiMenuController;
     BoardController boardController;
 
@@ -74,7 +74,7 @@ public class InfrastructureController : MonoBehaviour
     }
     public void CreateInfrastructure(ObjectType objectType)
     {
-        Object infrastructureObject;
+        ObjectBasic infrastructureObject;
 
         switch (objectType)
         {
@@ -94,56 +94,60 @@ public class InfrastructureController : MonoBehaviour
         }
     }
 
-    Infrastructure InstantiateInfrastructure(GameObject prefabObject, Object infrastructureObject, int infrastructureSize)
+    Infrastructure InstantiateInfrastructure(GameObject prefabObject, ObjectBasic infrastructureObject, int infrastructureSize)
     {
         int infrastructureRotation = UnityEngine.Random.Range(0, infrastructureRotationsList.Count() - 1);
         GameObject newInfrastructureObject = Instantiate(prefabObject, mouseController.WorldPosition, Quaternion.identity); // is newInfrastructure needed?? use infrastructureRotation ???
-        newInfrastructure = newInfrastructureObject.GetComponent<Infrastructure>();
-        newInfrastructure.InitiateInfrastructure(infrastructureObject, infrastructureSize, infrastructureRotationsList[infrastructureRotation]);
-        boardController.StartBuildState();
+        infrastructureNew = newInfrastructureObject.GetComponent<Infrastructure>();
+        infrastructureNew.InitiateInfrastructure(infrastructureObject, infrastructureSize, infrastructureRotationsList[infrastructureRotation]);
+        
+        
+        boardController.StartBuildState(); // TODO: 
 
-        return newInfrastructure; 
+        return infrastructureNew; 
     }
 
     public void DestroyInstantiateInfrastructure()
     {
-        boardController.QuitBuildState();
-        newInfrastructure.DestroyInfrastructure();
-        newInfrastructure = null;
+        boardController.QuitBuildState(); // TODO: 
+
+        infrastructureNew.DestroyInfrastructure();
+        infrastructureNew = null;
     }
 
     public bool BuildNewInfrastructure(Vector3 worldPosition)
     {
-        if (!newInfrastructure.InfrastructureArea.BoardList.Any(n => n.IsUsedByInfrastructure == true) && newInfrastructure.InfrastructureArea.BoardList.Count() == Mathf.Pow(newInfrastructure.InfrastructureObject.Size, 2)) /// implemented as square objects
+        if (!infrastructureNew.InfrastructureArea.BoardList.Any(n => n.IsUsedByInfrastructure == true) && infrastructureNew.InfrastructureArea.BoardList.Count() == Mathf.Pow(infrastructureNew.InfrastructureObject.Size, 2)) /// implemented as square objects
         {
-            gameManager.CalculateBuildInfrastructure(newInfrastructure.InfrastructureObject.ObjectType, newInfrastructure.InfrastructureObject.ObjectLevel);
-
+            infrastructureNew.SetInfrastructure();
+            StartCoroutine(ImproveInfrastructure(infrastructureNew));
             
-            newInfrastructure.SetInfrastructure();
-            StartCoroutine(ImproveInfrastructure(newInfrastructure));
-            boardController.BoardAreaSetAsUsedByInfrastructure(newInfrastructure.InfrastructureArea.BoardList, newInfrastructure);
-            boardController.BoardAreaSetAsUsedByInfrastructureArea(newInfrastructure.InfrastructureArea.BoardAreaList, newInfrastructure);
+            
+            boardController.BoardAreaSetAsUsedByInfrastructure(infrastructureNew.InfrastructureArea.BoardList, infrastructureNew); // TODO: 
+            boardController.BoardAreaSetAsUsedByInfrastructureArea(infrastructureNew.InfrastructureArea.BoardAreaList, infrastructureNew);
             boardController.EndBuildState();
+            
+            
             AddNewInfrastructureToList();
-            newInfrastructure = null;
+            infrastructureNew = null;
             
             return true; 
         } 
         return false;
     }
 
-    void AddNewInfrastructureToList()
+    void AddNewInfrastructureToList() // ?: manage list, add add ane remove
     {
-        if(newInfrastructure != null)
+        if(infrastructureNew != null)
         {
-            switch (newInfrastructure.InfrastructureObject.ObjectType)
+            switch (infrastructureNew.InfrastructureObject.ObjectType)
             {
                 case ObjectType.house:
-                    houseList.Add(newInfrastructure);
+                    houseList.Add(infrastructureNew);
                     break;
 
                 case ObjectType.farm:
-                    farmList.Add(newInfrastructure);
+                    farmList.Add(infrastructureNew);
                     break;
 
                 default:
@@ -177,7 +181,6 @@ public class InfrastructureController : MonoBehaviour
     public void UpgradeInfrastructure(Infrastructure infrastructure)
     {
         infrastructure.InfrastructureObject.UpgradeObject();
-        gameManager.CalculateBuildInfrastructure(infrastructure.InfrastructureObject.ObjectType, infrastructure.InfrastructureObject.ObjectLevel);
         StartCoroutine(ImproveInfrastructure(infrastructure)); // stop all coroutine
     }
 
@@ -211,9 +214,11 @@ public class InfrastructureController : MonoBehaviour
             //TODO: event system
         }
 
-        gameManager.CalculateDeleteInfrastructure(infrastructure);
+        gameManager.CalculateDeleteInfrastructure(infrastructure); // TODO: 
         boardController.SetDefaultInfrastructure(infrastructure.InfrastructureArea.BoardList);
         boardController.SetDefaultInfrastructureArea(infrastructure.InfrastructureArea.BoardAreaList);
+        
+        
         RemoveInfrastructureFromList(infrastructure);
         infrastructure.DestroyInfrastructure();
     }

@@ -35,8 +35,8 @@ public class GameController : MonoBehaviour
     GameObject gameCamera;
     public GameObject GameCamera { get { return gameCamera; } }
 
-    MouseController mouseController;
-    public MouseController MouseController { get { return mouseController; } }
+    GameUiMouseController mouseController;
+    public GameUiMouseController MouseController { get { return mouseController; } }
     
     GameUiController gameUiController;
     public GameUiController GameUiController { get { return gameUiController; } }
@@ -44,7 +44,7 @@ public class GameController : MonoBehaviour
     GameUiMenuController gameUiMenuController;
     public GameUiMenuController GameUiMenuController { get { return gameUiMenuController; } }
 
-    [SerializeField] MenuUiSectionController menuUiSectionController;
+    MenuUiSectionController menuUiSectionController;
     public MenuUiSectionController MenuUiSectionController { get { return menuUiSectionController; } }
 
     MenuUiTabController menuUiTabController;
@@ -56,7 +56,7 @@ public class GameController : MonoBehaviour
         try
         {
         gameTimeController = FindObjectOfType<GameTimeController>();
-        mouseController = FindObjectOfType<MouseController>();
+        mouseController = FindObjectOfType<GameUiMouseController>();
         gameCameraController = FindObjectOfType<GameUiCameraController>();
         gameCamera = gameCameraController.gameObject;
         gameUiController = FindObjectOfType<GameUiController>();

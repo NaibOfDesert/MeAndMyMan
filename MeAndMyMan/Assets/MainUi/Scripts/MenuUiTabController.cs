@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class MenuUiTabController : MonoBehaviour
 {
-    [SerializeField] List<MenuUiTabButton> tabList;
+    [SerializeField] List<MenuUiTabActive> tabList;
 
     GameController gameController; 
     GameUiMenuController gameUiMenuController;
-    MenuUiTabButton activeTab;
+    MenuUiTabActive activeTab;
 
     void Awake()
     {
@@ -21,12 +21,12 @@ public class MenuUiTabController : MonoBehaviour
         {
             Debug.Log(e.Message);
         }
+        tabList = new List<MenuUiTabActive>();
+
     }
 
     private void Start()
     {
-        tabList = new List<MenuUiTabButton>();
-
     }
 
     void Update()
@@ -34,13 +34,12 @@ public class MenuUiTabController : MonoBehaviour
         
     }
 
-
-    public void AddToUiList(MenuUiTabButton menuUiTab)
+    public void AddToUiList(MenuUiTabActive menuUiTab)
     {
         tabList.Add(menuUiTab); 
     }
 
-    public void OnTabEnter(MenuUiTabButton menuUiTab)
+    public void OnTabEnter(MenuUiTabActive menuUiTab)
     {
         ResetTabs();
         if (activeTab == null || menuUiTab != activeTab)
@@ -49,12 +48,12 @@ public class MenuUiTabController : MonoBehaviour
         }
     }
 
-    public void OnTabExit(MenuUiTabButton menuUiTab)
+    public void OnTabExit(MenuUiTabActive menuUiTab)
     {
         ResetTabs();
     }
 
-    public void OnTabSelected(MenuUiTabButton menuUiTab)
+    public void OnTabSelected(MenuUiTabActive menuUiTab)
     {
         if(activeTab != null)
         {
@@ -70,15 +69,10 @@ public class MenuUiTabController : MonoBehaviour
 
     public void ResetTabs()
     {
-        foreach(MenuUiTabButton menuUiTab in tabList)
+        foreach(MenuUiTabActive menuUiTab in tabList)
         {
             if (activeTab != null && menuUiTab == activeTab) { continue; }
             menuUiTab.SetTabIdleSprite();
         }
     }
-
-
-
-
-
 }

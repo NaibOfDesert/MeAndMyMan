@@ -17,9 +17,6 @@ public class GameManager
     Dictionary<ObjectType, Dictionary<ResourceType, int>> objectCostDictionary; 
     int goldValueToRebuildSingle = 25;
 
-    public string testValue; 
-        public string testValue1; 
-
 
     public GameManager(GameController gameController, InfrastructureController infrastructureController, BoardController boardController)
     {
@@ -120,11 +117,7 @@ public class GameManager
         {
             var valueKey = resourcesDictionary.ElementAt(i).Key;
             var valueToCheck = objectCost[valueKey.ToString()];
-            // testValue = valueToCheck.ToString();   
-            testValue1 = resourcesDictionary[valueKey].ToString();   
-            testValue = "value " + objectCost["objectType"].ToString();
             if((resourcesDictionary[valueKey] < (objectCost[valueKey.ToString()] * (int) objectLevel))) return false; 
-
         }
         return true;
     }

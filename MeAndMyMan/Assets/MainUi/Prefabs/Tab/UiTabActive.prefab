@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 915617297310026297, guid: b64095e557bbb174d8059ba16978aaa6, type: 3}
       propertyPath: m_Name
-      value: UiTabButton
+      value: UiTabActive
       objectReference: {fileID: 0}
     - target: {fileID: 6540102490254474428, guid: b64095e557bbb174d8059ba16978aaa6, type: 3}
       propertyPath: m_IsActive
@@ -106,7 +106,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 915617297310026297, guid: b64095e557bbb174d8059ba16978aaa6, type: 3}
   m_PrefabInstance: {fileID: 1392416895534189526}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4326674465607042826
+--- !u!114 &4083527351048207338
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,14 +115,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 2298584989778788847}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4dbc2cedbcc4bdf4ea152d09df87364c, type: 3}
+  m_Script: {fileID: 11500000, guid: 9e9edc6a43b95a04cbfb2bd445ef2287, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   tabBlockSprite: {fileID: 0}
   tabIdleSprite: {fileID: 0}
   tabHoverSprite: {fileID: 0}
   tabActiveSprite: {fileID: 0}
-  isAble: 0
   onTabSelected:
     m_PersistentCalls:
       m_Calls: []

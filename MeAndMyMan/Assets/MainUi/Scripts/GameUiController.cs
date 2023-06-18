@@ -10,7 +10,7 @@ public class GameUiController : MonoBehaviour
     float cameraZoomSpeed = 0.5f;
 
     GameController gameController;
-    MouseController mouseController;
+    GameUiMouseController mouseController;
     InfrastructureController infrastructureController;
     BoardController boardController;
     Camera mainCamera;
@@ -54,19 +54,14 @@ public class GameUiController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-
-            // if (gameUiMenuController.MenuUiState == MenuUiSectionState.infrastructureBuildState)
-            // {
-            //     // gameUiMenuController.MenuUiStateChange(MenuUiState.infrastructureBuildState);
-            //     infrastructureController.DestroyInstantiateInfrastructure();
-            // }
-            
-            // gameUiMenuController.MenuUiStateChange(MenuUiSectionState.infrastructureCreateState);
-
-            // if (gameUiMenuController.MenuUiState == MenuUiState.infrastructureAboutState)
-            // {
-            //     gameUiMenuController.MenuUiStateChange(MenuUiState.infrastructureAboutState);
-            // }
+            if (gameUiMenuController.MenuUiState == MenuUiState.UiStateBuild)
+            {
+                gameUiMenuController.ExitBuild();
+            }
+            if (gameUiMenuController.MenuUiState == MenuUiState.UiStateAbout)
+            {
+                gameUiMenuController.Manage();
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.C))
@@ -91,7 +86,6 @@ public class GameUiController : MonoBehaviour
                 gameCamera.transform.position -= mainCamera.transform.forward * cameraZoomSpeed;
 
             }
-
         }
 
         if (Input.GetKey(KeyCode.RightArrow))
@@ -104,14 +98,11 @@ public class GameUiController : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             gameCamera.transform.position -= mainCamera.transform.right;
-
-
         }
 
         if (Input.GetKey(KeyCode.Space)) //++ add mouse scroll wheel
         {
             // gameController.Puase(able)
-
         }
 
 

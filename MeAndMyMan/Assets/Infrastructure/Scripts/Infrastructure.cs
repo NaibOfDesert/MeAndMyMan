@@ -12,8 +12,8 @@ public class Infrastructure : MonoBehaviour
     public bool IsPlaced { get { return isPlaced; }  set { isPlaced = value; } }
     //int infrastructureSize = 0;
    //public int InfrastructureSize { get { return infrastructureSize; } }
-    Object infrastructureObject;
-    public Object InfrastructureObject { get { return infrastructureObject; } }
+    ObjectBasic infrastructureObject;
+    public ObjectBasic InfrastructureObject { get { return infrastructureObject; } }
     InfrastructureArea infrastructureArea;
     public InfrastructureArea InfrastructureArea { get { return infrastructureArea; } }
     InfrastructureAudio infrastructureAudio;
@@ -26,7 +26,7 @@ public class Infrastructure : MonoBehaviour
     
     GameController gameController;
     BoardController boardController; 
-    MouseController mouseController;
+    GameUiMouseController mouseController;
     InfrastructureController infrastructureController; 
 
     void Awake()
@@ -39,6 +39,7 @@ public class Infrastructure : MonoBehaviour
         meshRenderer = GetComponentInChildren<MeshRenderer>();
         infrastructureAudio = GetComponent<InfrastructureAudio>();
         infrastructureUiController = GetComponent<InfrastructureUiController>();
+        
         infrastructureMaterial = meshRenderer.material;
     }
 
@@ -74,7 +75,7 @@ public class Infrastructure : MonoBehaviour
         }
     }
 
-    public void InitiateInfrastructure(Object infrastructureObject, int infrastructureSize, float rotationAxisY)
+    public void InitiateInfrastructure(ObjectBasic infrastructureObject, int infrastructureSize, float rotationAxisY)
     {
         this.infrastructureObject = infrastructureObject;
         transform.rotation = Quaternion.Euler(transform.rotation.x, rotationAxisY, transform.rotation.z);

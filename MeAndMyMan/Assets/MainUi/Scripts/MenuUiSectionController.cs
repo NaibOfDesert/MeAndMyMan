@@ -16,9 +16,9 @@ public class MenuUiSectionController : MonoBehaviour
 
     void Start()
     {
-        // MenuListAble(MenuUiSectionState.infrastructureState);
-        // MenuListAble(MenuUiSectionState.informationState);
-        // MenuListAble(MenuUiSectionState.infrastructureCreateState);
+        MenuInfrastructureStateManage(MenuUiState.UiStateAbout, MenuUiState.UiStateBuild);
+
+
     }
 
 
@@ -27,30 +27,21 @@ public class MenuUiSectionController : MonoBehaviour
         
     }
 
-  
 
-    // public void AddToUiList(MenuUiSection menuUiSection)
-    // {
-    //     if(menuUiSection.MenuUiSectionState != MenuUiSectionState.noneState)
-    //     menuUiSectionList.Add(menuUiSection);
-    // }
-
-    public void MenuInfrastructureStateManage(MenuUiSectionState menuUiStateCurrent, MenuUiSectionState menuUiStateNew)
+    public void AddToUiList(MenuUiSectionActive menuUiSection)
     {
-       MenuListAble(menuUiStateCurrent); 
-       MenuListAble(menuUiStateNew); 
+        menuUiSectionList.Add(menuUiSection);
     }
-
-    private void MenuListAble(MenuUiSectionState menuUiState)
+    public void MenuInfrastructureStateManage(MenuUiState menuUiTypeCurrent, MenuUiState menuUiTypeNew)
     {
-        foreach(var s in menuUiSectionList)
+                Debug.Log(menuUiSectionList.Count());
+        var sections = menuUiSectionList.Where(s => s.MenuUiState == menuUiTypeCurrent || s.MenuUiState == menuUiTypeNew); 
+        Debug.Log(sections.Count()); 
+
+        foreach(var s in sections)
         {
-            if(s.MenuUiStatesList.Any(m => m == menuUiState.ToString()))
-            {
-                s.SetSectionAble();
-            }
-        }  
+            Debug.Log(s.MenuUiState); 
+            s.SetSectionAble();
+        }
     }
-
-
 }

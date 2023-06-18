@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -25,7 +25,6 @@ public class InfrastructureArea : MonoBehaviour
         gameController = FindObjectOfType<GameController>();
         infrastructure = GetComponentInParent<Infrastructure>();
         textCount = GetComponentInChildren<TextMeshPro>();
-
 
         boardList = new List<Tile>();
         boardAreaList = new List<Tile>();

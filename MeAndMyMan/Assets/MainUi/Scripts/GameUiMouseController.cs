@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-public class MouseController : MonoBehaviour
+public class GameUiMouseController : MonoBehaviour
 {
     Vector3 mousePosition;
     Vector3 worldPosition;
@@ -35,11 +35,14 @@ public class MouseController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            // if (gameUiMenuController.MenuUiState == MenuUiSectionState.infrastructureBuildState)
-            // {
-            //     if(infrastructureController.BuildNewInfrastructure(worldPosition)); // TODO: to remove
-            //     // gameUiMenuController.MenuUiStateChange(MenuUiState.infrastructureBuildState);
-            // }
+            if (gameUiMenuController.MenuUiState == MenuUiState.UiStateBuild)
+            {
+                var infrastructureNew = infrastructureController.InfrastructureNew; 
+                if(infrastructureController.BuildNewInfrastructure(worldPosition))
+                {
+                gameUiMenuController.ExitBuild(true, infrastructureNew);
+                } 
+            }
         }
     }
 

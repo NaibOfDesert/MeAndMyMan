@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-public abstract class Object    
+public abstract class ObjectBasic    
 {
     protected int Value;
     protected ObjectType objectType;
@@ -32,7 +32,10 @@ public abstract class Object
     protected int healthMax;
     public int HealthMax { get { return healthMax; } }
 
-    public Object()
+    // TODO: name from JSON? 
+    // TODO: description from JSON? 
+
+    public ObjectBasic()
     {
         objectLevel = ObjectLevel.Level1;
         areaActiveCount = 0;
