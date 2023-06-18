@@ -7,6 +7,8 @@ using System.Linq;
 
 public class MenuUiSectionActive : MonoBehaviour
 {
+        [SerializeField] private List<MenuUiSectionState> menuUiSectionStateList;
+
     [SerializeField] private MenuUiSectionState menuUiSectionState;
     public MenuUiSectionState MenuUiSectionState { get {return menuUiSectionState;} }
     [SerializeField] private List<string> menuUiStatesList; 

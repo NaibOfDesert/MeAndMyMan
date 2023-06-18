@@ -70,6 +70,9 @@ public class GameUiMenuController : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log("value to compare" + gameManager.testValue1);
+        Debug.Log("value to check" + gameManager.testValue);
+
         MenuResourcesUpdate(); 
 
         if(infrastructureInAboutState != null) 
