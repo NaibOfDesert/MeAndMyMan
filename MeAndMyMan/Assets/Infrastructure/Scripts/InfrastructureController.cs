@@ -72,29 +72,32 @@ public class InfrastructureController : MonoBehaviour
     {
 
     }
-    public void CreateInfrastructure(ObjectType objectType)
+    public Infrastructure CreateInfrastructure(ObjectType objectType)
     {
         ObjectBasic infrastructureObject;
+        Infrastructure newInfrastructure; 
 
         switch (objectType)
         {
             case ObjectType.house:
                 infrastructureObject = new House();
-                InstantiateInfrastructure(housePrefab, infrastructureObject, infrastructureObject.Size);
+                newInfrastructure = InstantiateInfrastructure(housePrefab, infrastructureObject, infrastructureObject.Size);
 
                 break;
             case ObjectType.farm:
                 infrastructureObject = new Farm();
-                InstantiateInfrastructure(farmPrefab, infrastructureObject, infrastructureObject.Size);
+                newInfrastructure = InstantiateInfrastructure(farmPrefab, infrastructureObject, infrastructureObject.Size);
 
                 break;
             default:
                 Debug.Log("CreateInfrastructure error");
+                newInfrastructure = null; 
                 break;
         }
+        return newInfrastructure;
     }
 
-    Infrastructure InstantiateInfrastructure(GameObject prefabObject, ObjectBasic infrastructureObject, int infrastructureSize)
+    private Infrastructure InstantiateInfrastructure(GameObject prefabObject, ObjectBasic infrastructureObject, int infrastructureSize)
     {
         int infrastructureRotation = UnityEngine.Random.Range(0, infrastructureRotationsList.Count() - 1);
         GameObject newInfrastructureObject = Instantiate(prefabObject, mouseController.WorldPosition, Quaternion.identity); // is newInfrastructure needed?? use infrastructureRotation ???

@@ -7926,6 +7926,34 @@ PrefabInstance:
       propertyPath: tabHoverSprite
       value: 
       objectReference: {fileID: 21300000, guid: 69b8d9e84cc3d4247a28892f06ea5800, type: 3}
+    - target: {fileID: 4083527351048207338, guid: 5a34b7b3e14e6de4c86dd5980e52573b, type: 3}
+      propertyPath: onTabSelected.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083527351048207338, guid: 5a34b7b3e14e6de4c86dd5980e52573b, type: 3}
+      propertyPath: onTabSelected.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083527351048207338, guid: 5a34b7b3e14e6de4c86dd5980e52573b, type: 3}
+      propertyPath: onTabSelected.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1850989137}
+    - target: {fileID: 4083527351048207338, guid: 5a34b7b3e14e6de4c86dd5980e52573b, type: 3}
+      propertyPath: onTabSelected.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083527351048207338, guid: 5a34b7b3e14e6de4c86dd5980e52573b, type: 3}
+      propertyPath: onTabSelected.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Exit
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083527351048207338, guid: 5a34b7b3e14e6de4c86dd5980e52573b, type: 3}
+      propertyPath: onTabSelected.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GameUiMenuController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083527351048207338, guid: 5a34b7b3e14e6de4c86dd5980e52573b, type: 3}
+      propertyPath: onTabSelected.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 8583583747008327375, guid: 5a34b7b3e14e6de4c86dd5980e52573b, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -8196,7 +8224,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: defa584c1bcc7624da2f27202000ce86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textAlert: {fileID: 1185753108}
   textInfrastructureDescription: {fileID: 100120306}
   textInfrastructureArea: {fileID: 693164164}
   textInfrastructureLevel: {fileID: 814303614}
@@ -8210,6 +8237,7 @@ MonoBehaviour:
   textWoodAmount: {fileID: 13873076}
   textStoneAmount: {fileID: 1851469744}
   textIronAmount: {fileID: 332222544}
+  textAlert: {fileID: 1185753108}
   menuUiState: 0
   pauseState: 0
 --- !u!114 &1850989138

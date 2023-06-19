@@ -56,7 +56,7 @@ public class GameUiController : MonoBehaviour
         {
             if (gameUiMenuController.MenuUiState == MenuUiState.UiStateBuild)
             {
-                gameUiMenuController.ExitBuild();
+                gameUiMenuController.Exit();
             }
             if (gameUiMenuController.MenuUiState == MenuUiState.UiStateAbout)
             {

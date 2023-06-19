@@ -8,7 +8,6 @@ using System;
 public class GameUiMenuController : MonoBehaviour
 {
     [Header("InfrastructureMenu")]
-    [SerializeField] TextMeshProUGUI textAlert;
     [SerializeField] TextMeshProUGUI textInfrastructureDescription;
     [SerializeField] TextMeshProUGUI textInfrastructureArea;
     [SerializeField] TextMeshProUGUI textInfrastructureLevel;
@@ -25,15 +24,17 @@ public class GameUiMenuController : MonoBehaviour
     [SerializeField] TextMeshProUGUI textStoneAmount;
     [SerializeField] TextMeshProUGUI textIronAmount;
 
+    [Header("Alerts")]
+    [SerializeField] TextMeshProUGUI textAlert;
+
     [Header("Values")]
     [SerializeField] MenuUiState menuUiState;
     public MenuUiState MenuUiState { get { return menuUiState; } } //-- ??
     [SerializeField] bool pauseState;
     public bool PauseState { get { return pauseState; } set { pauseState = value; } }
-    private Infrastructure infrastructureCurrent;
-    public Infrastructure InfrastructureInControl { get { return infrastructureCurrent; } }
-    // private Dictionary<MenuUiTabState, ObjectType> menuUiObjectTypeDictionary; 
-    // [SerializeField] public Dictionary<MenuUiTabState, ObjectType> MenuUiObjectTypeDictionary { get { return menuUiObjectTypeDictionary; } } 
+    private Infrastructure infrastructureInControl;
+    public Infrastructure InfrastructureInControl { get { return infrastructureInControl; } }
+
     GameController gameController;
     GameManager gameManager;
     BoardController boardController;
@@ -63,7 +64,7 @@ public class GameUiMenuController : MonoBehaviour
     private void Start()
     {
         menuUiState = MenuUiState.UiStateManage; 
-        infrastructureCurrent = null;
+        infrastructureInControl = null;
 
 
 
@@ -74,9 +75,9 @@ public class GameUiMenuController : MonoBehaviour
 
         MenuResourcesUpdate(); 
 
-        if(infrastructureCurrent != null) 
+        if(infrastructureInControl != null) 
         {
-            MenuInfrastructureSetValues(infrastructureCurrent);
+            MenuInfrastructureSetValues(infrastructureInControl);
         }
     }
 
@@ -99,7 +100,7 @@ public class GameUiMenuController : MonoBehaviour
     {
         if(gameManager.CheckBuildInfrastructure(objectType, ObjectLevel.Level1))
         {
-            infrastructureController.CreateInfrastructure(objectType);
+            infrastructureInControl = infrastructureController.CreateInfrastructure(objectType);
             MenuUiStateChange(MenuUiState.UiStateBuild);
         } 
         else 
@@ -117,7 +118,7 @@ public class GameUiMenuController : MonoBehaviour
     public void DeteleInfrastructure()
     {
         // TODO: get bool to call gameManager
-        infrastructureController.DestroyInfrastructure(infrastructureCurrent); 
+        infrastructureController.DestroyInfrastructure(infrastructureInControl); 
 
         // TODO: gameManager. to implement
     }
@@ -125,9 +126,9 @@ public class GameUiMenuController : MonoBehaviour
 
     public void RebuildInfrastructure() 
     {
-        if (gameManager.CheckRebuildInfrastructure(infrastructureController.CheckAreaToRebuildInfrastructure(infrastructureCurrent).Count()))
+        if (gameManager.CheckRebuildInfrastructure(infrastructureController.CheckAreaToRebuildInfrastructure(infrastructureInControl).Count()))
         {
-            infrastructureController.RebuildInfrastructure(infrastructureCurrent); 
+            infrastructureController.RebuildInfrastructure(infrastructureInControl); 
         // TODO: gameManager. to implement
         }
         
@@ -135,21 +136,37 @@ public class GameUiMenuController : MonoBehaviour
 
     public void UpgradeInfrastructure()
     {   
-        if (gameManager.CheckRebuildInfrastructure(infrastructureController.CheckAreaToRebuildInfrastructure(infrastructureCurrent).Count()))
+        if (gameManager.CheckRebuildInfrastructure(infrastructureController.CheckAreaToRebuildInfrastructure(infrastructureInControl).Count()))
         {
             // gameManager.CalculateBuildInfrastructure(infrastructure.InfrastructureObject.ObjectType, infrastructure.InfrastructureObject.ObjectLevel);
 
-            infrastructureController.UpgradeInfrastructure(infrastructureCurrent);
+            infrastructureController.UpgradeInfrastructure(infrastructureInControl);
         // TODO: gameManager. to implement
         }
     }
 
-    public void ExitBuild(bool isBuilded = false, Infrastructure infrastructureNew = null)
+    public void Exit()
+    {
+        ExitBuild(); 
+    }
+    
+    public void ExitBuild(bool isBuilded = false, Infrastructure infrastructureNew = null) // TODO: to fix
     {
         if(!isBuilded) infrastructureController.DestroyInstantiateInfrastructure();
-        gameManager.CalculateBuildInfrastructure(infrastructureNew.InfrastructureObject.ObjectType, infrastructureNew.InfrastructureObject.ObjectLevel);
+        if(infrastructureNew == null)
+        {
+            gameManager.CalculateBuildInfrastructure(infrastructureInControl.InfrastructureObject.ObjectType, infrastructureInControl.InfrastructureObject.ObjectLevel);
+
+        }
+        else 
+        {
+            gameManager.CalculateBuildInfrastructure(infrastructureNew.InfrastructureObject.ObjectType, infrastructureNew.InfrastructureObject.ObjectLevel);
+
+        }
         MenuUiStateChange(MenuUiState.UiStateManage); 
     }
+
+
 
 
 
@@ -166,12 +183,12 @@ public class GameUiMenuController : MonoBehaviour
 
     private void MenuUiStateInfrastructureCheck(Infrastructure infrastructure) // ?: move call board Methods to BoardController in update
     {
-        if (infrastructureCurrent != infrastructure)
+        if (infrastructureInControl != infrastructure)
         {   
-            if (infrastructureCurrent != null)
+            if (infrastructureInControl != null)
             {
-                boardController.SetMaterialForListDefault(infrastructureCurrent.InfrastructureArea.BoardAreaBlockedList);
-                boardController.AbleInfrastructurePlane(infrastructureCurrent); 
+                boardController.SetMaterialForListDefault(infrastructureInControl.InfrastructureArea.BoardAreaBlockedList);
+                boardController.AbleInfrastructurePlane(infrastructureInControl); 
             }
 
             if(infrastructure != null)
@@ -180,7 +197,7 @@ public class GameUiMenuController : MonoBehaviour
                 boardController.AbleInfrastructurePlane(infrastructure);
             }
 
-            infrastructureCurrent = infrastructure;
+            infrastructureInControl = infrastructure;
         } 
     }
 

@@ -40,7 +40,7 @@ public class GameUiMouseController : MonoBehaviour
                 var infrastructureNew = infrastructureController.InfrastructureNew; 
                 if(infrastructureController.BuildNewInfrastructure(worldPosition))
                 {
-                gameUiMenuController.ExitBuild(true, infrastructureNew);
+                    gameUiMenuController.ExitBuild(true, infrastructureNew);
                 } 
             }
         }
