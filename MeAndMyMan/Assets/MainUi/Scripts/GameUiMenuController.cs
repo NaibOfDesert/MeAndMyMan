@@ -32,7 +32,7 @@ public class GameUiMenuController : MonoBehaviour
     public MenuUiState MenuUiState { get { return menuUiState; } } //-- ??
     [SerializeField] bool pauseState;
     public bool PauseState { get { return pauseState; } set { pauseState = value; } }
-    private Infrastructure infrastructureInControl;
+    [SerializeField] private Infrastructure infrastructureInControl;
     public Infrastructure InfrastructureInControl { get { return infrastructureInControl; } }
 
     GameController gameController;
@@ -100,24 +100,23 @@ public class GameUiMenuController : MonoBehaviour
     {
         if(gameManager.CheckBuildInfrastructure(objectType, ObjectLevel.Level1))
         {
-            infrastructureInControl = infrastructureController.CreateInfrastructure(objectType);
-            MenuUiStateChange(MenuUiState.UiStateBuild);
+            var newInfrastructure = infrastructureController.CreateInfrastructure(objectType);
+            MenuUiStateChange(MenuUiState.UiStateBuild, newInfrastructure);
         } 
         else 
         {
             textAlert.text = "Impossible to build " + objectType.ToString() + ". You have not enought resources!"; // TODO: add time
         }
- 
     }
 
     public void About(Infrastructure infrastructure)
     {
-        MenuUiStateChange(MenuUiState.UiStateAbout, infrastructure); 
+        MenuUiStateChange(MenuUiState.UiStateAbout, infrastructure); // *IMPORTANT: setting infrastructure to GameUiMenuController as infrastructureInControll
     }
 
-    public void DeteleInfrastructure()
+    public void DeteleInfrastructure(GameObject gameObject)
     {
-        // TODO: get bool to call gameManager
+        gameManager.CalculateDeleteInfrastructure(infrastructureInControl);
         infrastructureController.DestroyInfrastructure(infrastructureInControl); 
 
         // TODO: gameManager. to implement
@@ -188,7 +187,7 @@ public class GameUiMenuController : MonoBehaviour
             if (infrastructureInControl != null)
             {
                 boardController.SetMaterialForListDefault(infrastructureInControl.InfrastructureArea.BoardAreaBlockedList);
-                boardController.AbleInfrastructurePlane(infrastructureInControl); 
+                boardController.AbleInfrastructurePlane(infrastructureInControl); // ! infrastrucute in build state do not save board area so afret deleting instance cant able infrastructureplane
             }
 
             if(infrastructure != null)
@@ -197,7 +196,7 @@ public class GameUiMenuController : MonoBehaviour
                 boardController.AbleInfrastructurePlane(infrastructure);
             }
 
-            infrastructureInControl = infrastructure;
+            infrastructureInControl = infrastructure; // *IMPORTANT: setting infrastructure to GameUiMenuController as infrastructureInControll
         } 
     }
 
