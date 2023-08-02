@@ -8,7 +8,7 @@ using System;
 public class InfrastructureController : MonoBehaviour
 {
     [Header("Prefabs")]
-    [SerializeField] Dictionary<ObjectType, GameObject> prefabDictionary; 
+    [SerializeField] Dictionary<EObjectType, GameObject> prefabDictionary; 
     [SerializeField] GameObject housePrefab;
     public GameObject HousePrefab { get { return housePrefab; } } // TODO: check is needed? 
 
@@ -44,7 +44,7 @@ public class InfrastructureController : MonoBehaviour
     GameManager gameManager;
     GameUiMouseController mouseController;
     GameUiMenuController gameUiMenuController;
-    BoardController boardController;
+    GameBoardController boardController;
 
     // TODO: move board control to UI Controll
 
@@ -72,19 +72,19 @@ public class InfrastructureController : MonoBehaviour
     {
 
     }
-    public Infrastructure CreateInfrastructure(ObjectType objectType)
+    public Infrastructure CreateInfrastructure(EObjectType objectType)
     {
         ObjectBasic infrastructureObject;
         Infrastructure newInfrastructure; 
 
         switch (objectType)
         {
-            case ObjectType.house:
+            case EObjectType.house:
                 infrastructureObject = new House();
                 newInfrastructure = InstantiateInfrastructure(housePrefab, infrastructureObject, infrastructureObject.Size);
 
                 break;
-            case ObjectType.farm:
+            case EObjectType.farm:
                 infrastructureObject = new Farm();
                 newInfrastructure = InstantiateInfrastructure(farmPrefab, infrastructureObject, infrastructureObject.Size);
 
@@ -145,11 +145,11 @@ public class InfrastructureController : MonoBehaviour
         {
             switch (infrastructureNew.InfrastructureObject.ObjectType)
             {
-                case ObjectType.house:
+                case EObjectType.house:
                     houseList.Add(infrastructureNew);
                     break;
 
-                case ObjectType.farm:
+                case EObjectType.farm:
                     farmList.Add(infrastructureNew);
                     break;
 
@@ -166,11 +166,11 @@ public class InfrastructureController : MonoBehaviour
         {
             switch (infrastructure.InfrastructureObject.ObjectType)
             {
-                case ObjectType.house:  
+                case EObjectType.house:  
                     houseList.Remove(infrastructure);
                     break;
 
-                case ObjectType.farm:
+                case EObjectType.farm:
                     farmList.Remove(infrastructure);
                     break;
 

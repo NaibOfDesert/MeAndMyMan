@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class BoardController : MonoBehaviour
+public class GameBoardController : MonoBehaviour
 {
     [SerializeField] GameObject forestPrefab;
     [SerializeField] GameObject rockPrefab;

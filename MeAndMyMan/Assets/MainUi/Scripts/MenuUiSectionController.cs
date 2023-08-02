@@ -16,7 +16,7 @@ public class MenuUiSectionController : MonoBehaviour
 
     void Start()
     {
-        MenuInfrastructureStateManage(MenuUiState.UiStateAbout, MenuUiState.UiStateBuild);
+        MenuInfrastructureStateManage(EMenuUiState.UiStateAbout, EMenuUiState.UiStateBuild);
 
 
     }
@@ -32,15 +32,12 @@ public class MenuUiSectionController : MonoBehaviour
     {
         menuUiSectionList.Add(menuUiSection);
     }
-    public void MenuInfrastructureStateManage(MenuUiState menuUiTypeCurrent, MenuUiState menuUiTypeNew)
+    public void MenuInfrastructureStateManage(EMenuUiState menuUiTypeCurrent, EMenuUiState menuUiTypeNew)
     {
-                Debug.Log(menuUiSectionList.Count());
         var sections = menuUiSectionList.Where(s => s.MenuUiState == menuUiTypeCurrent || s.MenuUiState == menuUiTypeNew); 
-        Debug.Log(sections.Count()); 
 
         foreach(var s in sections)
         {
-            Debug.Log(s.MenuUiState); 
             s.SetSectionAble();
         }
     }

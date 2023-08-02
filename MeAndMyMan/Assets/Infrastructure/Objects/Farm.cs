@@ -8,7 +8,7 @@ public class Farm : ObjectBasic
 {
     public Farm() : base()
     {
-        objectType = ObjectType.farm;
+        objectType = EObjectType.farm;
         size = 2;
         areaSize = 1;
         improvementTime = 2; 

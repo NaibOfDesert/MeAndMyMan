@@ -1,10 +1,10 @@
 using System;
-public enum ResourceType 
+public enum EResourceType 
 {
     objectType,
     user,
     gold,
-    food,
+    food,   
     wood,
     stone,
     iron

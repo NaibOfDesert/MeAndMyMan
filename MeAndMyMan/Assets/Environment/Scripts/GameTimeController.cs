@@ -23,9 +23,11 @@ public class GameTimeController : MonoBehaviour
 
     void Update()
     {
-        
+
+
     }
 
+    //TODO: clock work in diferent part of time
     IEnumerator GameClock()
     {
         gameLoopsCount++;

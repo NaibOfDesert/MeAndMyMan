@@ -22,12 +22,14 @@ public class GameController : MonoBehaviour
 
     GameTimeController gameTimeController;
     public GameTimeController GameTimeController { get { return gameTimeController; } }
+    GameLightController gameLightController;
+    public GameLightController GameLightController { get { return gameLightController; } }
 
     InfrastructureController infrastructureController;
     public InfrastructureController InfrastructureController { get { return infrastructureController; } }
 
-    BoardController boardController;
-    public BoardController BoardController { get { return boardController; } }
+    GameBoardController boardController;
+    public GameBoardController BoardController { get { return boardController; } }
 
     GameUiCameraController gameCameraController;
     public GameUiCameraController GameCameraController { get { return gameCameraController; } }
@@ -56,6 +58,7 @@ public class GameController : MonoBehaviour
         try
         {
         gameTimeController = FindObjectOfType<GameTimeController>();
+        gameLightController = FindObjectOfType<GameLightController>();
         mouseController = FindObjectOfType<GameUiMouseController>();
         gameCameraController = FindObjectOfType<GameUiCameraController>();
         gameCamera = gameCameraController.gameObject;
@@ -63,7 +66,7 @@ public class GameController : MonoBehaviour
         gameUiMenuController = FindObjectOfType<GameUiMenuController>();
         menuUiSectionController = FindObjectOfType<MenuUiSectionController>();
         menuUiTabController = FindObjectOfType<MenuUiTabController>();
-        boardController = FindObjectOfType<BoardController>();
+        boardController = FindObjectOfType<GameBoardController>();
         infrastructureController = FindObjectOfType<InfrastructureController>();
         }
         catch(Exception e)
@@ -72,7 +75,7 @@ public class GameController : MonoBehaviour
         }
         finally
         {
-            // *: Debug.Log("GameController: Awake basic values launched correctly"); 
+
         }
 
         gameManager = new GameManager(this, infrastructureController, BoardController);

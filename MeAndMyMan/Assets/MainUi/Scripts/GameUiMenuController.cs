@@ -28,8 +28,8 @@ public class GameUiMenuController : MonoBehaviour
     [SerializeField] TextMeshProUGUI textAlert;
 
     [Header("Values")]
-    [SerializeField] MenuUiState menuUiState;
-    public MenuUiState MenuUiState { get { return menuUiState; } } //-- ??
+    [SerializeField] EMenuUiState menuUiState;
+    public EMenuUiState MenuUiState { get { return menuUiState; } } //-- ??
     [SerializeField] bool pauseState;
     public bool PauseState { get { return pauseState; } set { pauseState = value; } }
     [SerializeField] private Infrastructure infrastructureInControl;
@@ -37,7 +37,7 @@ public class GameUiMenuController : MonoBehaviour
 
     GameController gameController;
     GameManager gameManager;
-    BoardController boardController;
+    GameBoardController boardController;
     InfrastructureController infrastructureController;
     GameUiController gameUiController; 
     MenuUiSectionController menuUiSectionController;
@@ -63,7 +63,7 @@ public class GameUiMenuController : MonoBehaviour
 
     private void Start()
     {
-        menuUiState = MenuUiState.UiStateManage; 
+        menuUiState = EMenuUiState.UiStateManage; 
         infrastructureInControl = null;
 
 
@@ -83,25 +83,25 @@ public class GameUiMenuController : MonoBehaviour
 
     public void Manage()
     {
-        MenuUiStateChange(MenuUiState.UiStateManage); 
+        MenuUiStateChange(EMenuUiState.UiStateManage); 
     }
 
     public void BuildHouse(GameObject gameObject) // ?: maybe somehow to use
     {
-        BuildInfrastructure(ObjectType.house);
+        BuildInfrastructure(EObjectType.house);
     }
 
     public void BuildFarm()
     {
-        BuildInfrastructure(ObjectType.farm);
+        BuildInfrastructure(EObjectType.farm);
     }
 
-    public void BuildInfrastructure(ObjectType objectType)
+    public void BuildInfrastructure(EObjectType objectType)
     {
-        if(gameManager.CheckBuildInfrastructure(objectType, ObjectLevel.Level1))
+        if(gameManager.CheckBuildInfrastructure(objectType, EObjectLevel.Level1))
         {
             var newInfrastructure = infrastructureController.CreateInfrastructure(objectType);
-            MenuUiStateChange(MenuUiState.UiStateBuild, newInfrastructure);
+            MenuUiStateChange(EMenuUiState.UiStateBuild, newInfrastructure);
         } 
         else 
         {
@@ -111,7 +111,7 @@ public class GameUiMenuController : MonoBehaviour
 
     public void About(Infrastructure infrastructure)
     {
-        MenuUiStateChange(MenuUiState.UiStateAbout, infrastructure); // *IMPORTANT: setting infrastructure to GameUiMenuController as infrastructureInControll
+        MenuUiStateChange(EMenuUiState.UiStateAbout, infrastructure); // *IMPORTANT: setting infrastructure to GameUiMenuController as infrastructureInControll
     }
 
     public void DeteleInfrastructure(GameObject gameObject)
@@ -162,14 +162,14 @@ public class GameUiMenuController : MonoBehaviour
             gameManager.CalculateBuildInfrastructure(infrastructureNew.InfrastructureObject.ObjectType, infrastructureNew.InfrastructureObject.ObjectLevel);
 
         }
-        MenuUiStateChange(MenuUiState.UiStateManage); 
+        MenuUiStateChange(EMenuUiState.UiStateManage); 
     }
 
 
 
 
 
-    private void MenuUiStateChange(MenuUiState menuUiStateNew, Infrastructure infrastructure = null)
+    private void MenuUiStateChange(EMenuUiState menuUiStateNew, Infrastructure infrastructure = null)
     {
         MenuUiStateInfrastructureCheck(infrastructure); 
 
@@ -221,12 +221,12 @@ public class GameUiMenuController : MonoBehaviour
 
     private void MenuResourcesUpdate()
     {        
-        textCitizensAmount.text = gameManager.ResourcesDictionary[ResourceType.user].ToString();
-        textGoldAmount.text = gameManager.ResourcesDictionary[ResourceType.gold].ToString();
-        textFoodAmount.text = gameManager.ResourcesDictionary[ResourceType.food].ToString();
-        textWoodAmount.text = gameManager.ResourcesDictionary[ResourceType.wood].ToString();
-        textStoneAmount.text = gameManager.ResourcesDictionary[ResourceType.stone].ToString();
-        textIronAmount.text = gameManager.ResourcesDictionary[ResourceType.iron].ToString();
+        textCitizensAmount.text = gameManager.ResourcesDictionary[EResourceType.user].ToString();
+        textGoldAmount.text = gameManager.ResourcesDictionary[EResourceType.gold].ToString();
+        textFoodAmount.text = gameManager.ResourcesDictionary[EResourceType.food].ToString();
+        textWoodAmount.text = gameManager.ResourcesDictionary[EResourceType.wood].ToString();
+        textStoneAmount.text = gameManager.ResourcesDictionary[EResourceType.stone].ToString();
+        textIronAmount.text = gameManager.ResourcesDictionary[EResourceType.iron].ToString();
     }
 
 

@@ -25,7 +25,7 @@ public class Infrastructure : MonoBehaviour
     Material infrastructureMaterial;
     
     GameController gameController;
-    BoardController boardController; 
+    GameBoardController boardController; 
     GameUiMouseController mouseController;
     InfrastructureController infrastructureController; 
 

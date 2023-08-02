@@ -11,7 +11,7 @@ public class House: ObjectBasic
 
     public House() : base()
     {
-        objectType = ObjectType.house;
+        objectType = EObjectType.house;
         size = 1;
         areaSize = 0;
         improvementTime = 1;

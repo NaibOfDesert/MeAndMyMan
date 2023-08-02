@@ -8,7 +8,7 @@ public class Tower : ObjectBasic, IObjectActiveDefence
 {
     public Tower() : base()
     {
-        objectType = ObjectType.tower;
+        objectType = EObjectType.tower;
         size = 1;
         areaSize = 0;
         improvementTime = 20; 

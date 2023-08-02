@@ -1,6 +1,6 @@
 ﻿using System;
 
-public enum MenuUiState
+public enum EMenuUiState
 {
     none, 
     UiStateManage,

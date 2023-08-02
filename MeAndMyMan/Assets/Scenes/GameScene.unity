@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2253,7 +2253,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 494792054}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d709def8d9154643b8c552e337a5ecc, type: 3}
+  m_Script: {fileID: 11500000, guid: dad7e45398a679843ae7750c91ba54d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   gameLoopsCount: 0
@@ -3550,8 +3550,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_Father: {fileID: 1859479206}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1001 &709683194
 PrefabInstance:
@@ -7528,7 +7528,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1647739176}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a292f606c07e89d4aaf2285b11d40d03, type: 3}
+  m_Script: {fileID: 11500000, guid: 5f5c0965111180e41bdd3cca9aa7a57f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   forestPrefab: {fileID: 8040782815182945752, guid: 83b62ad0075ded5489197c265f0b40c2, type: 3}
@@ -8240,6 +8240,7 @@ MonoBehaviour:
   textAlert: {fileID: 1185753108}
   menuUiState: 0
   pauseState: 0
+  infrastructureInControl: {fileID: 0}
 --- !u!114 &1850989138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8517,6 +8518,51 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6522749861971741982, guid: 5fe7c0cdc0b569446acb9f2effc6abbd, type: 3}
   m_PrefabInstance: {fileID: 1855798520}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1859479204
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1859479206}
+  - component: {fileID: 1859479205}
+  m_Layer: 0
+  m_Name: GameLight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1859479205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1859479204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 284b73002e97e4b4699c27ed8091d396, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1859479206
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1859479204}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 705507995}
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1878158580
 PrefabInstance:
   m_ObjectHideFlags: 0

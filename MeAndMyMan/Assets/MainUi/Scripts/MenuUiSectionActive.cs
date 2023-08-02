@@ -7,8 +7,8 @@ using System.Linq;
 
 public class MenuUiSectionActive : MonoBehaviour
 {
-    [SerializeField] private MenuUiState menuUiState;
-    public MenuUiState MenuUiState { get {return menuUiState;} }
+    [SerializeField] private EMenuUiState menuUiState;
+    public EMenuUiState MenuUiState { get {return menuUiState;} }
     GameController gameController;
     MenuUiSectionController menuUiSectionController;
     

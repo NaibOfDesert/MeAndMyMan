@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 public class GameManager
 {
     GameController gameController;
-    BoardController boardController;
+    GameBoardController boardController;
     InfrastructureController infrastructureController;
     int experienceAmount = 0;
     public int ExperienceAmount { get { return experienceAmount; } }
-    Dictionary<ResourceType, int> resourcesDictionary;
-    public Dictionary<ResourceType, int> ResourcesDictionary { get { return resourcesDictionary; } }
+    Dictionary<EResourceType, int> resourcesDictionary;
+    public Dictionary<EResourceType, int> ResourcesDictionary { get { return resourcesDictionary; } }
     List<Dictionary<string, int>> objectCostListDictionary; // TODO: dictionary of dictionary
-    Dictionary<ObjectType, Dictionary<ResourceType, int>> objectCostDictionary; 
+    Dictionary<EObjectType, Dictionary<EResourceType,    int>> objectCostDictionary; 
     int goldValueToRebuildSingle = 25;
 
 
-    public GameManager(GameController gameController, InfrastructureController infrastructureController, BoardController boardController)
+    public GameManager(GameController gameController, InfrastructureController infrastructureController, GameBoardController boardController)
     {
         this.gameController = gameController;
         this.boardController = boardController;
@@ -32,50 +32,50 @@ public class GameManager
     #region SetBasicValues
     public void SetResourcesDictionary()
     {
-        resourcesDictionary = new Dictionary<ResourceType, int>();
-        resourcesDictionary.Add(ResourceType.user, 25);
-        resourcesDictionary.Add(ResourceType.gold, 100);
-        resourcesDictionary.Add(ResourceType.food, 200);
-        resourcesDictionary.Add(ResourceType.wood, 150);
-        resourcesDictionary.Add(ResourceType.stone, 100);
-        resourcesDictionary.Add(ResourceType.iron, 10);
+        resourcesDictionary = new Dictionary<EResourceType, int>();
+        resourcesDictionary.Add(EResourceType.user, 25);
+        resourcesDictionary.Add(EResourceType.gold, 100);
+        resourcesDictionary.Add(EResourceType.food, 200);
+        resourcesDictionary.Add(EResourceType.wood, 150);
+        resourcesDictionary.Add(EResourceType.stone, 100);
+        resourcesDictionary.Add(EResourceType.iron, 10);
     }
 
     public void SetObjectCostListDictionary()
     {
         objectCostListDictionary = new List<Dictionary<string, int>>(); 
-        objectCostListDictionary.Add(SetCostsByDictionary(ObjectType.house, 0, 5, 10, 25, 0, 0));
-        objectCostListDictionary.Add(SetCostsByDictionary(ObjectType.farm, 12, 5, 10, 25, 0, 0));
-        objectCostListDictionary.Add(SetCostsByDictionary(ObjectType.tower, 5, 2, 1, 5, 0, 0));
+        objectCostListDictionary.Add(SetCostsByDictionary(EObjectType.house, 0, 5, 10, 25, 0, 0));
+        objectCostListDictionary.Add(SetCostsByDictionary(EObjectType.farm, 12, 5, 10, 25, 0, 0));
+        objectCostListDictionary.Add(SetCostsByDictionary(EObjectType.tower, 5, 2, 1, 5, 0, 0));
     }
 
     public void SetCostDictionary()
     {
-        objectCostDictionary = new Dictionary<ObjectType, Dictionary<ResourceType, int>>(); 
-        objectCostDictionary.Add(ObjectType.house, SetCosts(0, 5, 10, 25, 0, 0));
-        objectCostDictionary.Add(ObjectType.farm, SetCosts(12, 5, 10, 25, 0, 0));
-        objectCostDictionary.Add(ObjectType.tower, SetCosts(25, 20, 100, 25, 60, 70));    
+        objectCostDictionary = new Dictionary<EObjectType, Dictionary<EResourceType, int>>(); 
+        objectCostDictionary.Add(EObjectType.house, SetCosts(0, 5, 10, 25, 0, 0));
+        objectCostDictionary.Add(EObjectType.farm, SetCosts(12, 5, 10, 25, 0, 0));
+        objectCostDictionary.Add(EObjectType.tower, SetCosts(25, 20, 100, 25, 60, 70));    
     }
-    public Dictionary<ResourceType, int> SetCosts(int userCost, int goldCost, int foodCost, int woodCost, int stoneCost, int ironCost){
-        Dictionary<ResourceType, int> newCostDictionary = new Dictionary<ResourceType, int>();
-        newCostDictionary.Add(ResourceType.user, userCost);
-        newCostDictionary.Add(ResourceType.gold, goldCost);
-        newCostDictionary.Add(ResourceType.food, foodCost);
-        newCostDictionary.Add(ResourceType.wood, woodCost);
-        newCostDictionary.Add(ResourceType.stone, stoneCost);
-        newCostDictionary.Add(ResourceType.iron, ironCost);
+    public Dictionary<EResourceType, int> SetCosts(int userCost, int goldCost, int foodCost, int woodCost, int stoneCost, int ironCost){
+        Dictionary<EResourceType, int> newCostDictionary = new Dictionary<EResourceType, int>();
+        newCostDictionary.Add(EResourceType.user, userCost);
+        newCostDictionary.Add(EResourceType.gold, goldCost);
+        newCostDictionary.Add(EResourceType.food, foodCost);
+        newCostDictionary.Add(EResourceType.wood, woodCost);
+        newCostDictionary.Add(EResourceType.stone, stoneCost);
+        newCostDictionary.Add(EResourceType.iron, ironCost);
         return newCostDictionary;
     }
-    public Dictionary<string, int> SetCostsByDictionary(ObjectType objectType, int userCost, int goldCost, int foodCost, int woodCost, int stoneCost, int ironCost)
+    public Dictionary<string, int> SetCostsByDictionary(EObjectType objectType, int userCost, int goldCost, int foodCost, int woodCost, int stoneCost, int ironCost)
     {
         Dictionary<string, int> newCostDictionary = new Dictionary<string, int>();
         newCostDictionary.Add("objectType", (int)objectType);
-        newCostDictionary.Add(ResourceType.user.ToString(), userCost);
-        newCostDictionary.Add(ResourceType.gold.ToString(), goldCost);
-        newCostDictionary.Add(ResourceType.food.ToString(), foodCost);
-        newCostDictionary.Add(ResourceType.wood.ToString(), woodCost);
-        newCostDictionary.Add(ResourceType.stone.ToString(), stoneCost);
-        newCostDictionary.Add(ResourceType.iron.ToString(), ironCost);
+        newCostDictionary.Add(EResourceType.user.ToString(), userCost);
+        newCostDictionary.Add(EResourceType.gold.ToString(), goldCost);
+        newCostDictionary.Add(EResourceType.food.ToString(), foodCost);
+        newCostDictionary.Add(EResourceType.wood.ToString(), woodCost);
+        newCostDictionary.Add(EResourceType.stone.ToString(), stoneCost);
+        newCostDictionary.Add(EResourceType.iron.ToString(), ironCost);
 
         return newCostDictionary;
     }
@@ -97,7 +97,7 @@ public class GameManager
     {
         switch (infrastructure.InfrastructureObject.ObjectType)
         {
-            case ObjectType.house:
+            case EObjectType.house:
                 // citizensAmount++;
                 break;
             default:
@@ -107,7 +107,7 @@ public class GameManager
     }
 
     #region Check
-    public bool CheckBuildInfrastructure(ObjectType? objectType, ObjectLevel objectLevel)  //TODO: to check i fix
+    public bool CheckBuildInfrastructure(EObjectType? objectType, EObjectLevel objectLevel)  //TODO: to check i fix
     {
         if(objectType == null) return false;
 
@@ -124,7 +124,7 @@ public class GameManager
 
     public bool CheckRebuildInfrastructure(int fieldsToRebuild)
     {
-        return (fieldsToRebuild * goldValueToRebuildSingle <= resourcesDictionary[ResourceType.gold]) ? true : false;
+        return (fieldsToRebuild * goldValueToRebuildSingle <= resourcesDictionary[EResourceType.gold]) ? true : false;
     }
 
     public void CalculateInfrastructureIncom(InfrastructureController infrastructureController)
@@ -140,12 +140,12 @@ public class GameManager
     {
         foreach (var infrastructure in infrastructureList)
         {
-            resourcesDictionary[ResourceType.food] += infrastructure.InfrastructureObject.AreaActiveCount;
+            resourcesDictionary[EResourceType.food] += infrastructure.InfrastructureObject.AreaActiveCount;
         }
     }
 
 
-    public void CalculateBuildInfrastructure(ObjectType objectType, ObjectLevel objectLevel)
+    public void CalculateBuildInfrastructure(EObjectType objectType, EObjectLevel objectLevel)
     {
         var objectCost = objectCostListDictionary.Where(d => d["objectType"].Equals((int)objectType)).SingleOrDefault();
 
@@ -159,7 +159,7 @@ public class GameManager
 
     public void CalculateRebuildInfrastructure(int fieldsToRebuild)
     {
-        resourcesDictionary[ResourceType.gold] -= fieldsToRebuild * goldValueToRebuildSingle;
+        resourcesDictionary[EResourceType.gold] -= fieldsToRebuild * goldValueToRebuildSingle;
     }
     public void CalculateDeleteInfrastructure(Infrastructure infrastructure)
     {

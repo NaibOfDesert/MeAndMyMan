@@ -1,4 +1,4 @@
-﻿public enum ObjectLevel : int
+﻿public enum EObjectLevel : int
 {
     Level1 = 1, 
     Level2 = 2, 

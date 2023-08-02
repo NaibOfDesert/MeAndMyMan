@@ -12,7 +12,7 @@ public class GameUiController : MonoBehaviour
     GameController gameController;
     GameUiMouseController mouseController;
     InfrastructureController infrastructureController;
-    BoardController boardController;
+    GameBoardController boardController;
     Camera mainCamera;
     GameObject gameCamera;
     GameUiCameraController gameCameraController;
@@ -54,11 +54,11 @@ public class GameUiController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (gameUiMenuController.MenuUiState == MenuUiState.UiStateBuild)
+            if (gameUiMenuController.MenuUiState == EMenuUiState.UiStateBuild)
             {
                 gameUiMenuController.Exit();
             }
-            if (gameUiMenuController.MenuUiState == MenuUiState.UiStateAbout)
+            if (gameUiMenuController.MenuUiState == EMenuUiState.UiStateAbout)
             {
                 gameUiMenuController.Manage();
             }

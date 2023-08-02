@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 public abstract class ObjectBasic    
 {
     protected int Value;
-    protected ObjectType objectType;
-    public ObjectType ObjectType { get { return objectType;  } }
+    protected EObjectType objectType;
+    public EObjectType ObjectType { get { return objectType;  } }
     protected int size;
     public int Size { get { return size; } }
     protected int areaSize;
@@ -16,8 +16,8 @@ public abstract class ObjectBasic
     public int AreaActiveCount { get { return areaActiveCount; } set { areaActiveCount = value; } }
     protected int areaDisactiveCount;
     public int AreaDisactiveCount { get { return areaDisactiveCount; } set { areaDisactiveCount = value; } }
-    protected ObjectLevel objectLevel;
-    public ObjectLevel ObjectLevel { get { return objectLevel; } set { objectLevel = value; } }
+    protected EObjectLevel objectLevel;
+    public EObjectLevel ObjectLevel { get { return objectLevel; } set { objectLevel = value; } }
     protected int improvementTime;
     public int ImprovementTime { get { return improvementTime; } }
     protected int users;
@@ -37,7 +37,7 @@ public abstract class ObjectBasic
 
     public ObjectBasic()
     {
-        objectLevel = ObjectLevel.Level1;
+        objectLevel = EObjectLevel.Level1;
         areaActiveCount = 0;
         areaDisactiveCount = 0;
         energy = 0;
@@ -46,21 +46,21 @@ public abstract class ObjectBasic
  
     public virtual void UpgradeObject()
     {
-        if (objectLevel == ObjectLevel.Level4) return;
-        else if (objectLevel == ObjectLevel.Level1){
-            usersMax = usersMaxBacic * (int) ObjectLevel.Level2; 
-            objectLevel = ObjectLevel.Level2;
+        if (objectLevel == EObjectLevel.Level4) return;
+        else if (objectLevel == EObjectLevel.Level1){
+            usersMax = usersMaxBacic * (int) EObjectLevel.Level2; 
+            objectLevel = EObjectLevel.Level2;
             return; 
         } 
-        else if (objectLevel == ObjectLevel.Level2){
-            objectLevel = ObjectLevel.Level3;
-            usersMax = usersMaxBacic * (int)ObjectLevel.Level3;
+        else if (objectLevel == EObjectLevel.Level2){
+            objectLevel = EObjectLevel.Level3;
+            usersMax = usersMaxBacic * (int)EObjectLevel.Level3;
             return;
         }
-        else if (objectLevel == ObjectLevel.Level3)
+        else if (objectLevel == EObjectLevel.Level3)
         {
-            usersMax = usersMaxBacic * (int)ObjectLevel.Level4;
-            objectLevel = ObjectLevel.Level4;
+            usersMax = usersMaxBacic * (int)EObjectLevel.Level4;
+            objectLevel = EObjectLevel.Level4;
             return;
         }
     }

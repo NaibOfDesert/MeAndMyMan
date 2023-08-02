@@ -1,4 +1,4 @@
-﻿public enum ObjectType
+﻿public enum EObjectType
 {
     non,
     castle,

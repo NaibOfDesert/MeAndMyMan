@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 public struct ObjectCost
 {
-    ObjectType objectType; 
-    public ObjectType ObjectType { get { return objectType; } }
+    EObjectType objectType; 
+    public EObjectType ObjectType { get { return objectType; } }
     int userCost;
     public int UserCost { get { return userCost; } }
     int goldCost;
@@ -20,7 +20,7 @@ public struct ObjectCost
     int ironCost;
     public int IronCost { get { return ironCost; } }
 
-    public ObjectCost ( ObjectType objectType, int userCost, int goldCost, int foodCost, int woodCost, int stoneCost, int ironCost)
+    public ObjectCost ( EObjectType objectType, int userCost, int goldCost, int foodCost, int woodCost, int stoneCost, int ironCost)
     {
         this.objectType = objectType;
         this.userCost = userCost;
